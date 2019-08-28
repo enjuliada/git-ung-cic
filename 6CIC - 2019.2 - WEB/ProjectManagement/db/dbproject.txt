@@ -1,0 +1,61 @@
+create database dbproject
+use dbproject
+
+CREATE TABLE `arquivos` (
+  `codigo_ARQUIVO` int(11) NOT NULL,
+  `nome_arquivo` varchar(120) NOT NULL,
+  `data_arquivo` date NOT NULL,
+  `codigoTarefa_ARQUIVO` int(11) NOT NULL,
+  PRIMARY KEY (`codigo_ARQUIVO`)
+) 
+
+CREATE TABLE `usuarios` (
+  `email_USUARIO` varchar(120) NOT NULL,
+  `nome_USUARIO` varchar(120) NOT NULL,
+  `senha_USUARIO` varchar(32) NOT NULL,
+  `telefone_USUARIO` varchar(13) NOT NULL,
+  PRIMARY KEY (`email_USUARIO`)
+)
+
+CREATE TABLE `tarefas` (
+  `codigo_TAREFA` int(11) NOT NULL,
+  `nome_TAREFA` varchar(80) NOT NULL,
+  `descricao_TAREFA` varchar(300) DEFAULT NULL,
+  `data_TAREFA` date NOT NULL,
+  `status_TAREFA` int(11) NOT NULL,
+  `emailUsuario_TAREFA` varchar(120) NOT NULL,
+  `codigoProjeto_TAREFA` int(11) NOT NULL,
+  PRIMARY KEY (`codigo_TAREFA`)
+)
+
+CREATE TABLE `projetos` (
+  `codigo_PROJETO` int(11) NOT NULL,
+  `nome_PROJETO` varchar(120) NOT NULL,
+  `descricao_PROJETO` varchar(300) NOT NULL,
+  `inicio_PROJETO` date NOT NULL,
+  `fim_PROJETO` date NOT NULL,
+  `status_PROJETO` int(11) NOT NULL,
+  `emailUsuario_PROJETO` varchar(120) NOT NULL,
+  `codigoCategoria_PROJETO` int(11) NOT NULL,
+  PRIMARY KEY (`codigo_PROJETO`)
+)
+
+CREATE TABLE `permissoes` (
+  `codigo_PERMISSAO` int(11) NOT NULL,
+  `nome_PERMISSAO` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`codigo_PERMISSAO`)
+)
+
+CREATE TABLE `equipes` (
+  `emailUsuario_EQUIPE` varchar(120) NOT NULL,
+  `codigoTarefa_EQUIPE` int(11) NOT NULL,
+  `codigoProjeto_EQUIPE` int(11) NOT NULL,
+  `codigoPermissao_EQUIPE` int(11) NOT NULL,
+  PRIMARY KEY (`emailUsuario_EQUIPE`,`codigoTarefa_EQUIPE`,`codigoProjeto_EQUIPE`, `codigoPermissao_EQUIPE`)
+)
+
+CREATE TABLE `categorias` (
+  `codigo_CATEGORIA` int(11) NOT NULL,
+  `nome_CATEGORIA` varchar(45) NOT NULL,
+  PRIMARY KEY (`codigo_CATEGORIA`)
+)

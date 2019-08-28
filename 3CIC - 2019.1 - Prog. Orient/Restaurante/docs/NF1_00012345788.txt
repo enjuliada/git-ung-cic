@@ -1,0 +1,24 @@
+#### RESTAURANTE CIC - 3º SEMESTRE ####
+Av. Guarulhos, 353 - Centro
+Tel: (11)95241-2545
+
+******** Dados do pedido *********
+
+Valor do Rodízio: R$ 49.9
+Pessoas: 2
+Sub-Total: 99.8
+Toddynho ------ 3 ------ 12.0
+Milk Shake ------ 1 ------ 12.0
+Pudim ------ 1 ------ 7.0
+Bolo ------ 1 ------ 8.5
+Cerveja ------ 1 ------ 9.5
+Mousse ------ 1 ------ 6.0
+
+Acompanhamentos: 55.0
+Serviços: 15.4800005
+Estacionamento: NÃO 
+
+TOTAL A PAGAR: R$170.28
+
+
+AGRADECEMOS A PREFERÊNCIA - VOLTE SEMPRE!
