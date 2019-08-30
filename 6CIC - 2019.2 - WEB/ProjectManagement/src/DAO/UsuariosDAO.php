@@ -44,9 +44,19 @@ class UsuariosDAO {
         
         //se numero de linhas do select for maior que 0
         if(mysqli_num_rows($rsLogin)>0){
-            return true;
+             
+            $dados = mysqli_fetch_array($rsLogin);//abrindo o resultset
+            
+            $tmpUsuario = new Usuarios();             
+             //preenchendo objeto
+             $tmpUsuario->setEmail($dados['email_USUARIO']);
+             $tmpUsuario->setNome($dados['nome_USUARIO']);
+             $tmpUsuario->setTelefone($dados['telefone_USUARIO']);
+            
+            return $tmpUsuario;
+            
         }else{
-            return false;
+            return null;
         }
         
         
