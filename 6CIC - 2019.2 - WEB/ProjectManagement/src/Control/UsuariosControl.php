@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
 require_once "../DAO/UsuariosDAO.php";
 require_once "../Model/Usuarios.php";
 
@@ -10,12 +13,20 @@ if($acao == 1){
     $email = $_POST['HTML_email'];
     $senha = $_POST['HTML_senha'];
     
-    $status = UsuariosDAO::validarUsuario($email, $senha);
+    $tmpUsuario = UsuariosDAO::validarUsuario($email, $senha);
     
-    if($status == true){
-        echo "<script>alert('OK!');</script>";        
+    if($tmpUsuario != null){
+        //abrindo sessão do usuario
+        $_SESSION['nome'] = $tmpUsuario->getNome();
+        $_SESSION['email'] = $tmpUsuario->getEmail();
+        $_SESSION['telefone'] = $tmpUsuario->getTelefone();
+        $_SESSION['statusLogin'] = 1; //certifica que logou
+        
+        echo "<script>location.href='../UI/HomeUsuariosUI.php';</script>";
+        
     }else{
-        echo "<script>alert('ERRO!');</script>";
+        echo "<script>alert('Dados Inválidos!');</script>";//aviso
+        echo "<script>location.href='../../index.php';</script>";//redirecionando
     }
     
     
