@@ -1,24 +1,28 @@
+
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.event.*;
 import java.awt.*;
+import java.util.*;
 
-public class ClientesView extends JInternalFrame implements ActionListener{
+public class ClientesView extends JInternalFrame implements ActionListener {
+
     //declaração de objetos
+
     public static Container ctnClientes;
-    
+
     public static String strCampos[] = {"CPF:", "Nome:", "Data de Nascimento:", "Endereço:", "Bairro:", "Cidade:", "Telefone:", "E-mail:"};
     public static JLabel lblCampos[];
     public static JTextField txtCampos[];
-    
+
     public static ImageIcon imgFoto;
     public static JLabel lblFoto;
-    
+
     public static String strTopo[] = {"CPF", "Nome", "Cidade", "Telefone"};
     public static JScrollPane scrClientes; //barra de rolagem da tabela
     public static JTable tblClientes;//tabela
     public static DefaultTableModel mdlClientes;//Classe que gerencia o conteudo da tabela
-    
+
     public static JLabel lblBusca;
     public static JTextField txtBusca;
     public static JButton btnBusca;
@@ -27,15 +31,14 @@ public class ClientesView extends JInternalFrame implements ActionListener{
     public static ImageIcon icnPais, icnUsuario, icnRestaurar, icnBloquear;
     public static JButton btnBairro, btnNome, btnRestaurar;
 
-    public ClientesView(){//construtor
+    public ClientesView() {//construtor
         super("Gerenciamento de Clientes");
-        
+
         //Construção dos objetos
-        
         ctnClientes = new Container();
         ctnClientes.setLayout(null);
         this.add(ctnClientes);
-        
+
         lblCampos = new JLabel[strCampos.length];
         txtCampos = new JTextField[strCampos.length];
 
@@ -43,14 +46,13 @@ public class ClientesView extends JInternalFrame implements ActionListener{
             lblCampos[i] = new JLabel(strCampos[i]);
             lblCampos[i].setBounds(30, 100 + (i * 30), 150, 20);
             ctnClientes.add(lblCampos[i]);
-            
+
             txtCampos[i] = new JTextField();
             txtCampos[i].setBounds(160, 100 + (i * 30), 240, 20);
             ctnClientes.add(txtCampos[i]);
-            
-            
+
         }//fechando for
-        
+
         imgFoto = new ImageIcon("img/user.png");
         lblFoto = new JLabel(imgFoto);
         lblFoto.setBounds(440, 100, 128, 128);
@@ -64,7 +66,7 @@ public class ClientesView extends JInternalFrame implements ActionListener{
         tblClientes = new JTable();
         scrClientes = new JScrollPane(tblClientes);
         mdlClientes = (DefaultTableModel) tblClientes.getModel();
-        
+
         //Inserindo elementos no topo da tabela
         for (int i = 0; i < strTopo.length; i++) {
             mdlClientes.addColumn(strTopo[i]);
@@ -78,13 +80,15 @@ public class ClientesView extends JInternalFrame implements ActionListener{
         ctnClientes.add(lblBusca);
 
         txtBusca = new JTextField();
-        txtBusca.setBounds(690, 100, 150, 20);
+        txtBusca.setBounds(690, 100, 450, 20);
         ctnClientes.add(txtBusca);
 
-                btnBusca = new JButton("Pesquisar");
-        btnBusca.addActionListener(this);
-        btnBusca.setBounds(850, 100, 100, 20);
-        ctnClientes.add(btnBusca);
+        txtBusca.addKeyListener(new KeyAdapter(){
+            public void keyPressed(KeyEvent evt){
+                carregarDados(3, txtBusca.getText());
+            }
+        }        
+        );
 
         btnNovo = new JButton("Novo Cliente");
         btnNovo.addActionListener(this);
@@ -123,14 +127,47 @@ public class ClientesView extends JInternalFrame implements ActionListener{
         btnRestaurar.setBounds(1170, 230, 150, 30);
         ctnClientes.add(btnRestaurar);
 
+        carregarDados(0,null);
+        
         this.setClosable(true);
         this.setSize(MainView.dskJanelas.getWidth(), MainView.dskJanelas.getHeight());
-        this.show();       
-        
+        this.show();
+
     }//fechando construtor
-    
-    public void actionPerformed(ActionEvent evt){
-        
+
+    public void actionPerformed(ActionEvent evt) {
+
     }
-    
+
+    public static void carregarDados(int tmpTipo, String tmpBusca) {
+
+        try {
+
+            java.util.List<ClientesVO> lstClientes = new ArrayList<ClientesVO>();
+
+            //limpando lista
+            while (mdlClientes.getRowCount() > 0) {
+                mdlClientes.removeRow(0);
+            }
+
+            //DAO >> VIEW
+            lstClientes = ClientesDAO.listarClientes(tmpTipo, tmpBusca);
+
+            for (ClientesVO tmpCliente : lstClientes) {//para cada obj cliente dentro da lista
+
+                String dados[] = new String[4];
+                dados[0] = tmpCliente.getCpf();
+                dados[1] = tmpCliente.getNome();
+                dados[2] = tmpCliente.getCidade();
+                dados[3] = tmpCliente.getTelefone();
+
+                mdlClientes.addRow(dados);
+            }
+
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro);
+        }
+
+    }//fechando carregarDados
+
 }
