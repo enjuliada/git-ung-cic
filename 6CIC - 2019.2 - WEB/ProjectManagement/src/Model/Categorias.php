@@ -1,23 +1,27 @@
 <?php
 
 class Categorias {
-    private $codigo, $nome;
+    private $codigoCategoria, $nomeCategoria;
     
-    function getCodigo() {
-        return $this->codigo;
+    function getCodigoCategoria() {
+        return $this->codigoCategoria;
     }
 
-    function getNome() {
-        return $this->nome;
+    function getNomeCategoria() {
+        return $this->nomeCategoria;
     }
 
-    function setCodigo($codigo) {
-        $this->codigo = $codigo;
+    function setCodigoCategoria($codigoCategoria) {
+        $this->codigoCategoria = $codigoCategoria;
     }
 
-    function setNome($nome) {
-        $this->nome = $nome;
+    function setNomeCategoria($nomeCategoria) {
+        $this->nomeCategoria = $nomeCategoria;
     }
 
+
+    
+    
+    
 
 }

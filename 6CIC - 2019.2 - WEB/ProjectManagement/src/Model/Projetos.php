@@ -1,7 +1,8 @@
 <?php
+require_once "Categorias.php";
 
-class Projetos {
-    private $codigo, $nome, $descricao, $inicio, $fim, $status, $emailUsuario, $codigoCategoria;
+class Projetos extends Categorias{ //projetos herda categorias
+    private $codigo, $nome, $descricao, $inicio, $fim, $status, $emailUsuario;
     
     function getCodigo() {
         return $this->codigo;
@@ -29,10 +30,6 @@ class Projetos {
 
     function getEmailUsuario() {
         return $this->emailUsuario;
-    }
-
-    function getCodigoCategoria() {
-        return $this->codigoCategoria;
     }
 
     function setCodigo($codigo) {
@@ -63,12 +60,7 @@ class Projetos {
         $this->emailUsuario = $emailUsuario;
     }
 
-    function setCodigoCategoria($codigoCategoria) {
-        $this->codigoCategoria = $codigoCategoria;
-    }
-
-
-    
+   
 }
 
 ?>
