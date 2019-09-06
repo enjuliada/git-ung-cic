@@ -28,7 +28,7 @@ session_start();
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-body" style="height:65px;padding-top:10px;">
-                            <a href="" class="btn btn-primary" style="width:100%;">
+                            <a href="FormCadastroProjetoUI.php" class="btn btn-primary" style="width:100%;">
                                 + Criar Novo Projeto
                             </a>
                         </div>
