@@ -51,8 +51,20 @@ public class MainView extends JFrame implements ActionListener {
         /****add tela de login******/
         dskJanelas.add(new LoginView());
         
-        
         //CONFIGURAÇÃO E COMPORTAMENTO DA JANELA
+        
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent evt){
+                int resp = JOptionPane.showConfirmDialog(null, "Deseja fechar os módulos e encerrar o sistema?","Fechar Sistema",JOptionPane.YES_NO_OPTION);
+                
+                if(resp == JOptionPane.NO_OPTION){
+                    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                }else{
+                    dispose();
+                }
+            }
+        });
+        
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(montarTela());
         this.setVisible(true);
@@ -62,6 +74,7 @@ public class MainView extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent evt) {
         
         if(evt.getSource() == btnMenu[0]){
+            btnMenu[0].setEnabled(false);
             dskJanelas.add(new ClientesView());
         }
         

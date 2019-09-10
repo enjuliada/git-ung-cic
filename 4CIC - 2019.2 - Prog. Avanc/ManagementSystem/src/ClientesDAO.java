@@ -6,9 +6,45 @@ public class ClientesDAO {
     public static Statement stClientes; //executa SQL
     public static ResultSet rsClientes; //armazena result do select
     
-    public static void cadastrarCliente() throws Exception{
+    public static void cadastrarCliente(ClientesVO tmpCliente) throws Exception{
         
-    }
+        try{
+            ConexaoDAO.abrirConexao();
+            //montagem do insert
+            String sqlCadCli = "";
+            sqlCadCli += "Insert into clientes(";
+            sqlCadCli += "cpf_CLIENTE, nome_CLIENTE,";
+            sqlCadCli += "dataNascimento_CLIENTE, endereco_CLIENTE,";
+            sqlCadCli += "bairro_CLIENTE, cidade_CLIENTE,";
+            sqlCadCli += "telefone_CLIENTE, email_CLIENTE,";
+            sqlCadCli += "foto_CLIENTE, status_CLIENTE)";
+            sqlCadCli += "values(";
+            sqlCadCli += "'" + tmpCliente.getCpf() + "',";
+            sqlCadCli += "'" + tmpCliente.getNome() + "',";
+            sqlCadCli += "'" + tmpCliente.getDataNascimento()+ "',";
+            sqlCadCli += "'" + tmpCliente.getEndereco()+ "',";
+            sqlCadCli += "'" + tmpCliente.getBairro() + "',";
+            sqlCadCli += "'" + tmpCliente.getCidade() + "',";
+            sqlCadCli += "'" + tmpCliente.getTelefone()+ "',";
+            sqlCadCli += "'" + tmpCliente.getEmail()+ "',";
+            sqlCadCli += "'" + tmpCliente.getFoto()+ "',1)";
+            
+            //preparando statement para execução do INSERT
+            stClientes = ConexaoDAO.connSistema.createStatement();
+                    
+            //execução do insert
+            stClientes.executeUpdate(sqlCadCli);
+            
+            ConexaoDAO.fecharConexao();
+            
+        }catch(Exception erro){
+            String msg = "Falha no procedimento de cadastro de cliente.\n"
+                       + "Verifique a sintaxe da instrução Insert e nomes de campos e tabelas.\n\n"
+                       + "Erro Original: " + erro.getMessage();
+            
+            throw new Exception(msg);
+        }
+    }//fechando cadastrarCliente
     
     public static ClientesVO consultarCliente(String tmpCpf) throws Exception{
         

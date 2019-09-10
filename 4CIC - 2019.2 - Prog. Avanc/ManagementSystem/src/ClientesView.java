@@ -1,6 +1,7 @@
 
 import javax.swing.*;
 import javax.swing.table.*;
+import javax.swing.event.*;
 import java.awt.event.*;
 import java.awt.*;
 import java.util.*;
@@ -75,6 +76,19 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         scrClientes.setBounds(600, 130, 550, 290);
         ctnClientes.add(scrClientes);
 
+        tblClientes.addMouseListener(new MouseAdapter(){
+            public void mouseClicked(MouseEvent evt){
+                try{
+                    String tmpCpf = tblClientes.getValueAt(tblClientes.getSelectedRow(),0).toString();
+                    ClientesVO tmpCliente = ClientesDAO.consultarCliente(tmpCpf);
+                    carregarCampos(tmpCliente);
+                    
+                }catch(Exception erro){
+                    JOptionPane.showMessageDialog(null, erro.getMessage());
+                }
+            }
+        });
+        
         lblBusca = new JLabel("Busca Rápida:");
         lblBusca.setBounds(600, 100, 100, 20);
         ctnClientes.add(lblBusca);
@@ -84,7 +98,7 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         ctnClientes.add(txtBusca);
 
         txtBusca.addKeyListener(new KeyAdapter(){
-            public void keyPressed(KeyEvent evt){
+            public void keyReleased(KeyEvent evt){
                 carregarDados(3, txtBusca.getText());
             }
         }        
@@ -127,7 +141,14 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         btnRestaurar.setBounds(1170, 230, 150, 30);
         ctnClientes.add(btnRestaurar);
 
+        desbloquearCampos(false);
         carregarDados(0,null);
+        
+        this.addInternalFrameListener(new InternalFrameAdapter() {
+            public void internalFrameClosing(InternalFrameEvent evt){
+                MainView.btnMenu[0].setEnabled(true);
+            }
+        });        
         
         this.setClosable(true);
         this.setSize(MainView.dskJanelas.getWidth(), MainView.dskJanelas.getHeight());
@@ -136,7 +157,10 @@ public class ClientesView extends JInternalFrame implements ActionListener {
     }//fechando construtor
 
     public void actionPerformed(ActionEvent evt) {
-
+        if(evt.getSource() == btnNovo){
+            desbloquearCampos(true);
+            limparCampos();
+        }
     }
 
     public static void carregarDados(int tmpTipo, String tmpBusca) {
@@ -170,4 +194,45 @@ public class ClientesView extends JInternalFrame implements ActionListener {
 
     }//fechando carregarDados
 
-}
+    public static void carregarCampos(ClientesVO tmpCliente){
+        txtCampos[0].setText(tmpCliente.getCpf());
+        txtCampos[1].setText(tmpCliente.getNome());
+        txtCampos[2].setText(tmpCliente.getDataNascimento());
+        txtCampos[3].setText(tmpCliente.getEndereco());
+        txtCampos[4].setText(tmpCliente.getBairro());
+        txtCampos[5].setText(tmpCliente.getCidade());
+        txtCampos[6].setText(tmpCliente.getTelefone());
+        txtCampos[7].setText(tmpCliente.getEmail());
+        
+        lblFoto.setIcon(new ImageIcon("img/system/" + tmpCliente.getFoto()));
+     
+        if(tmpCliente.getStatus() == 0){
+            txtCampos[0].setForeground(Color.red); //cpf
+            txtCampos[1].setForeground(Color.red); //nome
+        }else{
+            txtCampos[0].setForeground(Color.black); //cpf
+            txtCampos[1].setForeground(Color.black); //nome
+        }
+        
+        desbloquearCampos(false);
+        
+    }//fechando carregarCampos
+    
+    public static void desbloquearCampos(boolean tmpStatus){
+        for(int i=0;i<txtCampos.length;i++){
+            txtCampos[i].setEditable(tmpStatus);
+        }
+        btnFoto.setEnabled(tmpStatus);
+        btnDesativar.setEnabled(tmpStatus);
+        btnSalvar.setEnabled(tmpStatus);
+        btnNovo.setEnabled(!tmpStatus);
+    }
+    
+    public static void limparCampos(){
+        for(int i=0;i<txtCampos.length;i++){
+            txtCampos[i].setText(null);
+        }
+        lblFoto.setIcon(new ImageIcon("img/user.png"));
+    }
+    
+}//fechando classe
