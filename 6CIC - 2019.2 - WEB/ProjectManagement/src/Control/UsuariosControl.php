@@ -6,7 +6,13 @@ require_once "../DAO/UsuariosDAO.php";
 require_once "../Model/Usuarios.php";
 
 //resgatando valor da variavel(hidden) acao
-$acao = $_POST['acao'];
+
+
+if(isset($_POST['acao'])){
+    $acao = $_POST['acao'];
+}else{
+    $acao = $_GET['acao'];
+}
 
 if($acao == 1){
     //validar
@@ -56,6 +62,11 @@ if($acao == 1){
     echo "<script>location.href='../../index.php';</script>";//redirecionando
     
     //header("location:../../index.php");
+}else if($acao == 3){
+    //logoff
+    session_destroy();
+    echo "<script>location.href='../../index.php';</script>";//redirecionando
+    
 }
 
 ?>

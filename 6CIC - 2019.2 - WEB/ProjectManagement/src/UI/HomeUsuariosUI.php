@@ -1,5 +1,7 @@
 <?php
+require_once "../DAO/ProjetosDAO.php";
 session_start();
+
 ?>
 
 <html>
@@ -28,7 +30,7 @@ session_start();
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-body" style="height:65px;padding-top:10px;">
-                            <a href="FormCadastroProjetoUI.php" class="btn btn-primary" style="width:100%;">
+                            <a href="FormCadastroProjetoUI.php" class="btn btn-primary" style="width:100%;height: 45px;">
                                 + Criar Novo Projeto
                             </a>
                         </div>
@@ -49,14 +51,14 @@ session_start();
                             <?=$_SESSION['email'];?><br>
                             <?=$_SESSION['telefone'];?><br>
                             
-                            <div class="dropup float-right">
+                          <div class="dropup float-right">
                                 <a href="#" class="btn btn-danger dropdown-toggle" style="height:45px;width:300px;"id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Opções
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-left" style="width:300px;">
                                     <a class="dropdown-item" href="#">Alterar Dados</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Sair</a>                                    
+                                    <a class="dropdown-item" href="../Control/UsuariosControl.php?acao=3">Sair</a>                                    
                                 </div>
                             </div> 
                             
@@ -71,12 +73,12 @@ session_start();
                     <div class="card">
                         <div class="card-header" style="height:50px;">
                             <h5>
-                                <a href="">Projetos</a>
+                                <a href="ListaProjetosUI.php">Projetos</a>
                             </h5>
                         </div>
                         <div class="card-body text-center" style="height:200px;line-height:120px;">
                             <font style="font-size:100pt;">
-                                10
+                                <?=ProjetosDAO::contarProjetos($_SESSION['email']);?>
                             </font>
                         </div>                            
                     </div>
@@ -110,6 +112,7 @@ session_start();
             </div>
         </div>        
     </body>
+    
     
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
