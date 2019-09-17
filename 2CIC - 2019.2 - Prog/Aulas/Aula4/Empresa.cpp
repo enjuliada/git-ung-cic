@@ -4,79 +4,81 @@
 #include<string.h>
 
 int main(){
-
-	//declaração das variaveis
-	int nivel;
-	float sFixo, sFinal, com, vendas;
-	char nome[6], resp;
-			
-	setlocale(LC_ALL, "");
+	//declaraÃ§Ã£o das variaveis
+	int cod;
+	float vendas, salFinal, salFixo, comissao;
+	char nome[20], resp;
+	bool erro = false; //bool(verd, falsa)
+	
+	setlocale(LC_ALL,"");
 	
 	do{
-
-		printf("***** PROGRAMA EMPRESA ******\n\n\n");
+		
+	printf("**** PROGRAMA EMPRESA ****\n\n");
 	
-		//desenvolvimento
-		printf("Nível do funcionário: ");
-		scanf("%d", &nivel);
+	printf("Entre com o cÃ³digo do funcionÃ¡rio: ");
+	scanf("%d", &cod);
 	
-		if(nivel == 1){
-			sFixo = 800;
-			com = 0.05;
+	switch(cod){
+		case 1:
+			salFixo = 800;
+			comissao = 0.05;
 			strcpy(nome,"Zeca");
-		
-		}else if(nivel == 2){
-			sFixo = 1000;
-			com = 0.08;
-			strcpy(nome,"Pedro");		
-		
-		}else if(nivel == 3){
-			sFixo = 1200;
-			com = 0.1;
-			strcpy(nome,"Nino");
-		
-		}else if(nivel == 4){
-			sFixo = 1500;
-			com = 0.15;
-			strcpy(nome,"Biba");
-		
-		}else{		
-			printf("Dados inválidos!!!\n\n");
-			//return 0;//sai do programa
+			break;
+		case 2:
+			salFixo = 1000;
+			comissao = 0.08;
+			strcpy(nome, "Pedro");
+			break;
+		case 3:
+			salFixo = 1200;
+			comissao = 0.1;
+			strcpy(nome, "Nino");
+			break;
+		case 4:
+			salFixo = 1500;
+			comissao = 0.12;
+			strcpy(nome, "Biba");
+			break;
+		default:
+			salFixo = 0;
+			comissao = 0;
+			strcpy(nome, "Inexistente");
+			erro = true;
+			break;
+	}//fechando switch case	
+	
+		if(erro == false){
+			printf("Informe o valor das vendas:");
+			scanf("%f", &vendas);
+			
+			salFinal = salFixo + (vendas * comissao);
+			
+			system("cls"); //limpa a tela
+			printf("*** RELATÃ“RIO FINAL ***\n\n");
+			
+			printf("Nome do funcionÃ¡rio: %s\n",nome);
+			printf("SalÃ¡rio-Base: R$ %.2f\n", salFixo);
+			printf("ComissÃ£o: %.0f%%\n",comissao * 100);
+			printf("SalÃ¡rio Total: R$ %.2f", salFinal);
+					
+		}else{
+			printf("CÃ³digo InvÃ¡lido!");
 		}
 		
-		if(nivel >= 1 && nivel <= 4){
+		printf("\n\nDeseja continuar? (s/n) ");
+		scanf("%s", &resp);
 		
+		erro = false;
 		system("cls");
-		printf("***** PROGRAMA EMPRESA ******\n\n\n");
-	
-		printf("Identificação: %d\n\n", nivel);
-		printf("Funcionário: %s\n", nome);
-		printf("Salário-Base: R$%.2f\n", sFixo);
-		printf("Comissão: %.0f%%\n\n", com*100);
 		
-		printf("Total de Vendas: R$ ");
-		scanf("%f",&vendas);
-	
-		sFinal = sFixo + (vendas * com);
-	
-		printf("\n\n");
-		printf("Salário Final: R$ %.2f", sFinal);
-	
-		printf("\n\n");
-		
-		}	
-		
-		printf("Deseja efetuar nova consulta?(s/n) ");
-		scanf("%s",&resp);
-		
-		system("cls");
-				
 	}while(resp == 's');
 	
+	printf("\n\n");
 	system("pause");
+	
+}
 
-} //fechando main
 
 
 
