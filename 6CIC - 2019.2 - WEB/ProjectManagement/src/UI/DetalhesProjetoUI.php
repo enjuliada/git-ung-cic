@@ -42,9 +42,7 @@ session_start();
                             <h5 class="card-title">Equipe</h5>
                         </div>
                         <div class="card-body text-center" style="min-height:220px;height:auto;">
-                            Pedro Leão<br>
-                            Felipe Fornaciari<br>
-                            Matheus Noronha
+                            (integrantes)
                             
                         </div>
                     </div>
@@ -54,10 +52,10 @@ session_start();
 
                     </div>
                     <div class="float-left">
-                        12/08/2019
+                        (Dt. Inicial)
                     </div>
                     <div class="float-right">     
-                        15/11/2019
+                        (Dt. Final)
                     </div>
                     <br><br>
                     <div class="card">
