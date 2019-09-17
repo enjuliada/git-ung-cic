@@ -92,12 +92,13 @@ class ProjetosDAO {
         
         $tmpProjeto = new Projetos();
         
-        $tmpProjeto->getCodigo($tblProj['codigo_PROJETO']);
-        $tmpProjeto->getNome($tblProj['nome_PROJETO']);
-        $tmpProjeto->getDescricao($tblProj['descricao_PROJETO']);
-        $tmpProjeto->getInicio($tblProj['inicio_PROJETO']);
-        $tmpProjeto->getFim($tblProj['fim_PROJETO']);
-        $tmpProjeto->getEmailUsuario($tblProj['emailUsuario_PROJETO']);
+        $tmpProjeto->setCodigo($tblProj['codigo_PROJETO']);
+        $tmpProjeto->setNome($tblProj['nome_PROJETO']);
+        $tmpProjeto->setDescricao($tblProj['descricao_PROJETO']);
+        $tmpProjeto->setInicio($tblProj['inicio_PROJETO']);
+        $tmpProjeto->setFim($tblProj['fim_PROJETO']);
+        $tmpProjeto->setEmailUsuario($tblProj['emailUsuario_PROJETO']);
+                        
                         
         return $tmpProjeto;
     }//fechando consultarProjeto
