@@ -80,7 +80,7 @@ class ProjetosDAO {
         
         $vConn = ConexaoDAO:: abrirConexao();
         
-        $sqlProj = "Select * from Projetos P, Equipes E, Usuarios U where ";
+        $sqlProj = "Select * from Projetos P where ";
         $sqlProj .= "P.codigo_PROJETO = '$tmpCodigo'";
         //$sqlProj .= "P.codigo_PROJETO = E.codigoProjeto_EQUIPE and ";
         //$sqlProj .= "E.emailUsuario_EQUIPE = U.email_USUARIO";
