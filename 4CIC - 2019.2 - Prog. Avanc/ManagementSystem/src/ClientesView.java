@@ -1,4 +1,8 @@
 
+import java.io.*;
+import java.nio.file.*;
+import java.nio.channels.*;
+import javax.swing.filechooser.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import javax.swing.event.*;
@@ -9,7 +13,6 @@ import java.util.*;
 public class ClientesView extends JInternalFrame implements ActionListener {
 
     //declaração de objetos
-
     public static Container ctnClientes;
 
     public static String strCampos[] = {"CPF:", "Nome:", "Data de Nascimento:", "Endereço:", "Bairro:", "Cidade:", "Telefone:", "E-mail:"};
@@ -31,6 +34,13 @@ public class ClientesView extends JInternalFrame implements ActionListener {
     public static JButton btnNovo, btnSalvar, btnDesativar, btnFoto;
     public static ImageIcon icnPais, icnUsuario, icnRestaurar, icnBloquear;
     public static JButton btnBairro, btnNome, btnRestaurar;
+
+    //Declaração de variaveis e objetos auxiliares
+    public static FileChannel flcOrigem, flcDestino;//cópia
+    public static FileInputStream flsEntrada;//leitura
+    public static FileOutputStream flsSaida;//leitura
+    String strCaminhoOrigem, strCaminhoDestino, strNomeArquivoOrigem, extensao;
+    int statusFoto;
 
     public ClientesView() {//construtor
         super("Gerenciamento de Clientes");
@@ -76,19 +86,19 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         scrClientes.setBounds(600, 130, 550, 290);
         ctnClientes.add(scrClientes);
 
-        tblClientes.addMouseListener(new MouseAdapter(){
-            public void mouseClicked(MouseEvent evt){
-                try{
-                    String tmpCpf = tblClientes.getValueAt(tblClientes.getSelectedRow(),0).toString();
+        tblClientes.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                try {
+                    String tmpCpf = tblClientes.getValueAt(tblClientes.getSelectedRow(), 0).toString();
                     ClientesVO tmpCliente = ClientesDAO.consultarCliente(tmpCpf);
                     carregarCampos(tmpCliente);
-                    
-                }catch(Exception erro){
+
+                } catch (Exception erro) {
                     JOptionPane.showMessageDialog(null, erro.getMessage());
                 }
             }
         });
-        
+
         lblBusca = new JLabel("Busca Rápida:");
         lblBusca.setBounds(600, 100, 100, 20);
         ctnClientes.add(lblBusca);
@@ -97,11 +107,11 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         txtBusca.setBounds(690, 100, 450, 20);
         ctnClientes.add(txtBusca);
 
-        txtBusca.addKeyListener(new KeyAdapter(){
-            public void keyReleased(KeyEvent evt){
+        txtBusca.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent evt) {
                 carregarDados(3, txtBusca.getText());
             }
-        }        
+        }
         );
 
         btnNovo = new JButton("Novo Cliente");
@@ -142,14 +152,14 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         ctnClientes.add(btnRestaurar);
 
         desbloquearCampos(false);
-        carregarDados(0,null);
-        
+        carregarDados(0, null);
+
         this.addInternalFrameListener(new InternalFrameAdapter() {
-            public void internalFrameClosing(InternalFrameEvent evt){
+            public void internalFrameClosing(InternalFrameEvent evt) {
                 MainView.btnMenu[0].setEnabled(true);
             }
-        });        
-        
+        });
+
         this.setClosable(true);
         this.setSize(MainView.dskJanelas.getWidth(), MainView.dskJanelas.getHeight());
         this.show();
@@ -157,11 +167,81 @@ public class ClientesView extends JInternalFrame implements ActionListener {
     }//fechando construtor
 
     public void actionPerformed(ActionEvent evt) {
-        if(evt.getSource() == btnNovo){
+        if (evt.getSource() == btnNovo) {
             desbloquearCampos(true);
             limparCampos();
+
+        } else if (evt.getSource() == btnSalvar) {
+            boolean status = validarCampos();
+
+            if (status == true) {
+
+                if (statusFoto == JFileChooser.APPROVE_OPTION) {
+                    //salvar a foto
+                    int ultimoPonto = strNomeArquivoOrigem.lastIndexOf(".");//pegando a posição do ultimo ponto
+                    extensao = strNomeArquivoOrigem.substring(ultimoPonto + 1, strNomeArquivoOrigem.length());
+                    strCaminhoDestino = "img\\system\\" + txtCampos[0].getText() + "." + extensao;
+
+                    try {
+                        flsEntrada = new FileInputStream(strCaminhoOrigem);
+                        flsSaida = new FileOutputStream(strCaminhoDestino);
+
+                        flcOrigem = flsEntrada.getChannel();
+                        flcDestino = flsSaida.getChannel();
+
+                        //cópia total do arquivo
+                        flcOrigem.transferTo(0, flcOrigem.size(), flcDestino);
+
+                        flcOrigem.close();
+                        flcDestino.close();
+
+                    } catch (Exception erro) {
+                        JOptionPane.showMessageDialog(null, erro.getMessage());
+                    }
+                }
+                //cadastrar
+
+                try{
+                    ClientesVO novoCliente = new ClientesVO();
+                    //preenchendo objeto
+                    novoCliente.setCpf(txtCampos[0].getText());
+                    novoCliente.setNome(txtCampos[1].getText());
+                    novoCliente.setDataNascimento(txtCampos[2].getText());
+                    novoCliente.setEndereco(txtCampos[3].getText());
+                    novoCliente.setBairro(txtCampos[4].getText());
+                    novoCliente.setCidade(txtCampos[5].getText());
+                    novoCliente.setTelefone(txtCampos[6].getText());
+                    novoCliente.setEmail(txtCampos[7].getText());
+                    novoCliente.setStatus(1);
+                    novoCliente.setFoto(txtCampos[0].getText() + "." + extensao);
+                                        
+                    ClientesDAO.cadastrarCliente(novoCliente);
+                    JOptionPane.showMessageDialog(null, "Cliente " + novoCliente.getNome() + " cadastrado.");
+                    desbloquearCampos(false);
+                    limparCampos();
+                    carregarDados(0, "");
+                    
+                    
+                }catch(Exception erro){
+                    JOptionPane.showMessageDialog(null, erro.getMessage());
+                }
+                
+            }
+
+        } else if (evt.getSource() == btnFoto) {
+
+            JFileChooser flcFoto = new JFileChooser("C:\\Users\\280104398\\Documents");
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Arquivos de imagem(*.png, *.jpg)", "png", "jpg");
+            flcFoto.setFileFilter(filtro);//vinculando chooser ao filtro
+            statusFoto = flcFoto.showOpenDialog(this);//abre o explorer
+
+            //preview da imagem
+            strCaminhoOrigem = flcFoto.getSelectedFile().getPath();
+            strNomeArquivoOrigem = flcFoto.getSelectedFile().getName();
+            lblFoto.setIcon(new ImageIcon(strCaminhoOrigem));
+
         }
-    }
+    }//fechando actionPerformed
 
     public static void carregarDados(int tmpTipo, String tmpBusca) {
 
@@ -194,7 +274,7 @@ public class ClientesView extends JInternalFrame implements ActionListener {
 
     }//fechando carregarDados
 
-    public static void carregarCampos(ClientesVO tmpCliente){
+    public static void carregarCampos(ClientesVO tmpCliente) {
         txtCampos[0].setText(tmpCliente.getCpf());
         txtCampos[1].setText(tmpCliente.getNome());
         txtCampos[2].setText(tmpCliente.getDataNascimento());
@@ -203,23 +283,23 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         txtCampos[5].setText(tmpCliente.getCidade());
         txtCampos[6].setText(tmpCliente.getTelefone());
         txtCampos[7].setText(tmpCliente.getEmail());
-        
+
         lblFoto.setIcon(new ImageIcon("img/system/" + tmpCliente.getFoto()));
-     
-        if(tmpCliente.getStatus() == 0){
+
+        if (tmpCliente.getStatus() == 0) {
             txtCampos[0].setForeground(Color.red); //cpf
             txtCampos[1].setForeground(Color.red); //nome
-        }else{
+        } else {
             txtCampos[0].setForeground(Color.black); //cpf
             txtCampos[1].setForeground(Color.black); //nome
         }
-        
+
         desbloquearCampos(false);
-        
+
     }//fechando carregarCampos
-    
-    public static void desbloquearCampos(boolean tmpStatus){
-        for(int i=0;i<txtCampos.length;i++){
+
+    public static void desbloquearCampos(boolean tmpStatus) {
+        for (int i = 0; i < txtCampos.length; i++) {
             txtCampos[i].setEditable(tmpStatus);
         }
         btnFoto.setEnabled(tmpStatus);
@@ -227,12 +307,25 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         btnSalvar.setEnabled(tmpStatus);
         btnNovo.setEnabled(!tmpStatus);
     }
-    
-    public static void limparCampos(){
-        for(int i=0;i<txtCampos.length;i++){
+
+    public static void limparCampos() {
+        for (int i = 0; i < txtCampos.length; i++) {
             txtCampos[i].setText(null);
         }
         lblFoto.setIcon(new ImageIcon("img/user.png"));
     }
-    
+
+    public static boolean validarCampos() {
+
+        for (int i = 0; i < txtCampos.length; i++) {
+            if (txtCampos[i].getText().trim().equals("")) {
+                JOptionPane.showMessageDialog(null,
+                        "Preencha o campo " + strCampos[i]);
+                txtCampos[i].grabFocus();//move o cursor pro campo espec.
+                return false;
+            }//fechando if
+        }//fechando for                
+        return true;
+    }//fechando validar
+
 }//fechando classe
