@@ -76,4 +76,31 @@ class ProjetosDAO {
         
     }//fechando cadastrarProjeto
     
+    public static function consultarProjeto($tmpCodigo){
+        
+        $vConn = ConexaoDAO:: abrirConexao();
+        
+        $sqlProj = "Select * from Projetos P, Equipes E, Usuarios U where ";
+        $sqlProj .= "P.codigo_PROJETO = '$tmpCodigo'";
+        //$sqlProj .= "P.codigo_PROJETO = E.codigoProjeto_EQUIPE and ";
+        //$sqlProj .= "E.emailUsuario_EQUIPE = U.email_USUARIO";
+        
+        $rsProj = mysqli_query($vConn, $sqlProj)
+                        or die(mysqli_error($vConn));
+        
+        $tblProj = mysqli_fetch_array($rsProj);
+        
+        $tmpProjeto = new Projetos();
+        
+        $tmpProjeto->getCodigo($tblProj['codigo_PROJETO']);
+        $tmpProjeto->getNome($tblProj['nome_PROJETO']);
+        $tmpProjeto->getDescricao($tblProj['descricao_PROJETO']);
+        $tmpProjeto->getInicio($tblProj['inicio_PROJETO']);
+        $tmpProjeto->getFim($tblProj['fim_PROJETO']);
+        $tmpProjeto->getEmailUsuario($tblProj['emailUsuario_PROJETO']);
+                        
+        return $tmpProjeto;
+    }//fechando consultarProjeto
+    
+    
 }
