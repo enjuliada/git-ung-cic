@@ -60,7 +60,13 @@ session_start();
                     <br><br>
                     <div class="card">
                         <div class="card-header bg-danger text-white">
-                            Tarefas
+                            <div class="row">
+                                <div class="col-md-11">
+                                    Tarefas
+                                </div>
+                                <div class="col-md-1">
+                                    <a href="FormCadastroTarefaUI.php">(+)></a>
+                                </div>
                         </div>
                         <div class="card-body" style="min-height:318px;height:auto;">
                             descricao
