@@ -22,7 +22,7 @@ status_CLIENTE int not null
 ) ;
 
 create table produtos(
-codigo_PRODUTO int not null AUTO INCREMENT primary key,
+codigo_PRODUTO int not null AUTO_INCREMENT primary key,
 nome_PRODUTO varchar(100) not null,
 descricao_PRODUTO text,
 quantidadeEstoque_PRODUTO int not null,
@@ -33,6 +33,6 @@ codigoCategoria_PRODUTO int not null
 );
 
 create table categorias(
-codigo_CATEGORIA int not null primary key,
+codigo_CATEGORIA int not null AUTO_INCREMENT primary key,
 nome_CATEGORIA varchar(40) not null
 );
