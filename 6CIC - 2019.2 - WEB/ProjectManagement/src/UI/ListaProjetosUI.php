@@ -42,10 +42,10 @@ $itens = ProjetosDAO::listarProjetos(1, $email,"");
                                     <?=$itens[$i]->getNome();?>
                                 </a>
                             </td>
+                                                        
+                            <td><?=ProjetosDAO::corrigirData($itens[$i]->getInicio());?></td>
+                            <td><?=ProjetosDAO::corrigirData($itens[$i]->getFim());?></td>
                             
-                            
-                            <td><?=$itens[$i]->getInicio();?></td>
-                            <td><?=$itens[$i]->getFim();?></td>
                             <td><?=$itens[$i]->getNomeCategoria();?></td>
                             <td></td>
                         </tr>

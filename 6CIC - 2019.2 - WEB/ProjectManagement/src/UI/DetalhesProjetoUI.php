@@ -1,7 +1,17 @@
 <meta charset="utf-8">
 
 <?php
+require_once "../Model/Projetos.php";
+require_once "../DAO/ProjetosDAO.php";
+
 session_start();
+
+$proj = $_GET['cod'];
+$tmpProjeto = ProjetosDAO::consultarProjeto($proj);
+
+$inicio = $tmpProjeto->getInicio();
+$fim = $tmpProjeto->getFim();
+
 ?>
 <html>
     <head>
@@ -16,10 +26,10 @@ session_start();
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header bg-primary text-white">
-                            NOME DO PROJETO 
+                            <h5> <?=$tmpProjeto->getNome();?> </h5>                       
                         </div>
                         <div class="card-body">
-                            descricao
+                            <?=$tmpProjeto->getDescricao();?>
                         </div>                               
                     </div>
                 </div>
@@ -32,8 +42,13 @@ session_start();
                             <h5 class="card-title">Concluído</h5>
                         </div>
                         <div class="card-body text-center" style="height:120px;line-height:80px;">
+                            
+                            <?php
+                            $concluido = ProjetosDAO::calcularProgresso($proj);
+                            ?>
+                            
                             <font style="font-family:impact;font-size:100px;">
-                            0%
+                            <?=$concluido;?>%
                             </font>                            
                         </div>
                     </div>
@@ -48,14 +63,35 @@ session_start();
                     </div>
                 </div>
                 <div class="col-md-8" style="margin-top:10px;">
-                    <div style="width:30%;height:60px;background-color:lightgreen;" >
-
+                    
+                    <?php
+                    $progresso=ProjetosDAO::medirProjeto($inicio, $fim);
+                    
+                    if($progresso < 30){
+                        $cor = "#98FB98"; //verde
+                    }else if($progresso < 70){
+                        $cor = "#FFA500"; //laranja/amarelo
+                    }else if($progresso < 100){
+                        $cor = "#FF0000"; //vermelho
+                    }else{
+                        $cor = "#555555"; //preto
+                        $progresso = 100;
+                    }
+                    ?>                    
+                    
+                    <div style="padding:5px;max-width:100%;width:<?=$progresso;?>%;height:60px;background-color:<?=$cor;?>;" id="DivBarra">                        
+                        <div style="width:500px;">
+                            <h1 style="font-family:impact;color:#999999">
+                                <?=ProjetosDAO::contarDias($fim);?> dias restantes.
+                            </h1>
+                        </div>
                     </div>
+                    
                     <div class="float-left">
-                        (Dt. Inicial)
+                        <?=ProjetosDAO::corrigirData($tmpProjeto->getInicio());?>
                     </div>
                     <div class="float-right">     
-                        (Dt. Final)
+                        <?=ProjetosDAO::corrigirData($tmpProjeto->getFim());?>
                     </div>
                     <br><br>
                     <div class="card">
@@ -65,22 +101,21 @@ session_start();
                                     Tarefas
                                 </div>
                                 <div class="col-md-1">
-                                    <a href="FormCadastroTarefaUI.php">(+)></a>
+                                    <a class="text-white" href="FormCadastroTarefaUI.php">(+)</a>
                                 </div>
-                        </div>
-                        <div class="card-body" style="min-height:318px;height:auto;">
+                            </div>
+                            
+                             </div>
+                            <div class="card-body" style="min-height:318px;height:auto;">
                             descricao
-                        </div>  
-
-                    </div>
+                            </div> 
                 </div>
             </div>
 
         </div>
 
+        </div>
+            
     </body>
 
-    ?>
-
 </html>
-

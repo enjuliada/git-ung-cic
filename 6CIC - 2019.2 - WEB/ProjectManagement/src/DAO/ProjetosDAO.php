@@ -1,5 +1,6 @@
 <?php
 require_once "ConexaoDAO.php";
+require_once "TarefasDAO.php";
 require_once "../Model/Projetos.php";
 
 class ProjetosDAO {
@@ -46,14 +47,12 @@ class ProjetosDAO {
         }//fecha else      
         
     }//fechando listarProjetos
-    
-    
+        
     public static function contarProjetos($tmpEmail){
         $itens = ProjetosDAO::listarProjetos(1, $tmpEmail, "");
         return count($itens);
     }
     
-
     public static function cadastrarProjeto($tmpProjeto){
         
         $vConn = ConexaoDAO::abrirConexao();
@@ -102,6 +101,60 @@ class ProjetosDAO {
                         
         return $tmpProjeto;
     }//fechando consultarProjeto
+        
+    public static function corrigirData($tmpData){
+        
+        $vData = explode('-', $tmpData);        
+        $novaData = $vData[2] . "/" . $vData[1] . "/" . $vData[0];
+        
+        return $novaData;        
+    }
     
-    
+    public static function medirProjeto($tmpInicio, $tmpFim){
+        $dtInicial = new DateTime($tmpInicio);
+        $dtFinal = new DateTime($tmpFim);
+        $dtHoje = new DateTime(date('Y-m-d'));
+        
+        $dias = $dtInicial->diff($dtFinal)->days;
+        $hoje = $dtInicial->diff($dtHoje)->days; 
+        
+        $porcent = ($hoje/$dias)*100;        
+        
+        return number_format($porcent,1);
+        
+        
+    }
+   
+    public static function contarDias($tmpFim){
+        
+        $dtFinal = new DateTime($tmpFim);
+        $dtHoje = new DateTime(date('Y-m-d'));
+        
+        $rest = $dtFinal->diff($dtHoje)->days;
+        
+        return $rest;
+        
+    }
+
+    public static function calcularProgresso($tmpCodigo){
+        
+        $total = TarefasDAO::listarTarefas(0, $tmpCodigo);
+        $concluidas = TarefasDAO::listarTarefas(1, $tmpCodigo);
+                
+        if($total == null){
+            return 0;
+        }else{
+            $total = count($total);
+            $concluidas = count($concluidas);
+            
+            if($concluidas == 0){
+                return 0;
+            }else{
+                $prog = $concluidas/$total;
+                return $prog;
+            }
+        }        
+        
+        
+    }
 }
