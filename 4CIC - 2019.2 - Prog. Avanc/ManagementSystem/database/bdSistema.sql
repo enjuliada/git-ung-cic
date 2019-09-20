@@ -24,7 +24,7 @@ status_CLIENTE int not null
 create table produtos(
 codigo_PRODUTO int not null primary key,
 nome_PRODUTO varchar(100) not null,
-descricao_PRODUTO text not null,
+descricao_PRODUTO text,
 quantidadeEstoque_PRODUTO int not null,
 valorCompra_PRODUTO float not null,
 valorVenda_PRODUTO float not null,
