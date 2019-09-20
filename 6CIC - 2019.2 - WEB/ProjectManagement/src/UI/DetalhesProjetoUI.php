@@ -88,10 +88,10 @@ $fim = $tmpProjeto->getFim();
                     </div>
                     
                     <div class="float-left">
-                        <?=ProjetosDAO::corrigirData($tmpProjeto->getInicio());?>
+                        <?=ProjetosDAO::corrigirData($inicio);?>
                     </div>
                     <div class="float-right">     
-                        <?=ProjetosDAO::corrigirData($tmpProjeto->getFim());?>
+                        <?=ProjetosDAO::corrigirData($fim);?>
                     </div>
                     <br><br>
                     <div class="card">
