@@ -33,7 +33,7 @@ public class ClientesView extends JInternalFrame implements ActionListener {
 
     public static JButton btnNovo, btnSalvar, btnDesativar, btnFoto;
     public static ImageIcon icnPais, icnUsuario, icnRestaurar, icnBloquear;
-    public static JButton btnBairro, btnNome, btnRestaurar;
+    public static JButton btnCidade, btnNome, btnRestaurar;
 
     //Declaração de variaveis e objetos auxiliares
     public static FileChannel flcOrigem, flcDestino;//cópia
@@ -41,6 +41,7 @@ public class ClientesView extends JInternalFrame implements ActionListener {
     public static FileOutputStream flsSaida;//leitura
     String strCaminhoOrigem, strCaminhoDestino, strNomeArquivoOrigem, extensao;
     int statusFoto;
+    public static int statusAtual = 0;
 
     public ClientesView() {//construtor
         super("Gerenciamento de Clientes");
@@ -136,10 +137,10 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         icnUsuario = new ImageIcon("img/icons/user.png");
         icnRestaurar = new ImageIcon("img/icons/restore.png");
 
-        btnBairro = new JButton("por Bairro", icnPais);
-        btnBairro.addActionListener(this);
-        btnBairro.setBounds(1170, 130, 150, 30);
-        ctnClientes.add(btnBairro);
+        btnCidade = new JButton("por Cidade", icnPais);
+        btnCidade.addActionListener(this);
+        btnCidade.setBounds(1170, 130, 150, 30);
+        ctnClientes.add(btnCidade);
 
         btnNome = new JButton("por Nome", icnUsuario);
         btnNome.addActionListener(this);
@@ -169,6 +170,7 @@ public class ClientesView extends JInternalFrame implements ActionListener {
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource() == btnNovo) {
             desbloquearCampos(true);
+            btnDesativar.setEnabled(false);
             limparCampos();
 
         } else if (evt.getSource() == btnSalvar) {
@@ -239,7 +241,41 @@ public class ClientesView extends JInternalFrame implements ActionListener {
             strCaminhoOrigem = flcFoto.getSelectedFile().getPath();
             strNomeArquivoOrigem = flcFoto.getSelectedFile().getName();
             lblFoto.setIcon(new ImageIcon(strCaminhoOrigem));
-
+        
+        }else if(evt.getSource() == btnDesativar){
+            try{
+                String cpf = txtCampos[0].getText();
+                
+                ClientesDAO.alterarStatus(cpf, statusAtual);
+                carregarDados(0, "");
+                carregarCampos(ClientesDAO.consultarCliente(cpf));
+                
+                JOptionPane.showMessageDialog(null, "Status Alterado!");
+                
+                
+            }catch(Exception erro){
+                JOptionPane.showMessageDialog(null, erro.getMessage());
+            }
+            
+        }else if(evt.getSource() == btnRestaurar){
+            carregarDados(0, "");
+            txtBusca.setText("");
+            
+        }else if(evt.getSource() == btnNome){
+            String nome = JOptionPane.showInputDialog(
+                            "Entre com o nome do cliente.");
+            
+            carregarDados(2,nome);  
+            txtBusca.setText("");
+            
+        }else if(evt.getSource()== btnCidade){
+            String cidade = JOptionPane.showInputDialog(
+                            "Entre com a cidade: ");
+            
+            carregarDados(1, cidade);
+            txtBusca.setText("");
+            
+            
         }
     }//fechando actionPerformed
 
@@ -283,18 +319,25 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         txtCampos[5].setText(tmpCliente.getCidade());
         txtCampos[6].setText(tmpCliente.getTelefone());
         txtCampos[7].setText(tmpCliente.getEmail());
-
+        statusAtual = tmpCliente.getStatus();
+        
         lblFoto.setIcon(new ImageIcon("img/system/" + tmpCliente.getFoto()));
 
         if (tmpCliente.getStatus() == 0) {
             txtCampos[0].setForeground(Color.red); //cpf
             txtCampos[1].setForeground(Color.red); //nome
+            
+            btnDesativar.setText("Ativar");
+            
         } else {
             txtCampos[0].setForeground(Color.black); //cpf
             txtCampos[1].setForeground(Color.black); //nome
+        
+            btnDesativar.setText("Desativar");
         }
-
+        
         desbloquearCampos(false);
+        btnDesativar.setEnabled(true);
 
     }//fechando carregarCampos
 
