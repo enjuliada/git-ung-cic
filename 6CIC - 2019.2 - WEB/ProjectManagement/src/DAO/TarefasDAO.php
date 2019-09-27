@@ -6,8 +6,22 @@ require_once "../Model/Tarefas.php";
 class TarefasDAO {
 
     public static function cadastrarTarefa($tmpTarefa) {
+        $vConn = ConexaoDAO::abrirConexao();
         
-    }
+        $sqlCadTar = "Insert into TAREFAS(";
+        $sqlCadTar .= "nome_TAREFA, descricao_TAREFA,";
+        $sqlCadTar .= "data_TAREFA, status_TAREFA,";
+        $sqlCadTar .= "emailUsuario_TAREFA, codigoProjeto_TAREFA)";
+        $sqlCadTar .= "values(";
+        $sqlCadTar .= "'" . $tmpTarefa->getNome() ."',";
+        $sqlCadTar .= "'" . $tmpTarefa->getDescricao() ."',";
+        $sqlCadTar .= "'" . $tmpTarefa->getData() ."',0,";
+        $sqlCadTar .= "'" . $tmpTarefa->getEmailUsuario() ."',";
+        $sqlCadTar .= $tmpTarefa->getCodigoProjeto() . ")";
+        
+        mysqli_query($vConn, $sqlCadTar) or die (mysqli_error($vConn));
+        
+    }//fechando metodo
 
     public static function listarTarefas($tmpTipo, $tmpProj) {
         //PROGRAMAR

@@ -28,8 +28,6 @@ class UsuariosDAO {
     }
 
     
-    
-    
     public static function validarUsuario($tmpEmail, $tmpSenha){
      
         
@@ -62,5 +60,40 @@ class UsuariosDAO {
         
         
     }
+    
+    
+    public static function listarIntegrantes($tmpCodigo){
+      $vConn = ConexaoDAO::abrirConexao();
+        
+      $sqlInteg = "Select U.* from USUARIOS U, EQUIPES E ";
+      $sqlInteg .= "where E.codigoProjeto_EQUIPE = '$tmpCodigo' ";
+      $sqlInteg .= "and E.emailUsuario_EQUIPE = U.email_USUARIO";
+      
+      $rsInteg = mysqli_query($vConn,$sqlInteg)
+                 or die(mysqli_error($vConn));
+      
+      if(mysqli_num_rows($rsInteg) == 0){
+          return null;
+      }else{
+          
+          $itens = new ArrayObject();
+          
+          while($dados = mysqli_fetch_array($rsInteg)){
+          
+              $tmpUsuario = new Usuarios();
+              
+              $tmpUsuario->setEmail($dados['email_USUARIO']);
+              $tmpUsuario->setNome($dados['nome_USUARIO']);
+              $tmpUsuario->setTelefone($dados['telefone_USUARIO']);
+              
+              $itens->append($tmpUsuario);
+              
+          }//fechando while
+          
+          return $itens;
+          
+      }//fechando else
+        
+    }//fechando metodo
     
 }//fechando classe

@@ -88,10 +88,10 @@ $fim = $tmpProjeto->getFim();
                     </div>
                     
                     <div class="float-left">
-                        <?=ProjetosDAO::corrigirData($inicio);?>
+                        <?=ProjetosDAO::corrigirData($tmpProjeto->getInicio());?>
                     </div>
                     <div class="float-right">     
-                        <?=ProjetosDAO::corrigirData($fim);?>
+                        <?=ProjetosDAO::corrigirData($tmpProjeto->getFim());?>
                     </div>
                     <br><br>
                     <div class="card">
@@ -101,13 +101,15 @@ $fim = $tmpProjeto->getFim();
                                     Tarefas
                                 </div>
                                 <div class="col-md-1">
-                                    <a class="text-white" href="FormCadastroTarefaUI.php">(+)</a>
+                                    <a class="text-white" href="FormCadastroTarefaUI.php?cod=<?=$tmpProjeto->getCodigo();?>">(+)</a>
                                 </div>
                             </div>
                             
                              </div>
                             <div class="card-body" style="min-height:318px;height:auto;">
-                            descricao
+                            <?php
+                                include "ListaTarefasUI.php";
+                            ?>
                             </div> 
                 </div>
             </div>
