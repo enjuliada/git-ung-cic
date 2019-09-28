@@ -2,9 +2,7 @@
 require_once "../DAO/ProjetosDAO.php";
 require_once "../DAO/TarefasDAO.php";
 require_once "../Model/Tarefas.php";
-
 $itens = TarefasDAO::listarTarefas(0, $proj);
-
 ?>
       
                    
@@ -54,6 +52,3 @@ $itens = TarefasDAO::listarTarefas(0, $proj);
                 
             </div>
             
-            
-       
-        

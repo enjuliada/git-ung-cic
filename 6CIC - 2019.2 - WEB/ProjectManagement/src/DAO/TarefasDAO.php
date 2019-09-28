@@ -1,10 +1,7 @@
 <?php
-
 require_once "ConexaoDAO.php";
 require_once "../Model/Tarefas.php";
-
 class TarefasDAO {
-
     public static function cadastrarTarefa($tmpTarefa) {
         $vConn = ConexaoDAO::abrirConexao();
         
@@ -22,11 +19,9 @@ class TarefasDAO {
         mysqli_query($vConn, $sqlCadTar) or die (mysqli_error($vConn));
         
     }//fechando metodo
-
     public static function listarTarefas($tmpTipo, $tmpProj) {
         //PROGRAMAR
         $vConn = ConexaoDAO::abrirConexao();
-
         if ($tmpTipo == 0) { //todas
             $sqlLista = "Select * from TAREFAS where codigoProjeto_TAREFA = '$tmpProj'";    
         } else if ($tmpTipo == 1) {//finalizadas
@@ -82,11 +77,8 @@ class TarefasDAO {
                         
         return $tmpTarefa;
     }
-
     public static function alterarStatus($tmpCodigo) {
         
     }
-
 }
-
 ?>

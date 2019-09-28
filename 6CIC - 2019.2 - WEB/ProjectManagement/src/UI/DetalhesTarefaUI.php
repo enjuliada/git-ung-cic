@@ -5,7 +5,6 @@ require_once "../Model/Projetos.php";
 require_once "../Model/Tarefas.php";
 require_once "../DAO/ProjetosDAO.php";
 require_once "../DAO/TarefasDAO.php";
-
 session_start();
 
 $tar = $_GET['cod'];
@@ -55,7 +54,7 @@ if ($tmpTarefa->getStatus() == 0) {
                         </div>
                         <div class="col-md-7">
                             <div class="card" style="margin-top:15px;">
-                                <div class="card-header bg-info text-white">
+                                <div class="card-header bg-warning text-white">
                                     Arquivos
                                 </div>
                                 <div class="card-body">
