@@ -60,7 +60,27 @@ class TarefasDAO {
        
     }
     public static function consultarTarefa($tmpCodigo) {
+        $vConn = ConexaoDAO:: abrirConexao();
         
+        $sqlTar = "Select * from Tarefas T where ";
+        $sqlTar .= "T.codigo_TAREFA = '$tmpCodigo'";
+               
+        $rsTar = mysqli_query($vConn, $sqlTar)
+                        or die(mysqli_error($vConn));
+        
+        $tblTar = mysqli_fetch_array($rsTar);
+        
+        $tmpTarefa = new Tarefas();
+        
+        $tmpTarefa->setCodigo($tblTar['codigo_TAREFA']);
+        $tmpTarefa->setNome($tblTar['nome_TAREFA']);
+        $tmpTarefa->setDescricao($tblTar['descricao_TAREFA']);
+        $tmpTarefa->setData($tblTar['data_TAREFA']);
+        $tmpTarefa->setStatus($tblTar['status_TAREFA']);
+        $tmpTarefa->setEmailUsuario($tblTar['emailUsuario_TAREFA']);
+                        
+                        
+        return $tmpTarefa;
     }
 
     public static function alterarStatus($tmpCodigo) {

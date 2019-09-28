@@ -7,12 +7,11 @@ $itens = TarefasDAO::listarTarefas(0, $proj);
 
 ?>
       
-        <div class="container">
-            
-            <div class="table-responsive border" style="margin-top:70px;">
+                   
+            <div class="table-responsive border">
                 
-                <table class="table table-striped">
-                    <thead class="bg-primary text-white"> <!-- cabeçalho da tabela -->
+                <table class="table table-sm table-striped">
+                    <thead class="bg-light"> <!-- cabeçalho da tabela -->
                         <th>Nome da Tarefa</th>
                         <th>Data Registrada</th>
                         <th>Responsável</th>
@@ -56,5 +55,5 @@ $itens = TarefasDAO::listarTarefas(0, $proj);
             </div>
             
             
-        </div>
+       
         
