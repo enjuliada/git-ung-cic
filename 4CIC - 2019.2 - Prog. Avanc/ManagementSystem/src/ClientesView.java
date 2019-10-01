@@ -31,7 +31,7 @@ public class ClientesView extends JInternalFrame implements ActionListener {
     public static JTextField txtBusca;
     public static JButton btnBusca;
 
-    public static JButton btnNovo, btnSalvar, btnDesativar, btnFoto;
+    public static JButton btnNovo, btnSalvar, btnDesativar, btnFoto, btnEditar;
     public static ImageIcon icnPais, icnUsuario, icnRestaurar, icnBloquear;
     public static JButton btnCidade, btnNome, btnRestaurar;
 
@@ -40,7 +40,7 @@ public class ClientesView extends JInternalFrame implements ActionListener {
     public static FileInputStream flsEntrada;//leitura
     public static FileOutputStream flsSaida;//leitura
     String strCaminhoOrigem, strCaminhoDestino, strNomeArquivoOrigem, extensao;
-    int statusFoto;
+    int statusFoto, acao;
     public static int statusAtual = 0;
 
     public ClientesView() {//construtor
@@ -64,6 +64,12 @@ public class ClientesView extends JInternalFrame implements ActionListener {
             ctnClientes.add(txtCampos[i]);
 
         }//fechando for
+
+        btnEditar = new JButton("Editar Dados");
+        btnEditar.setEnabled(false);
+        btnEditar.addActionListener(this);
+        btnEditar.setBounds(250, 340, 150, 30);
+        ctnClientes.add(btnEditar);
 
         imgFoto = new ImageIcon("img/user.png");
         lblFoto = new JLabel(imgFoto);
@@ -169,13 +175,23 @@ public class ClientesView extends JInternalFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource() == btnNovo) {
+            acao = 1; //cadastro
+            btnEditar.setEnabled(false);
             desbloquearCampos(true);
             btnDesativar.setEnabled(false);
             limparCampos();
 
+        } else if (evt.getSource() == btnEditar) {
+            acao = 2;
+            desbloquearCampos(true);
+            txtCampos[0].setEditable(false);
+            btnEditar.setEnabled(false);
+
         } else if (evt.getSource() == btnSalvar) {
             boolean status = validarCampos();
 
+            if (acao == 1) {
+            
             if (status == true) {
 
                 if (statusFoto == JFileChooser.APPROVE_OPTION) {
@@ -201,34 +217,57 @@ public class ClientesView extends JInternalFrame implements ActionListener {
                         JOptionPane.showMessageDialog(null, erro.getMessage());
                     }
                 }
-                //cadastrar
 
-                try{
-                    ClientesVO novoCliente = new ClientesVO();
-                    //preenchendo objeto
-                    novoCliente.setCpf(txtCampos[0].getText());
-                    novoCliente.setNome(txtCampos[1].getText());
-                    novoCliente.setDataNascimento(txtCampos[2].getText());
-                    novoCliente.setEndereco(txtCampos[3].getText());
-                    novoCliente.setBairro(txtCampos[4].getText());
-                    novoCliente.setCidade(txtCampos[5].getText());
-                    novoCliente.setTelefone(txtCampos[6].getText());
-                    novoCliente.setEmail(txtCampos[7].getText());
-                    novoCliente.setStatus(1);
-                    novoCliente.setFoto(txtCampos[0].getText() + "." + extensao);
-                                        
-                    ClientesDAO.cadastrarCliente(novoCliente);
-                    JOptionPane.showMessageDialog(null, "Cliente " + novoCliente.getNome() + " cadastrado.");
-                    desbloquearCampos(false);
-                    limparCampos();
-                    carregarDados(0, "");
-                    
-                    
-                }catch(Exception erro){
-                    JOptionPane.showMessageDialog(null, erro.getMessage());
-                }
                 
+                    //cadastrar
+                    try {
+                        ClientesVO novoCliente = new ClientesVO();
+                        //preenchendo objeto
+                        novoCliente.setCpf(txtCampos[0].getText());
+                        novoCliente.setNome(txtCampos[1].getText());
+                        novoCliente.setDataNascimento(txtCampos[2].getText());
+                        novoCliente.setEndereco(txtCampos[3].getText());
+                        novoCliente.setBairro(txtCampos[4].getText());
+                        novoCliente.setCidade(txtCampos[5].getText());
+                        novoCliente.setTelefone(txtCampos[6].getText());
+                        novoCliente.setEmail(txtCampos[7].getText());
+                        novoCliente.setStatus(1);
+                        novoCliente.setFoto(txtCampos[0].getText() + "." + extensao);
+
+                        ClientesDAO.cadastrarCliente(novoCliente);
+                        JOptionPane.showMessageDialog(null, "Cliente " + novoCliente.getNome() + " cadastrado.");
+                        desbloquearCampos(false);
+                        limparCampos();
+                        carregarDados(0, "");
+
+                    } catch (Exception erro) {
+                        JOptionPane.showMessageDialog(null, erro.getMessage());
+                    }       
             }
+            
+             } else if (acao == 2) {
+                    //ALTERAÇÃO
+                    try {
+                        ClientesVO clienteAtual = new ClientesVO();
+                        String tmpCpf = txtCampos[0].getText();
+                        //preenchendo objeto
+                        clienteAtual.setNome(txtCampos[1].getText());
+                        clienteAtual.setDataNascimento(txtCampos[2].getText());
+                        clienteAtual.setEndereco(txtCampos[3].getText());
+                        clienteAtual.setBairro(txtCampos[4].getText());
+                        clienteAtual.setCidade(txtCampos[5].getText());
+                        clienteAtual.setTelefone(txtCampos[6].getText());
+                        clienteAtual.setEmail(txtCampos[7].getText());
+                        
+                        ClientesDAO.alterarCliente(clienteAtual, tmpCpf);
+                        JOptionPane.showMessageDialog(null, "Dados alterados.");
+                        desbloquearCampos(false);
+                        carregarDados(0, "");
+                        
+                    } catch (Exception erro) {
+                        JOptionPane.showMessageDialog(null, erro.getMessage());
+                    }
+                }
 
         } else if (evt.getSource() == btnFoto) {
 
@@ -241,41 +280,39 @@ public class ClientesView extends JInternalFrame implements ActionListener {
             strCaminhoOrigem = flcFoto.getSelectedFile().getPath();
             strNomeArquivoOrigem = flcFoto.getSelectedFile().getName();
             lblFoto.setIcon(new ImageIcon(strCaminhoOrigem));
-        
-        }else if(evt.getSource() == btnDesativar){
-            try{
+
+        } else if (evt.getSource() == btnDesativar) {
+            try {
                 String cpf = txtCampos[0].getText();
-                
+
                 ClientesDAO.alterarStatus(cpf, statusAtual);
                 carregarDados(0, "");
                 carregarCampos(ClientesDAO.consultarCliente(cpf));
-                
+
                 JOptionPane.showMessageDialog(null, "Status Alterado!");
-                
-                
-            }catch(Exception erro){
+
+            } catch (Exception erro) {
                 JOptionPane.showMessageDialog(null, erro.getMessage());
             }
-            
-        }else if(evt.getSource() == btnRestaurar){
+
+        } else if (evt.getSource() == btnRestaurar) {
             carregarDados(0, "");
             txtBusca.setText("");
-            
-        }else if(evt.getSource() == btnNome){
+
+        } else if (evt.getSource() == btnNome) {
             String nome = JOptionPane.showInputDialog(
-                            "Entre com o nome do cliente.");
-            
-            carregarDados(2,nome);  
+                    "Entre com o nome do cliente.");
+
+            carregarDados(2, nome);
             txtBusca.setText("");
-            
-        }else if(evt.getSource()== btnCidade){
+
+        } else if (evt.getSource() == btnCidade) {
             String cidade = JOptionPane.showInputDialog(
-                            "Entre com a cidade: ");
-            
+                    "Entre com a cidade: ");
+
             carregarDados(1, cidade);
             txtBusca.setText("");
-            
-            
+
         }
     }//fechando actionPerformed
 
@@ -320,24 +357,25 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         txtCampos[6].setText(tmpCliente.getTelefone());
         txtCampos[7].setText(tmpCliente.getEmail());
         statusAtual = tmpCliente.getStatus();
-        
+
         lblFoto.setIcon(new ImageIcon("img/system/" + tmpCliente.getFoto()));
 
         if (tmpCliente.getStatus() == 0) {
             txtCampos[0].setForeground(Color.red); //cpf
             txtCampos[1].setForeground(Color.red); //nome
-            
+
             btnDesativar.setText("Ativar");
-            
+
         } else {
             txtCampos[0].setForeground(Color.black); //cpf
             txtCampos[1].setForeground(Color.black); //nome
-        
+
             btnDesativar.setText("Desativar");
         }
-        
+
         desbloquearCampos(false);
         btnDesativar.setEnabled(true);
+        btnEditar.setEnabled(true);
 
     }//fechando carregarCampos
 

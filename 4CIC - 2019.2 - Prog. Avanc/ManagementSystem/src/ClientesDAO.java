@@ -147,8 +147,38 @@ public class ClientesDAO {
 
     }//fechando listarClientes - saida 3
 
-    public static void alterarCliente() throws Exception {
+    public static void alterarCliente(ClientesVO tmpCliente, String tmpCPF) throws Exception {
 
+        try{
+            ConexaoDAO.abrirConexao();
+            
+            String sqlAltera = "";
+            sqlAltera += "Update clientes set ";
+            sqlAltera += "nome_CLIENTE = '" + tmpCliente.getNome() + "',";
+            sqlAltera += "dataNascimento_CLIENTE = '" + tmpCliente.getDataNascimento()+ "',";
+            sqlAltera += "endereco_CLIENTE = '" + tmpCliente.getEndereco()+ "',";
+            sqlAltera += "bairro_CLIENTE = '" + tmpCliente.getBairro()+ "',";
+            sqlAltera += "cidade_CLIENTE = '" + tmpCliente.getCidade()+ "',";
+            sqlAltera += "telefone_CLIENTE = '" + tmpCliente.getTelefone()+ "',";
+            sqlAltera += "email_CLIENTE = '" + tmpCliente.getEmail()+ "' where ";
+            sqlAltera += "cpf_CLIENTE like '" + tmpCPF + "'";
+            
+            stClientes = ConexaoDAO.connSistema.createStatement();
+            stClientes.executeUpdate(sqlAltera);
+            
+            
+            
+            ConexaoDAO.fecharConexao();
+            
+        }catch(Exception erro){
+            String msg = "Falha na alteração dos dados.\n"
+                    + "Verifique a sintaxe da instrução Update e nomes de campos e tabelas.\n\n"
+                    + "Erro Original: " + erro.getMessage();
+
+            throw new Exception(msg);
+            
+        }
+        
     }
 
     public static void alterarStatus(String tmpCpf, int tmpStatus) throws Exception {
