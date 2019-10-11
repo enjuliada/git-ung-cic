@@ -12,7 +12,6 @@ $itens = ProjetosDAO::listarProjetos(1, $email,"");
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel="stylesheet" href="../../assets/css/cores.css">
     </head>
     
     <body>
@@ -22,7 +21,7 @@ $itens = ProjetosDAO::listarProjetos(1, $email,"");
             <div class="table-responsive border" style="margin-top:70px;">
                 
                 <table class="table table-striped">
-                    <thead class="bg-primary-shadow text-white"> <!-- cabeçalho da tabela -->
+                    <thead class="bg-primary text-white"> <!-- cabeçalho da tabela -->
                         <th>Nome do Projeto</th>
                         <th>Data de Início</th>
                         <th>Data de Fim</th>
