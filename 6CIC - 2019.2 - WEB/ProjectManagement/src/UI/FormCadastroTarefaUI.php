@@ -19,8 +19,14 @@ $itens = UsuariosDAO::listarIntegrantes($cod);
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="../../assets/css/cores.css">
     </head>
     <body>
+        <?php
+       include "MenuTopoUI.php";
+       
+       ?>
+        
         <div class="container d-flex" style="justify-content:center;">
             <div class="col-md-8"style="margin-top:100px;">
                 <center><p><h5>Informe os dados da Tarefa</h5></p></center>

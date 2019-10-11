@@ -1,5 +1,3 @@
-
-<meta charset="utf-8">
 <?php
 
 session_start();
@@ -58,9 +56,13 @@ if($acao == 1){
     $tmpUsuario->setSenha($senha);
     $tmpUsuario->setTelefone($telefone);
     
-    UsuariosDAO::cadastrarUsuario($tmpUsuario);//cadastrando
+    $statusCad =UsuariosDAO::cadastrarUsuario($tmpUsuario);//cadastrando
     
-    echo "<script>alert('Dados Cadastrados.');</script>";
+    if($statusCad == 0){
+        echo "<script>alert('E-mail já cadastrado em sistema.');</script>";
+    }else{    
+        echo "<script>alert('Dados Cadastrados.');</script>";
+    }
     echo "<script>location.href='../../index.php';</script>";//redirecionando
     
     //header("location:../../index.php");
@@ -70,20 +72,19 @@ if($acao == 1){
     echo "<script>location.href='../../index.php';</script>";//redirecionando
     
 }else if($acao == 4){
-    $email = $_POST['HTML_usuario'];
-    $proj = $_POST['proj'];
+   //addUsuario
+    $email = $_GET['HTML_email'];
+    $cod = $_GET['cod'];
+    $statusAdd = UsuariosDAO::adicionarIntegrante($cod, $email);
     
-    $status = UsuariosDAO::adicionarIntegrante($email, $proj);
-    
-    if($status == 0){
-        echo "<script>alert('Usuário não cadastrado.');</script>";
-    }else if($status == -1){
-        echo "<script>alert('Usuário já pertence ao projeto.');</script>";
+    if($statusAdd == 0){
+        echo "<script>alert('Usuário não cadastrado no sistema.');</script>";
+    }else if($statusAdd == -1){
+        echo "<script>alert('O usuário informado já pertence à equipe.');</script>";
     }else{
-        echo "<script>alert('Usuário adicionado à equipe.');</script>";
+        echo "<script>alert('Integrante adicionado ao projeto.');</script>";
     }
-    
-    echo "<script>location.href='../UI/DetalhesProjetoUI.php?cod=$proj';</script>";//redirecionando
+    echo "<script>location.href='../UI/DetalhesProjetoUI.php?cod=".$cod."';</script>";//redirecionando
 }
 
 ?>

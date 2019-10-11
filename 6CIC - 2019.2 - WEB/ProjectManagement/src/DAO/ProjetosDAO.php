@@ -151,9 +151,10 @@ class ProjetosDAO {
                 return 0;
             }else{
                 $prog = $concluidas/$total;
-                return number_format($prog*100,0);
+                return number_format($prog * 100,0);
             }
         }        
-                
+        
+        
     }
 }

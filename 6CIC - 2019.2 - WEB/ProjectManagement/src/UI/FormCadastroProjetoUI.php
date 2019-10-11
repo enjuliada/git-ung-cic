@@ -10,8 +10,14 @@ $itens = CategoriasDAO::listarCategorias();
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../assets/css/cores.css">
     </head>
     <body>
+        <?php
+       include "MenuTopoUI.php";
+       
+       ?>   
+        
         <div class="container d-flex" style="justify-content:center;">
             <div class="col-md-8"style="margin-top:100px;">
                 <center><p><h5>Informe os dados do Projeto</h5></p></center>
@@ -58,7 +64,7 @@ $itens = CategoriasDAO::listarCategorias();
                     </div>
                     <div class="form-group">
                         <input type="hidden" name="acao" value="2">
-                        <button type="submit" class="btn btn-primary form-control">Cadastrar</button>
+                        <button type="submit" class="btn bg-primary-light text-white form-control">Cadastrar</button>
                     </div>
                 </form>
             </div>
