@@ -5,13 +5,18 @@
         <group>
             <file>file:/C:/WEBN/ProjectManagement/src/Model/Categorias.php</file>
             <file>file:/C:/WEBN/ProjectManagement/src/Model/Arquivos.php</file>
-            <file>file:/C:/WEBN/ProjectManagement/src/Model/Equipes.php</file>
-            <file>file:/C:/WEBN/ProjectManagement/src/Model/Projetos.php</file>
+            <file>file:/C:/WEBN/ProjectManagement/src/Control/UsuariosControl.php</file>
+            <file>file:/C:/WEBN/ProjectManagement/src/UI/DetalhesProjetoUI.php</file>
+            <file>file:/C:/WEBN/ProjectManagement/src/DAO/TarefasDAO.php</file>
             <file>file:/C:/WEBN/ProjectManagement/src/Model/Permissoes.php</file>
             <file>file:/C:/WEBN/ProjectManagement/index.php</file>
+            <file>file:/C:/WEBN/ProjectManagement/src/Model/Usuarios.php</file>
+            <file>file:/C:/WEBN/ProjectManagement/src/DAO/ProjetosDAO.php</file>
+            <file>file:/C:/WEBN/ProjectManagement/src/Model/Equipes.php</file>
+            <file>file:/C:/WEBN/ProjectManagement/src/DAO/UsuariosDAO.php</file>
+            <file>file:/C:/WEBN/ProjectManagement/src/Model/Projetos.php</file>
             <file>file:/C:/WEBN/ProjectManagement/src/UI/FormCadastroUsuarioUI.php</file>
             <file>file:/C:/WEBN/ProjectManagement/src/Model/Tarefas.php</file>
-            <file>file:/C:/WEBN/ProjectManagement/src/Model/Usuarios.php</file>
         </group>
     </open-files>
 </project-private>

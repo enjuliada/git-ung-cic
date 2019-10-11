@@ -1,0 +1,15 @@
+Usuarios
+ - Cadastro: OK
+ - Login/Logout: OK
+
+Projetos
+ - Cadastro: OK
+ - Listagem: OK
+ - Detalhes
+   - Progresso: OK
+   - Contagem(dias): OK
+   - Listagem Integ. : OK
+   - Listagem Tar.: OK
+
+Tarefas
+ - Cadastro: OK

@@ -96,4 +96,43 @@ class UsuariosDAO {
         
     }//fechando metodo
     
+    
+    public static function adicionarIntegrante($tmpEmail, $tmpCodProj){
+        $vConn = ConexaoDAO::abrirConexao();
+        
+       $sqlVerif = "Select * from usuarios where email_USUARIO like '$tmpEmail'";
+       $rsVerif = mysqli_query($vConn, $sqlVerif)
+               or die(mysqli_error($vConn));
+       
+       if(mysqli_num_rows($rsVerif) == 0){
+           return 0;
+       }else{
+           
+           $sqlEquipe = "Select emailUsuario_EQUIPE from equipes ";
+           $sqlEquipe .= "where emailUsuario_EQUIPE like '$tmpEmail' and ";
+           $sqlEquipe .= "codigoProjeto_EQUIPE = '$tmpCodProj'";
+           $rsEquipe = mysqli_query($vConn,$sqlEquipe)
+                        or die(mysqli_error($vConn));
+           
+           
+           if(mysqli_num_rows($rsEquipe) > 0){
+               return -1;
+           }else{
+                $sqlAdd = "Insert into equipes(";
+                $sqlAdd .= "codigoProjeto_EQUIPE, emailUSUARIO_EQUIPE,";
+                $sqlAdd .= "codigoPermissao_EQUIPE)values('$tmpCodProj','$tmpEmail',2)";
+                
+                mysqli_query($vConn, $sqlAdd) or die(mysqli_error($vConn));
+                
+                return 1;
+           }          
+           
+       }
+       
+        
+        
+    }
+    
+    
+    
 }//fechando classe
