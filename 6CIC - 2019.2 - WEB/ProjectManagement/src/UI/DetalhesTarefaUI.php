@@ -10,10 +10,16 @@ session_start();
 $tar = $_GET['cod'];
 $tmpTarefa = TarefasDAO::consultarTarefa($tar);
 
+$proj = $_GET['proj'];
+$tmpProjeto = ProjetosDAO::consultarProjeto($proj);
+$responsavel = $tmpProjeto->getEmailUsuario();
+
 if ($tmpTarefa->getStatus() == 0) {
     $status = "Incompleta";
+    $textoBotao = "Finalizar";
 } else {
     $status = "Finalizada";
+    $textoBotao = "Reabrir";
 }
 ?>
 <html>
@@ -26,8 +32,10 @@ if ($tmpTarefa->getStatus() == 0) {
 
         <div class="container" style="margin-top: 10px;">
             <div class="card">
-                <div class="card-header">
-                    NOME DO PROJETO
+                <div class="card-header bg-dark text-white">
+                    <h4>
+                    <?=$tmpProjeto->getNome();?>
+                    </h4>
                 </div>
                 <div class="card-body">
 
@@ -39,6 +47,17 @@ if ($tmpTarefa->getStatus() == 0) {
 
                             <?= $tmpTarefa->getDescricao(); ?><br>
                             Status: <b><?= $status; ?></b>
+                            
+                            <?php
+                                if($_SESSION['email']  == $responsavel){
+                            ?>
+                            <a href="../Control/TarefasControl.php?acao=3&proj=<?=$proj?>&tar=<?=$tar?>&status=<?=$tmpTarefa->getStatus();?>" class="btn btn-danger text-white float-right">
+                                <?=$textoBotao;?>
+                            </a>
+                            <?php 
+                                }
+                            ?>
+                            
                         </div>                               
                     </div>
                     <div class="row">
@@ -60,9 +79,14 @@ if ($tmpTarefa->getStatus() == 0) {
                                 <div class="card-body">
                                     LISTA DE ARQUIVOS   
                                     
-                                    <form>
+                                    <form action="EnviaArquivoUI.php" method="POST" enctype="multipart/form-data">
                                         <div class="form-group">
-                                            <input type="file" class="form-control-sm">
+                                            <input type="file" name="HTML_arquivo" class="form-control-sm">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-dark">
+                                                Enviar
+                                            </button>
                                         </div>
                                             
                                     </form>

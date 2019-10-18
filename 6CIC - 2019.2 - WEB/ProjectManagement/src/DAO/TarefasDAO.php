@@ -1,7 +1,9 @@
 <?php
 require_once "ConexaoDAO.php";
 require_once "../Model/Tarefas.php";
+
 class TarefasDAO {
+    
     public static function cadastrarTarefa($tmpTarefa) {
         $vConn = ConexaoDAO::abrirConexao();
         
@@ -77,7 +79,21 @@ class TarefasDAO {
                         
         return $tmpTarefa;
     }
-    public static function alterarStatus($tmpCodigo) {
+    
+    public static function alterarStatus($tmpCodigo, $tmpStatusAtual){
+        
+        $vConn = ConexaoDAO::abrirConexao();
+        
+        if($tmpStatusAtual == 0){
+            $novoStatus = 1; //finalizando
+        }else{
+            $novoStatus = 0;//reabrindo
+        }
+        
+        $sqlStatus = "Update tarefas set status_TAREFA = '$novoStatus' where codigo_TAREFA = '$tmpCodigo'";
+        
+        mysqli_query($vConn, $sqlStatus)
+                or die(mysqli_error($vConn));
         
     }
 }

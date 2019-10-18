@@ -5,7 +5,12 @@ require_once "../DAO/TarefasDAO.php";
 session_start();
 
 //resgatando variavel acao(hidden) do form
-$acao = $_POST['acao'];
+
+if(isset($_POST['acao'])){
+    $acao = $_POST['acao'];
+}else{
+    $acao = $_GET['acao'];
+}
 
 if($acao == 1){
     //listarTarefas
@@ -32,6 +37,17 @@ if($acao == 1){
     
     echo "<script>alert('Tarefa cadastrada!');</script>";
     echo "<script>location.href='../UI/DetalhesProjetoUI.php?cod=" . $codigo . "';</script>";
+    
+}else if($acao == 3){
+    //alterar status
+    
+    $proj = $_GET['proj'];
+    $tar = $_GET['tar'];
+    $statusAtual = $_GET['status'];
+    
+    TarefasDAO::alterarStatus($tar, $statusAtual);
+    
+    echo "<script>location.href='../UI/DetalhesTarefaUI.php?proj=$proj&cod=$tar';</script>";
     
 }
 
