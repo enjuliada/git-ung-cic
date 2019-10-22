@@ -13,7 +13,24 @@ import java.util.*;
 public class ClientesView extends JInternalFrame implements ActionListener {
 
     //declaração de objetos
+    public static JMenuBar mbrClientes;
+    public static JMenu mnuArquivo, mnuDados, mnuAjuda;
+    public static JMenuItem mniNovo, mniEditar, mniSalvar,
+                            mniExcluir, mniFechar,
+                            mniConsulta, mniDesativar,
+                            mniSobre;
+    
     public static Container ctnClientes;
+    
+    public static JToolBar tbrClientes;
+    public static ImageIcon icnNovo, icnEditar,
+                            icnSalvar, icnDesativar,
+                            icnBuscar, icnExcluir,
+                            icnImprimir, icnFechar;
+    public static BotoesBarra bbrNovo, bbrEditar,
+                              bbrSalvar, bbrDesativar, 
+                              bbrBuscar, bbrExcluir,
+                              bbrImprimir, bbrFechar;
 
     public static String strCampos[] = {"CPF:", "Nome:", "Data de Nascimento:", "Endereço:", "Bairro:", "Cidade:", "Telefone:", "E-mail:"};
     public static JLabel lblCampos[];
@@ -39,46 +56,143 @@ public class ClientesView extends JInternalFrame implements ActionListener {
     public static FileChannel flcOrigem, flcDestino;//cópia
     public static FileInputStream flsEntrada;//leitura
     public static FileOutputStream flsSaida;//leitura
-    String strCaminhoOrigem, strCaminhoDestino, strNomeArquivoOrigem, extensao;
-    int statusFoto, acao;
-    public static int statusAtual = 0;
+    public static String strCaminhoOrigem, strCaminhoDestino, strNomeArquivoOrigem, extensao;
+    public static int statusFoto;
+    public static int statusAtual = 0,acao;
+    public static boolean status;
 
     public ClientesView() {//construtor
         super("Gerenciamento de Clientes");
 
         //Construção dos objetos
+        icnNovo = new ImageIcon("img/icons/new.png");
+        icnEditar = new ImageIcon("img/icons/edit.png");
+        icnSalvar = new ImageIcon("img/icons/save.png");
+        icnDesativar = new ImageIcon("img/icons/block.png");
+        icnBuscar = new ImageIcon("img/icons/search.png");
+        icnExcluir = new ImageIcon("img/icons/delete.png");
+        icnImprimir = new ImageIcon("img/icons/report.png");
+        icnFechar = new ImageIcon("img/icons/exit.png");
+        
+        mbrClientes = new JMenuBar();
+        this.setJMenuBar(mbrClientes);
+        
+        mnuArquivo = new JMenu("Arquivo");
+        mnuArquivo.setMnemonic('a');
+        mbrClientes.add(mnuArquivo);
+        
+        mniNovo = new JMenuItem("Novo Cliente",icnNovo);
+        mniNovo.addActionListener(this);
+        mnuArquivo.add(mniNovo);
+        
+        mnuArquivo.add(new JSeparator());
+        
+        mniEditar = new JMenuItem("Editar Dados", icnEditar);
+        mniEditar.setEnabled(false);
+        mniEditar.addActionListener(this);
+        mnuArquivo.add(mniEditar);
+        
+        mniSalvar = new JMenuItem("Salvar Informações", icnSalvar);
+        mniSalvar.addActionListener(this);
+        mnuArquivo.add(mniSalvar);
+        
+        mnuArquivo.add(new JSeparator());
+        
+        mniExcluir = new JMenuItem("Excluir cliente atual", icnExcluir);
+        mniExcluir.addActionListener(this);
+        mnuArquivo.add(mniExcluir);
+        
+        mnuArquivo.add(new JSeparator());
+        
+        mniFechar = new JMenuItem("Fechar módulo CLIENTES", icnFechar);
+        mniFechar.addActionListener(this);
+        mnuArquivo.add(mniFechar);
+        
+        mnuDados = new JMenu("Dados");
+        mnuDados.setMnemonic('d');
+        mbrClientes.add(mnuDados);
+        
+        mniConsulta = new JMenuItem("Consulta por CPF",icnBuscar);
+        mniConsulta.addActionListener(this);
+        mnuDados.add(mniConsulta);
+        
+        mnuDados.add(new JSeparator());
+        
+        mniDesativar = new JMenuItem("Alterar Status",icnBloquear);
+        mniDesativar.setEnabled(false);
+        mniDesativar.addActionListener(this);
+        mnuDados.add(mniDesativar);
+        
+        mnuAjuda = new JMenu("Ajuda");
+        mnuAjuda.setMnemonic('h');
+        mbrClientes.add(mnuAjuda);
+        
+        mniSobre = new JMenuItem("Sobre o sistema");
+        mniSobre.addActionListener(this);
+        mnuAjuda.add(mniSobre);
+        
         ctnClientes = new Container();
         ctnClientes.setLayout(null);
         this.add(ctnClientes);
+        
+        tbrClientes = new JToolBar();
+        tbrClientes.setBounds(0,0,285,35);
+        ctnClientes.add(tbrClientes);
+        
+        bbrNovo = new BotoesBarra(0,icnNovo,"Novo Cliente");
+        tbrClientes.add(bbrNovo);
+        
+        bbrEditar = new BotoesBarra(1,icnEditar,"Editar Dados");
+        bbrEditar.setEnabled(false);
+        tbrClientes.add(bbrEditar);
+        
+        bbrSalvar = new BotoesBarra(2,icnSalvar,"Salvar Informações");
+        tbrClientes.add(bbrSalvar);
+        
+        bbrDesativar = new BotoesBarra(3,icnDesativar,"Alterar Status");
+        bbrDesativar.setEnabled(false);
+        tbrClientes.add(bbrDesativar);
+        
+        bbrBuscar = new BotoesBarra(4,icnBuscar,"Buscar por CPF");
+        tbrClientes.add(bbrBuscar);
+        
+        bbrExcluir = new BotoesBarra(5,icnExcluir,"Remover cliente atual");
+        tbrClientes.add(bbrExcluir);
+        
+        bbrImprimir = new BotoesBarra(6,icnImprimir,"Gerar arquivo texto");
+        tbrClientes.add(bbrImprimir);
+        
+        bbrFechar = new BotoesBarra(7,icnFechar,"Fechar módulo");
+        tbrClientes.add(bbrFechar);
 
         lblCampos = new JLabel[strCampos.length];
         txtCampos = new JTextField[strCampos.length];
 
         for (int i = 0; i < lblCampos.length; i++) {
             lblCampos[i] = new JLabel(strCampos[i]);
-            lblCampos[i].setBounds(30, 100 + (i * 30), 150, 20);
+            lblCampos[i].setBounds(30, 75 + (i * 30), 150, 20);
             ctnClientes.add(lblCampos[i]);
 
             txtCampos[i] = new JTextField();
-            txtCampos[i].setBounds(160, 100 + (i * 30), 240, 20);
+            txtCampos[i].setBounds(160, 75 + (i * 30), 240, 20);
             ctnClientes.add(txtCampos[i]);
 
         }//fechando for
 
         btnEditar = new JButton("Editar Dados");
-        btnEditar.setEnabled(false);
+        btnEditar.setEnabled(false);        
         btnEditar.addActionListener(this);
-        btnEditar.setBounds(250, 340, 150, 30);
+        btnEditar.setBounds(250, 315, 150, 30);
         ctnClientes.add(btnEditar);
 
         imgFoto = new ImageIcon("img/user.png");
         lblFoto = new JLabel(imgFoto);
-        lblFoto.setBounds(440, 100, 128, 128);
+        lblFoto.setBounds(440, 75, 128, 128);
         ctnClientes.add(lblFoto);
 
         btnFoto = new JButton("Selecionar imagem");
         btnFoto.addActionListener(this);
-        btnFoto.setBounds(430, 240, 150, 20);
+        btnFoto.setBounds(430, 215, 150, 20);
         ctnClientes.add(btnFoto);
 
         tblClientes = new JTable();
@@ -90,7 +204,7 @@ public class ClientesView extends JInternalFrame implements ActionListener {
             mdlClientes.addColumn(strTopo[i]);
         }
 
-        scrClientes.setBounds(600, 130, 550, 290);
+        scrClientes.setBounds(600, 105, 550, 290);
         ctnClientes.add(scrClientes);
 
         tblClientes.addMouseListener(new MouseAdapter() {
@@ -107,11 +221,11 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         });
 
         lblBusca = new JLabel("Busca Rápida:");
-        lblBusca.setBounds(600, 100, 100, 20);
+        lblBusca.setBounds(600, 75, 100, 20);
         ctnClientes.add(lblBusca);
 
         txtBusca = new JTextField();
-        txtBusca.setBounds(690, 100, 450, 20);
+        txtBusca.setBounds(690, 75, 450, 20);
         ctnClientes.add(txtBusca);
 
         txtBusca.addKeyListener(new KeyAdapter() {
@@ -123,12 +237,12 @@ public class ClientesView extends JInternalFrame implements ActionListener {
 
         btnNovo = new JButton("Novo Cliente");
         btnNovo.addActionListener(this);
-        btnNovo.setBounds(430, 290, 150, 30);
+        btnNovo.setBounds(430, 265, 150, 30);
         ctnClientes.add(btnNovo);
 
         btnSalvar = new JButton("Salvar dados");
         btnSalvar.addActionListener(this);
-        btnSalvar.setBounds(430, 340, 150, 30);
+        btnSalvar.setBounds(430, 315, 150, 30);
         ctnClientes.add(btnSalvar);
 
         icnBloquear = new ImageIcon("img/icons/block.png");
@@ -136,7 +250,7 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         btnDesativar = new JButton("Desativar", icnBloquear);
         btnDesativar.setEnabled(false);
         btnDesativar.addActionListener(this);
-        btnDesativar.setBounds(430, 390, 150, 30);
+        btnDesativar.setBounds(430, 365, 150, 30);
         ctnClientes.add(btnDesativar);
 
         icnPais = new ImageIcon("img/icons/country.png");
@@ -145,17 +259,17 @@ public class ClientesView extends JInternalFrame implements ActionListener {
 
         btnCidade = new JButton("por Cidade", icnPais);
         btnCidade.addActionListener(this);
-        btnCidade.setBounds(1170, 130, 150, 30);
+        btnCidade.setBounds(1170, 105, 150, 30);
         ctnClientes.add(btnCidade);
 
         btnNome = new JButton("por Nome", icnUsuario);
         btnNome.addActionListener(this);
-        btnNome.setBounds(1170, 180, 150, 30);
+        btnNome.setBounds(1170, 155, 150, 30);
         ctnClientes.add(btnNome);
 
         btnRestaurar = new JButton("Restaurar", icnRestaurar);
         btnRestaurar.addActionListener(this);
-        btnRestaurar.setBounds(1170, 230, 150, 30);
+        btnRestaurar.setBounds(1170, 205, 150, 30);
         ctnClientes.add(btnRestaurar);
 
         desbloquearCampos(false);
@@ -174,21 +288,27 @@ public class ClientesView extends JInternalFrame implements ActionListener {
     }//fechando construtor
 
     public void actionPerformed(ActionEvent evt) {
-        if (evt.getSource() == btnNovo) {
+        if (evt.getSource() == btnNovo || evt.getSource() == mniNovo) {
             acao = 1; //cadastro
             btnEditar.setEnabled(false);
+            bbrEditar.setEnabled(false);
+            mniEditar.setEnabled(false);
             desbloquearCampos(true);
             btnDesativar.setEnabled(false);
+            bbrDesativar.setEnabled(false);
+            mniDesativar.setEnabled(false);
             limparCampos();
 
-        } else if (evt.getSource() == btnEditar) {
+        } else if (evt.getSource() == btnEditar || evt.getSource() == mniEditar) {
             acao = 2;
             desbloquearCampos(true);
             txtCampos[0].setEditable(false);
             btnEditar.setEnabled(false);
+            mniEditar.setEnabled(false);
+            bbrEditar.setEnabled(false);
 
-        } else if (evt.getSource() == btnSalvar) {
-            boolean status = validarCampos();
+        } else if (evt.getSource() == btnSalvar || evt.getSource() == mniSalvar) {
+            status = validarCampos();
 
             if (acao == 1) {
             
@@ -281,7 +401,7 @@ public class ClientesView extends JInternalFrame implements ActionListener {
             strNomeArquivoOrigem = flcFoto.getSelectedFile().getName();
             lblFoto.setIcon(new ImageIcon(strCaminhoOrigem));
 
-        } else if (evt.getSource() == btnDesativar) {
+        } else if (evt.getSource() == btnDesativar || evt.getSource() == mniDesativar) {
             try {
                 String cpf = txtCampos[0].getText();
 
@@ -313,6 +433,24 @@ public class ClientesView extends JInternalFrame implements ActionListener {
             carregarDados(1, cidade);
             txtBusca.setText("");
 
+        }else if(evt.getSource() == mniConsulta){
+            String cpf = JOptionPane.showInputDialog
+                            ("Informe o CPF do cliente:");
+            
+            try{
+                ClientesVO dadosCliente = ClientesDAO.consultarCliente(cpf);
+                
+                if(dadosCliente == null){
+                    JOptionPane.showMessageDialog(null,"Cliente não encontrado");
+                }else{
+                    ClientesView.carregarCampos(dadosCliente);
+                }
+            
+            }catch(Exception erro){
+                JOptionPane.showMessageDialog(null,erro.getMessage());
+            }
+        }else if(evt.getSource() == mniExcluir){
+            
         }
     }//fechando actionPerformed
 
@@ -375,7 +513,11 @@ public class ClientesView extends JInternalFrame implements ActionListener {
 
         desbloquearCampos(false);
         btnDesativar.setEnabled(true);
+        mniDesativar.setEnabled(true);
+        bbrDesativar.setEnabled(true);
         btnEditar.setEnabled(true);
+        mniEditar.setEnabled(true);
+        bbrEditar.setEnabled(true);
 
     }//fechando carregarCampos
 
@@ -385,8 +527,14 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         }
         btnFoto.setEnabled(tmpStatus);
         btnDesativar.setEnabled(tmpStatus);
+        mniDesativar.setEnabled(tmpStatus);
+        bbrDesativar.setEnabled(tmpStatus);
         btnSalvar.setEnabled(tmpStatus);
+        mniSalvar.setEnabled(tmpStatus);
+        bbrSalvar.setEnabled(tmpStatus);
         btnNovo.setEnabled(!tmpStatus);
+        mniNovo.setEnabled(!tmpStatus);
+        bbrNovo.setEnabled(!tmpStatus);
     }
 
     public static void limparCampos() {
