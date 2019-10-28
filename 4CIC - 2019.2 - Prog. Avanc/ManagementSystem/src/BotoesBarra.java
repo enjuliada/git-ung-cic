@@ -147,7 +147,28 @@ public class BotoesBarra extends AbstractAction {
                 JOptionPane.showMessageDialog(null,erro.getMessage());
             }
         }else if((int)getValue("id") == 5){
-            
+            try{
+                String cpf = ClientesView.txtCampos[0].getText();
+                
+                int verif = JOptionPane.showConfirmDialog(
+                            null, "Deseja realmente excluir " + 
+                                   ClientesView.txtCampos[1].getText(),
+                                   "Exclusão de Dados",
+                                    JOptionPane.YES_NO_OPTION);
+                
+                if(verif == JOptionPane.YES_OPTION){
+                    ClientesDAO.excluirCliente(cpf);
+                    JOptionPane.showMessageDialog(null, "Cliente excluído");
+                    ClientesView.desbloquearCampos(false);
+                    ClientesView.limparCampos();
+                    ClientesView.carregarDados(0,"");                    
+                }
+                    ClientesView.bbrExcluir.setEnabled(false);
+                    ClientesView.mniExcluir.setEnabled(false);
+                
+            }catch(Exception erro){
+                JOptionPane.showMessageDialog(null, erro.getMessage());
+            }
         }
 
     }

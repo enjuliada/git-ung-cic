@@ -210,7 +210,24 @@ public class ClientesDAO {
     }
 
     public static void excluirCliente(String tmpCpf) throws Exception {
-
+        try{
+            ConexaoDAO.abrirConexao();
+            
+            String sqlExc = "Delete from clientes where cpf_CLIENTE like '" + tmpCpf + "'";
+            stClientes = ConexaoDAO.connSistema.createStatement();
+            stClientes.executeUpdate(sqlExc);            
+            
+            ConexaoDAO.fecharConexao();
+            
+        }catch(Exception erro){
+            String msg = "Falha na exclusão de dados. "
+                    + "Verifique a sintaxe do DELETE e "
+                    + "o nome de campos e tabelas.\n\n"
+                    + "Erro Original:" + erro.getMessage();
+            
+            throw new Exception(msg);
+                    
+        }
     }
 
 }

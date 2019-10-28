@@ -99,6 +99,7 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         mnuArquivo.add(new JSeparator());
         
         mniExcluir = new JMenuItem("Excluir cliente atual", icnExcluir);
+        mniExcluir.setEnabled(false);
         mniExcluir.addActionListener(this);
         mnuArquivo.add(mniExcluir);
         
@@ -139,6 +140,8 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         tbrClientes.setBounds(0,0,285,35);
         ctnClientes.add(tbrClientes);
         
+        /********************************BARRA DE FERRAMENTAS******************************/
+        
         bbrNovo = new BotoesBarra(0,icnNovo,"Novo Cliente");
         tbrClientes.add(bbrNovo);
         
@@ -157,6 +160,7 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         tbrClientes.add(bbrBuscar);
         
         bbrExcluir = new BotoesBarra(5,icnExcluir,"Remover cliente atual");
+        bbrExcluir.setEnabled(false);
         tbrClientes.add(bbrExcluir);
         
         bbrImprimir = new BotoesBarra(6,icnImprimir,"Gerar arquivo texto");
@@ -290,6 +294,8 @@ public class ClientesView extends JInternalFrame implements ActionListener {
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource() == btnNovo || evt.getSource() == mniNovo) {
             acao = 1; //cadastro
+            mniExcluir.setEnabled(false);
+            bbrExcluir.setEnabled(false);
             btnEditar.setEnabled(false);
             bbrEditar.setEnabled(false);
             mniEditar.setEnabled(false);
@@ -303,6 +309,8 @@ public class ClientesView extends JInternalFrame implements ActionListener {
             acao = 2;
             desbloquearCampos(true);
             txtCampos[0].setEditable(false);
+            mniExcluir.setEnabled(false);
+            bbrExcluir.setEnabled(false);
             btnEditar.setEnabled(false);
             mniEditar.setEnabled(false);
             bbrEditar.setEnabled(false);
@@ -451,6 +459,29 @@ public class ClientesView extends JInternalFrame implements ActionListener {
             }
         }else if(evt.getSource() == mniExcluir){
             
+            try{
+                String cpf = txtCampos[0].getText();
+                
+                int verif = JOptionPane.showConfirmDialog(
+                            null, "Deseja realmente excluir " + 
+                                   txtCampos[1].getText(),
+                                   "Exclusão de Dados",
+                                    JOptionPane.YES_NO_OPTION);
+                
+                if(verif == JOptionPane.YES_OPTION){
+                    ClientesDAO.excluirCliente(cpf);
+                    JOptionPane.showMessageDialog(null, "Cliente excluído");
+                    desbloquearCampos(false);
+                    limparCampos();
+                    carregarDados(0,"");                    
+                }
+                    bbrExcluir.setEnabled(false);
+                    mniExcluir.setEnabled(false);
+                
+            }catch(Exception erro){
+                JOptionPane.showMessageDialog(null, erro.getMessage());
+            }
+            
         }
     }//fechando actionPerformed
 
@@ -515,6 +546,8 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         btnDesativar.setEnabled(true);
         mniDesativar.setEnabled(true);
         bbrDesativar.setEnabled(true);
+        mniExcluir.setEnabled(true);
+        bbrExcluir.setEnabled(true);
         btnEditar.setEnabled(true);
         mniEditar.setEnabled(true);
         bbrEditar.setEnabled(true);
