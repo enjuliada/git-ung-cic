@@ -6,16 +6,33 @@ import java.util.*;
 public class MainView extends JFrame implements ActionListener {
 
     //DECLARAÇÃO DOS OBJETOS
+    public static JMenuBar mbrPrincipal;
+    public static JMenu mnuSistema;
+    public static JMenuItem mniLogout;    
     public static Container ctnPrincipal, ctnTopo, ctnMenu;
     public static JLabel lblBanner;    
     public static JButton btnMenu[];
     public static JDesktopPane dskJanelas;
+    
+    //Janelas
+    public static ClientesView objClientesUI;
     
     public MainView() {//CONSTRUTOR
 
         super("Sistema de Gerenciamento por Módulos");
 
         //INSTÂNCIA E CONFIGURAÇÃO DE OBJETOS (CONSTRUÇÃO)
+        
+        mbrPrincipal = new JMenuBar();
+        this.setJMenuBar(mbrPrincipal);
+        
+        mnuSistema = new JMenu("Sistema");
+        mbrPrincipal.add(mnuSistema);
+        
+        mniLogout = new JMenuItem("Logout",new ImageIcon("img/icons/exit.png"));
+        mniLogout.addActionListener(this);
+        mniLogout.setEnabled(false);
+        mnuSistema.add(mniLogout);
         
         ctnPrincipal = new Container();
         ctnPrincipal.setLayout(new BorderLayout());
@@ -75,10 +92,19 @@ public class MainView extends JFrame implements ActionListener {
         
         if(evt.getSource() == btnMenu[0]){
             btnMenu[0].setEnabled(false);
-            dskJanelas.add(new ClientesView());
+            objClientesUI = new ClientesView();
+            dskJanelas.add(objClientesUI);
         }
         
-        
+        if(evt.getSource() == mniLogout){
+            objClientesUI.dispose();
+            
+            for(int i=0; i<btnMenu.length;i++){
+                btnMenu[i].setEnabled(false);
+            }
+            
+            dskJanelas.add(new LoginView());
+        }
         
     }//fechando actionPerformed
     

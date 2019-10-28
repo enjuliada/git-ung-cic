@@ -70,6 +70,7 @@ public class LoginView extends JInternalFrame implements ActionListener {
                 }else{
                     JOptionPane.showMessageDialog(null, "Acesso Concedido.");
                     this.dispose(); //fecha a interface atual(login)
+                    MainView.mniLogout.setEnabled(true);
                     
                     if(permissao == 1){//ADM
                         for(int i=0; i<MainView.btnMenu.length;i++){
