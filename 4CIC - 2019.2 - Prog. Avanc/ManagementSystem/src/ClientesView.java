@@ -284,7 +284,7 @@ public class ClientesView extends JInternalFrame implements ActionListener {
                 MainView.btnMenu[0].setEnabled(true);
             }
         });
-
+        this.setIconifiable(true);
         this.setClosable(true);
         this.setSize(MainView.dskJanelas.getWidth(), MainView.dskJanelas.getHeight());
         this.show();

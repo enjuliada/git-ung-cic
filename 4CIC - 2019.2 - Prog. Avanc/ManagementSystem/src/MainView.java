@@ -16,6 +16,7 @@ public class MainView extends JFrame implements ActionListener {
     
     //Janelas
     public static ClientesView objClientesUI;
+    public static VendasView objVendasUI;
     
     public MainView() {//CONSTRUTOR
 
@@ -94,6 +95,11 @@ public class MainView extends JFrame implements ActionListener {
             btnMenu[0].setEnabled(false);
             objClientesUI = new ClientesView();
             dskJanelas.add(objClientesUI);
+            
+        }else if(evt.getSource() == btnMenu[4]){
+            btnMenu[4].setEnabled(false);
+            objVendasUI = new VendasView();
+            dskJanelas.add(objVendasUI);
         }
         
         if(evt.getSource() == mniLogout){
