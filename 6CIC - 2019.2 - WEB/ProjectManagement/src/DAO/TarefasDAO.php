@@ -1,6 +1,7 @@
 <?php
 require_once "ConexaoDAO.php";
 require_once "../Model/Tarefas.php";
+require_once "../Model/Arquivos.php";
 
 class TarefasDAO {
     
@@ -79,7 +80,6 @@ class TarefasDAO {
                         
         return $tmpTarefa;
     }
-    
     public static function alterarStatus($tmpCodigo, $tmpStatusAtual){
         
         $vConn = ConexaoDAO::abrirConexao();
@@ -96,5 +96,20 @@ class TarefasDAO {
                 or die(mysqli_error($vConn));
         
     }
-}
+
+    public static function cadastrarArquivo($tmpArquivo){
+        $vConn = ConexaoDAO::abrirConexao();
+        
+        $sqlArq = "Insert into arquivos(";
+        $sqlArq .= "nome_ARQUIVO, data_ARQUIVO, codigoTarefa_ARQUIVO)values(";
+        $sqlArq .= "'" . $tmpArquivo->getNome() . "',";
+        $sqlArq .= "'" . $tmpArquivo->getData() . "',";
+        $sqlArq .= "'" . $tmpArquivo->getCodigoTarefa() . "')";
+        
+        mysqli_query($vConn, $sqlArq) or die(mysqli_error($vConn));
+        
+    }
+    
+    
+        }
 ?>

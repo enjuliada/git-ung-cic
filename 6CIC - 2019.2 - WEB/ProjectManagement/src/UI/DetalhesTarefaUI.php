@@ -84,6 +84,8 @@ if ($tmpTarefa->getStatus() == 0) {
                                             <input type="file" name="HTML_arquivo" class="form-control-sm">
                                         </div>
                                         <div class="form-group">
+                                            <input type="hidden" name="proj" value="<?=$proj?>">
+                                            <input type="hidden" name="cod" value="<?=$tar?>">
                                             <button type="submit" class="btn btn-dark">
                                                 Enviar
                                             </button>
