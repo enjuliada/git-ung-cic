@@ -19,6 +19,9 @@ $extensao = strtolower($extensao);
 
 if(!in_array($extensao, $tiposPermitidos)){
     echo "<script>alert('Formato de arquivo inválido');</script>";
+    echo "<script>location.href='DetalhesTarefaUI.php?proj=$proj&cod=$cod';</script>";
+    
+    
 }else{
   $origem = $nomeTemp;
   $destino = "../../files/". $nomeOrig;
@@ -33,11 +36,11 @@ if(!in_array($extensao, $tiposPermitidos)){
   
   TarefasDAO::cadastrarArquivo($tmpArquivo);
   
-if($result) 
+if($result) {
     echo "<script>alert('Arquivo Transferido');</script>";    
-else 
+}else {
     echo "<script>alert('Falha na transferência.');</script>";
-
+}
 //redirecionando
 echo "<script>location.href='DetalhesTarefaUI.php?proj=$proj&cod=$cod';</script>";
 

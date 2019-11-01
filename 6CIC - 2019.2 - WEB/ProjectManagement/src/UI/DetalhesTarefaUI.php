@@ -26,7 +26,7 @@ if ($tmpTarefa->getStatus() == 0) {
     <head>
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     </head>
     <body>
 
@@ -77,8 +77,30 @@ if ($tmpTarefa->getStatus() == 0) {
                                     Arquivos
                                 </div>
                                 <div class="card-body">
-                                    LISTA DE ARQUIVOS   
+                                    <div class="row">                                    
+                                    <?php
+                                    $itens = TarefasDAO::listarArquivos($tar);
                                     
+                                    for($i=0;$i<count($itens);$i++){
+                                    ?>
+                                        <div class="col-md-3 text-center">
+                                            
+                                            <a href="../../files/<?=$itens[$i]->getNome();?>" target="_blank">
+                                                <i class="fa fa-file fa-2x"></i>
+                                                <br>
+                                                <?=$itens[$i]->getNome();?>
+                                            </a>
+                                            
+                                            <a href="../Control/TarefasControl.php?acao=4&arq=<?=$itens[$i]->getCodigo();?>">
+                                                <i class="fa fa-trash fa-sm text-danger"></i>
+                                            </a>
+                                            
+                                        </div>
+                                    
+                                    <?php
+                                    }
+                                    ?>
+                                    </div><hr>
                                     <form action="EnviaArquivoUI.php" method="POST" enctype="multipart/form-data">
                                         <div class="form-group">
                                             <input type="file" name="HTML_arquivo" class="form-control-sm">
@@ -86,7 +108,7 @@ if ($tmpTarefa->getStatus() == 0) {
                                         <div class="form-group">
                                             <input type="hidden" name="proj" value="<?=$proj?>">
                                             <input type="hidden" name="cod" value="<?=$tar?>">
-                                            <button type="submit" class="btn btn-dark">
+                                            <button type="submit" class="btn btn-dark float-right">
                                                 Enviar
                                             </button>
                                         </div>

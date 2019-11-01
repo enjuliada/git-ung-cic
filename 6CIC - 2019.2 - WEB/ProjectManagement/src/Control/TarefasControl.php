@@ -49,6 +49,8 @@ if($acao == 1){
     
     echo "<script>location.href='../UI/DetalhesTarefaUI.php?proj=$proj&cod=$tar';</script>";
     
+}else if($acao == 4){ //excluir arquivo da tarefa
+    
 }
 
 

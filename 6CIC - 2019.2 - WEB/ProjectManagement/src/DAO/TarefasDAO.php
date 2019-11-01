@@ -96,7 +96,6 @@ class TarefasDAO {
                 or die(mysqli_error($vConn));
         
     }
-
     public static function cadastrarArquivo($tmpArquivo){
         $vConn = ConexaoDAO::abrirConexao();
         
@@ -109,7 +108,45 @@ class TarefasDAO {
         mysqli_query($vConn, $sqlArq) or die(mysqli_error($vConn));
         
     }
-    
-    
+    public static function listarArquivos($tmpCodigoTar){
+        
+        $vConn = ConexaoDAO::abrirConexao();
+        
+        $sqlArq = "Select * from arquivos where codigoTarefa_ARQUIVO='$tmpCodigoTar'";
+        
+        $rsArq = mysqli_query($vConn, $sqlArq)
+                or die(mysqli_error($vConn));
+        
+        $itens = new ArrayObject();
+        
+        while($dados = mysqli_fetch_array($rsArq)){
+            $tmpArquivo = new Arquivos();
+            $tmpArquivo->setCodigo($dados['codigo_ARQUIVO']);
+            $tmpArquivo->setNome($dados['nome_ARQUIVO']);
+            $tmpArquivo->setData($dados['data_ARQUIVO']);
+            $tmpArquivo->setCodigoTarefa($dados['codigoTarefa_ARQUIVO']);
+            
+            $itens->append($tmpArquivo);            
         }
+        
+            return $itens;
+    }
+    public static function excluirArquivo($tmpCodigo){
+        $vConn = ConexaoDAO::abrirConexao();
+        $sqlDel = "Delete from arquivos where codigo_ARQUIVO = '$tmpCodigo'";
+        mysqli_query($vConn, $sqlDel) or die(mysqli_error($vConn));
+    }
+    public static function excluirTarefa($tmpCodigo){
+        $vConn = ConexaoDAO::abrirConexao();
+        
+        $sqlDelArq = "Delete from arquivos where codigoTarefa_ARQUIVO = '$tmpCodigo'";
+        mysqli_query($vConn, $sqlDelArq) or die(mysqli_error($vConn));
+        
+        $sqlDelTar = "Delete from tarefas where codigo_TAREFA = '$tmpCodigo'";
+        mysqli_query($vConn, $sqlDelTar) or die(mysqli_error($vConn));
+                
+    }
+    
+    
+    }
 ?>
