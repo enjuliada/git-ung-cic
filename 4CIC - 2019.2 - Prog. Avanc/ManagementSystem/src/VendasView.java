@@ -2,6 +2,7 @@ import javax.swing.table.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
+import java.util.*;
 
 public class VendasView extends JInternalFrame implements ActionListener {
 
@@ -56,9 +57,24 @@ public class VendasView extends JInternalFrame implements ActionListener {
             
             txtCliente[i] = new JTextField();
             txtCliente[i].setBounds(160, 120 + (i * 30), 150, 20);
-            ctnVendas.add(txtCliente[i]);
-            
+            ctnVendas.add(txtCliente[i]);            
         }
+        
+        txtCliente[0].addFocusListener(new FocusListener() {            
+            public void focusGained(FocusEvent evt){
+                
+            }
+            public void focusLost(FocusEvent evt) {
+                try{
+                carregarCamposCli(ClientesDAO.consultarCliente(txtCliente[0].getText()));
+                }catch(Exception erro){
+                    JOptionPane.showMessageDialog(null, erro.getMessage());
+                }
+            }
+        }
+        );
+        
+        
         
         for(int i=0; i<strProduto.length; i++){
             lblProduto[i] = new JLabel(strProduto[i]);
@@ -67,9 +83,22 @@ public class VendasView extends JInternalFrame implements ActionListener {
             
             txtProduto[i] = new JTextField();
             txtProduto[i].setBounds(480, 75 + (i * 30), 150, 20);
-            ctnVendas.add(txtProduto[i]);
-            
+            ctnVendas.add(txtProduto[i]);            
         }
+        
+        txtProduto[0].addFocusListener(new FocusListener() {            
+            public void focusGained(FocusEvent evt){
+                
+            }
+            public void focusLost(FocusEvent evt) {
+                try{
+                carregarCamposProd(ProdutosDAO.consultarProduto(Integer.parseInt(txtProduto[0].getText())));
+                }catch(Exception erro){
+                    JOptionPane.showMessageDialog(null, erro.getMessage());
+                }
+            }
+        }
+        );
         
         btnAdicionar = new JButton("Adicionar", new ImageIcon("img/icons/new.png"));
         btnAdicionar.setBounds(350,200,280,35);
@@ -99,6 +128,21 @@ public class VendasView extends JInternalFrame implements ActionListener {
         scrProd.setBounds(680, 75, 550, 260);
         ctnVendas.add(scrProd);
         
+        carregarProdutos(0, "");//carregando tabela produtos
+        
+        tblProd.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                try {
+                    int tmpCodigo = Integer.parseInt(tblProd.getValueAt(tblProd.getSelectedRow(), 0).toString());
+                    ProdutosVO tmpProduto = ProdutosDAO.consultarProduto(tmpCodigo);
+                    carregarCamposProd(tmpProduto); 
+
+                } catch (Exception erro) {
+                    JOptionPane.showMessageDialog(null, erro.getMessage());
+                }
+            }
+        });
+        
         lblTotal = new JLabel("R$" + "0.00");
         lblTotal.setFont(new Font("Arial Black",Font.BOLD,40));
         lblTotal.setBounds(1000,330,250,80);
@@ -113,4 +157,47 @@ public class VendasView extends JInternalFrame implements ActionListener {
     public void actionPerformed(ActionEvent evt) {
 
     }
+    
+    public static void carregarProdutos(int tmpTipo, String tmpBusca){
+      try {
+
+            java.util.List<ProdutosVO> lstProdutos = new ArrayList<ProdutosVO>();
+
+            //limpando lista
+            while (mdlProd.getRowCount() > 0) {
+                mdlProd.removeRow(0);
+            }
+
+            //DAO >> VIEW
+            lstProdutos = ProdutosDAO.listarProdutos(tmpTipo, tmpBusca);
+
+            for (ProdutosVO tmpProduto : lstProdutos) {//para cada obj cliente dentro da lista
+
+                String dados[] = new String[4];
+                dados[0] = tmpProduto.getCodigo() + "";
+                dados[1] = tmpProduto.getNome();
+                dados[2] = "R$ " + tmpProduto.getValorVenda();
+                dados[3] = tmpProduto.getQtdeEstoque() + "";
+
+                mdlProd.addRow(dados);
+            }
+
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro);
+        }
+  
+    }
+    
+    public static void carregarCamposProd(ProdutosVO tmpProduto){
+        txtProduto[0].setText("" + tmpProduto.getCodigo());
+        txtProduto[1].setText(tmpProduto.getNome());
+        txtProduto[2].setText("R$ " + tmpProduto.getValorVenda());        
+    }
+    
+    public static void carregarCamposCli(ClientesVO tmpCliente){        
+        txtCliente[1].setText(tmpCliente.getNome());
+        txtCliente[2].setText(tmpCliente.getEndereco());        
+        txtCliente[3].setText(tmpCliente.getBairro());        
+    }
+    
 }
