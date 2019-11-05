@@ -1,37 +1,41 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <locale.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<locale.h>
 
 int main(){
+	
 	int num, i;
 	int a = 0, b = 1, prox, resp;
 	
+	
 	setlocale(LC_ALL,"");
 	
-	printf("***SEQUÊNCIA DE FIBONACCI ***\n");
+	printf("**SEQUÊNCIA FIBONACCI**\n\n");
 	
-	printf("Entre com o elemento: ");
-	scanf("%d", &num);
-	
-	//Construção do algoritmo
+	printf("Entre com o valor: ");
+	scanf("%d",&num);
 	
 	if(num == 1){
-		resp = a;
+		resp = a; //RESP: 0
+		
 	}else if(num == 2){
-		resp = b;
+		resp = b; //RESP: 1
+		
 	}else{		
-		for(i=3; i<=num; i++){
+		printf("\n%d  %d  ",a, b);
+		for(i=3; i<=num; i++){ //CALCULO		
 			prox = a + b;
 			a = b;
 			b = prox;
-		}//fechando for		
-		resp = prox;	
+			
+			printf("%d  ", prox);
+		}
+		resp = prox;
 	}
 	
-	printf("\nO (%d) elemento da sequência é: %d",num, resp);
+	printf("\n\nElemento: %d", resp);
 	
 	printf("\n\n");
 	system("pause");
-	
 	
 }
