@@ -22,12 +22,18 @@ void mostrarOnibus(int tmpOnib[]){
 	
 	for(i=0; i<42; i++){
 		if(tmpOnib[i] == 0){
-			strcpy(status,"Vazio");
-		}else{
-			strcpy(status,"Ocupado");
-		}//fechando else
+				strcpy(status,"Vazio");
+			}else{
+				strcpy(status,"Ocupado");
+			}//fechando else
+			
+		if(i % 2 == 0){				
 		
-		printf("POLTRONA[%d] = %s\n", i, status);		
+			printf("POLTRONA[%d] = %s\t", i, status);		
+		}else{
+			printf("POLTRONA[%d] = %s\n", i, status);
+		}		
+		
 	}//fechando for
 	
 	getch();
