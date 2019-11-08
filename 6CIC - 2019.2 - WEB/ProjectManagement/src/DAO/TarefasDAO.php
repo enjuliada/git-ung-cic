@@ -147,6 +147,19 @@ class TarefasDAO {
                 
     }
     
-    
+    public static function consultarArquivo($tmpCodigo){
+        $vConn = ConexaoDAO::abrirConexao();
+        
+        $sqlArq = "Select nome_ARQUIVO from arquivos where codigo_ARQUIVO = '$tmpCodigo'";
+        $rsArq = mysqli_query($vConn, $sqlArq)
+                or die (mysqli_error($vConn));        
+        $dados = mysqli_fetch_array($rsArq);
+        
+        return $dados['nome_ARQUIVO'];
+            
     }
+        
+    }
+    
+   
 ?>

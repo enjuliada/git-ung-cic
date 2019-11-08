@@ -14,6 +14,7 @@ $itens = TarefasDAO::listarTarefas(0, $proj);
                         <th>Data Registrada</th>
                         <th>Responsável</th>
                         <th>Status</th>                        
+                        <th>Ação</th>                        
                     </thead> 
                     
                     <tbody>                        
@@ -40,6 +41,12 @@ $itens = TarefasDAO::listarTarefas(0, $proj);
                                         echo "Finalizada";
                                 ?>                                
                             </td>
+                            <td align="center">
+                                <a href="../Control/TarefasControl.php?acao=5&proj=<?=$proj?>&tar=<?=$itens[$i]->getCodigo();?>">
+                                    <i class="fa fa-trash text-danger"></i>
+                                </a>                                
+                            </td>
+                            
                         </tr>
                         
                         <?php  } 

@@ -51,6 +51,9 @@ if ($tmpTarefa->getStatus() == 0) {
                             <?php
                                 if($_SESSION['email']  == $responsavel){
                             ?>
+                            <a href="../Control/TarefasControl.php?acao=5&proj=<?=$proj?>&tar=<?=$tar?>" class="btn btn-danger text-white float-right">
+                                Excluir Tarefa
+                            </a>
                             <a href="../Control/TarefasControl.php?acao=3&proj=<?=$proj?>&tar=<?=$tar?>&status=<?=$tmpTarefa->getStatus();?>" class="btn btn-danger text-white float-right">
                                 <?=$textoBotao;?>
                             </a>
@@ -91,7 +94,7 @@ if ($tmpTarefa->getStatus() == 0) {
                                                 <?=$itens[$i]->getNome();?>
                                             </a>
                                             
-                                            <a href="../Control/TarefasControl.php?acao=4&arq=<?=$itens[$i]->getCodigo();?>">
+                                            <a href="../Control/TarefasControl.php?acao=4&arq=<?=$itens[$i]->getCodigo();?>&proj=<?=$proj?>&tar=<?=$tar?>">
                                                 <i class="fa fa-trash fa-sm text-danger"></i>
                                             </a>
                                             
