@@ -6,7 +6,9 @@
 
 int main(){
 	
-	int opcao, i, classe, inicio, fim, cont = 1;
+	int opcao, i, classe, inicio, fim, cont = 0;
+	int poltrona, ocupadas = 0, disponiveis = 250;
+	float valor, taxa, caixa = 0;
 	int aviao[250];
 	char nomeClasse[12];
 	
@@ -49,14 +51,20 @@ int main(){
 					strcpy(nomeClasse,"Business");
 					inicio = 0;
 					fim = 31;
+					taxa = 0.1;
+					valor = 7500 + (7500 * taxa);					
 				}else if(classe == 2){
 					strcpy(nomeClasse,"Executiva");
 					inicio = 32;
 					fim = 95;
+					taxa = 0.07;
+					valor = 4000 + (4000 * taxa);
 				}else if (classe == 3){
 					strcpy(nomeClasse,"Econômica");
 					inicio = 96;
 					fim = 249;
+					taxa = 0.05;
+					valor = 2100 + (2100 * taxa);
 				}
 				
 				system("cls");
@@ -66,13 +74,32 @@ int main(){
 				
 				for(i=inicio; i<=fim; i++){
 					if(aviao[i] == 0){
-						printf("Polt. [%d]\t",i);
+						printf("Polt. [%d]\t",i+1);
 						cont++;
 					}
 					
 					if(cont % 8 == 0) printf("\n");					
 				}
 				
+				/***VOLTAR AQUI ***/
+				printf("\n\n");
+				printf("Informe o número da poltrona: ");
+				scanf("%d", &poltrona);
+				
+				if(aviao[poltrona - 1] == 0){ //livre
+					printf("Total a pagar: R$ %.2f\n", valor);
+					caixa+=valor;
+					aviao[poltrona - 1] = 1;
+					printf("Reservando Poltrona...\n");
+					_sleep(1000);
+					printf("Poltrona Reservada: [%d]", poltrona);
+					disponiveis--;
+					ocupadas++;
+				}else{
+					
+					printf("Poltrona Ocupada...\n");
+					printf("Não foi possível realizar a venda. Tente novamente.\n");
+				}
 				
 				getch();				
 				break;
@@ -83,6 +110,12 @@ int main(){
 				
 			case 3:
 				//relatorio
+				system("cls");
+				printf("Poltronas Ocupadas: %d\n", ocupadas);
+				printf("Poltronas Disponíveis: %d\n", disponiveis);
+				printf("Total em caixa: R$ %.2f",caixa);
+				
+				getch();
 				break;
 			
 			case 4:
@@ -98,7 +131,7 @@ int main(){
 				break;	
 		}
 		
-		cont = 1;
+		cont = 0;
 		system("cls");
 		
 		
