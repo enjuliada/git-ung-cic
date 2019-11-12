@@ -55,7 +55,13 @@ public class VendasDAO {
                 stVendas.executeUpdate(sqlItens);
                 
                 //UPDATE NO ESTOQUE
+                int qtdeItem = itemAtual.getQtdeItem();
+                String sqlEstoque = "Update produtos ";
+                sqlEstoque += "set quantidadeEstoque_PRODUTO = (quantidadeEstoque_PRODUTO - " + qtdeItem + ") ";
+                sqlEstoque += "where codigo_PRODUTO = " + itemAtual.getCodigoProd();
                
+                stVendas = ConexaoDAO.connSistema.createStatement();
+                stVendas.executeUpdate(sqlEstoque);
             }
             
             //INSERT NA VENDA

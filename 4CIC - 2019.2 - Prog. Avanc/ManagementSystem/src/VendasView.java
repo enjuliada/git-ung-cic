@@ -195,6 +195,7 @@ public class VendasView extends JInternalFrame implements ActionListener {
                 VendasDAO.cadastrarVenda(itens, objVenda);
                 
                 JOptionPane.showMessageDialog(null, "Venda Cadastrada!");
+                carregarProdutos(0, "");
 
             } catch (Exception erro) {
                 JOptionPane.showMessageDialog(null, erro.getMessage());
