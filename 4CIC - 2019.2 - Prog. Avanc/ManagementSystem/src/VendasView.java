@@ -3,6 +3,7 @@ import javax.swing.table.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
+import java.text.*;
 import java.util.*;
 
 public class VendasView extends JInternalFrame implements ActionListener {
@@ -17,7 +18,7 @@ public class VendasView extends JInternalFrame implements ActionListener {
     public static JTextField[] txtProduto;
     public static String strProduto[] = {"Código:", "Nome:", "Valor Unitário:", "Quantidade:"};
 
-    public static JButton btnAdicionar;
+    public static JButton btnAdicionar, btnFecharPedido;
 
     public static String strTopoItens[] = {"ID", "Nome", "Valor Unitário", "Quantidade", "Valor Parcial"};
     public static JScrollPane scrItens; //barra de rolagem da tabela
@@ -34,6 +35,7 @@ public class VendasView extends JInternalFrame implements ActionListener {
      */
     public static java.util.List<ItensVO> itens = new ArrayList<ItensVO>();
     public static float totalVenda;
+    public static int novoId;
 
     public VendasView() {
 
@@ -46,18 +48,18 @@ public class VendasView extends JInternalFrame implements ActionListener {
         lblId = new JLabel("Id da Venda: ");
         lblId.setBounds(30, 75, 150, 20);
         ctnVendas.add(lblId);
-        
+
         txtId = new JTextField("");
         txtId.setBounds(160, 75, 150, 20);
         ctnVendas.add(txtId);
-        
-        try{
+
+        try {
             int idAtual = VendasDAO.gerarCodigo();
             txtId.setText("" + idAtual);
-        }catch(Exception erro){
+            novoId = idAtual;
+        } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }
-        
 
         lblCliente = new JLabel[4];
         txtCliente = new JTextField[4];
@@ -119,6 +121,11 @@ public class VendasView extends JInternalFrame implements ActionListener {
         btnAdicionar.setBounds(350, 200, 280, 35);
         ctnVendas.add(btnAdicionar);
 
+        btnFecharPedido = new JButton("Fechar Pedido", new ImageIcon("img/icons/block.png"));
+        btnFecharPedido.addActionListener(this);
+        btnFecharPedido.setBounds(680, 350, 250, 35);
+        ctnVendas.add(btnFecharPedido);
+
         tblItens = new JTable();
         scrItens = new JScrollPane(tblItens);
         mdlItens = (DefaultTableModel) tblItens.getModel();
@@ -173,6 +180,25 @@ public class VendasView extends JInternalFrame implements ActionListener {
         if (evt.getSource() == btnAdicionar) {
             //adicionar item na tabela 
             adicionarItem(Integer.parseInt(txtProduto[0].getText()));
+        } else if (evt.getSource() == btnFecharPedido) {
+            try {
+                //CADASTRAR VENDA - VOLTAR AQUI
+                Date dataAtual = new Date();
+                SimpleDateFormat dataFinal = new SimpleDateFormat("dd/M/yyyy");
+
+                VendasVO objVenda = new VendasVO();
+                objVenda.setCodigo(novoId);
+                objVenda.setData("" + dataFinal.format(dataAtual));
+                objVenda.setTotal(totalVenda);
+                objVenda.setCpfCliente(txtCliente[0].getText());
+
+                VendasDAO.cadastrarVenda(itens, objVenda);
+                
+                JOptionPane.showMessageDialog(null, "Venda Cadastrada!");
+
+            } catch (Exception erro) {
+                JOptionPane.showMessageDialog(null, erro.getMessage());
+            }
         }
     }
 
@@ -222,11 +248,11 @@ public class VendasView extends JInternalFrame implements ActionListener {
         boolean achou = false;
 
         for (ItensVO tmpItem : itens) {
-            if (tmpCodigo == tmpItem.getCodigoProduto()) {
+            if (tmpCodigo == tmpItem.getCodigoProd()) {
                 achou = true;
                 int novaQtde;
-                novaQtde = tmpItem.getQuantidade() + (Integer.parseInt(txtProduto[3].getText()));
-                tmpItem.setQuantidade(novaQtde);
+                novaQtde = tmpItem.getQtdeItem() + (Integer.parseInt(txtProduto[3].getText()));
+                tmpItem.setQtdeItem(novaQtde);
             }
         }
 
@@ -238,20 +264,20 @@ public class VendasView extends JInternalFrame implements ActionListener {
             }
             for (ItensVO tmpItem : itens) {
                 String dados[] = new String[5];
-                dados[0] = "" + tmpItem.getCodigoProduto();
+                dados[0] = "" + tmpItem.getCodigoProd();
 
                 try {
-                    dados[1] = ProdutosDAO.consultarProduto(tmpItem.getCodigoProduto()).getNome();
+                    dados[1] = ProdutosDAO.consultarProduto(tmpItem.getCodigoProd()).getNome();
                 } catch (Exception erro) {
                     JOptionPane.showMessageDialog(null, erro.getMessage());
                 }
 
-                dados[2] = "" + tmpItem.getValorUnitario();
-                dados[3] = "" + tmpItem.getQuantidade();
-                dados[4] = "" + (tmpItem.getQuantidade() * tmpItem.getValorUnitario());
+                dados[2] = "" + tmpItem.getValorItem();
+                dados[3] = "" + tmpItem.getQtdeItem();
+                dados[4] = "" + (tmpItem.getQtdeItem() * tmpItem.getValorItem());
 
                 mdlItens.addRow(dados);
-                totalVenda += tmpItem.getQuantidade() * tmpItem.getValorUnitario();
+                totalVenda += tmpItem.getQtdeItem() * tmpItem.getValorItem();
             }
             lblTotal.setText("R$ " + totalVenda);
             return 2; //somando qtde
@@ -259,22 +285,23 @@ public class VendasView extends JInternalFrame implements ActionListener {
             ItensVO novoItem = new ItensVO();
             String nomeProd = txtProduto[1].getText();
 
-            novoItem.setCodigoProduto(Integer.parseInt(txtProduto[0].getText()));
-            novoItem.setValorUnitario(Float.parseFloat(txtProduto[2].getText().substring(3)));
-            novoItem.setQuantidade(Integer.parseInt(txtProduto[3].getText()));
+            novoItem.setCodigoVenda(novoId);
+            novoItem.setCodigoProd(Integer.parseInt(txtProduto[0].getText()));
+            novoItem.setValorItem(Float.parseFloat(txtProduto[2].getText().substring(3)));
+            novoItem.setQtdeItem(Integer.parseInt(txtProduto[3].getText()));
 
             /*Adicionando na Array*/
             itens.add(novoItem);
 
             /*Adicionando na JTable*/
             String dados[] = new String[5];
-            dados[0] = "" + novoItem.getCodigoProduto();
+            dados[0] = "" + novoItem.getCodigoProd();
             dados[1] = nomeProd;
-            dados[2] = "" + novoItem.getValorUnitario();
-            dados[3] = "" + novoItem.getQuantidade();
-            dados[4] = "" + (novoItem.getQuantidade() * novoItem.getValorUnitario());
+            dados[2] = "" + novoItem.getValorItem();
+            dados[3] = "" + novoItem.getQtdeItem();
+            dados[4] = "" + (novoItem.getQtdeItem() * novoItem.getValorItem());
 
-            totalVenda += novoItem.getQuantidade() * novoItem.getValorUnitario();
+            totalVenda += novoItem.getQtdeItem() * novoItem.getValorItem();
 
             mdlItens.addRow(dados);
         }

@@ -12,6 +12,8 @@ public class LoginView extends JInternalFrame implements ActionListener {
     public static JPasswordField pwdSenha;
     public static JButton btnAcessar;
     
+    public static JComboBox cmbItens;
+       
     public LoginView() {
 
         super("Acesso ao sistema");
@@ -20,6 +22,7 @@ public class LoginView extends JInternalFrame implements ActionListener {
         ctnLogin.setLayout(null);
         this.add(ctnLogin);
         
+                
         lblUsuario = new JLabel("Nome de Usuário:");
         lblUsuario.setBounds(15,15,150,20);
         ctnLogin.add(lblUsuario);

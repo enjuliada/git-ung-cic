@@ -1,7 +1,15 @@
 
 public class ItensVO {
-    private int codigoVenda, codigoProduto, quantidade;
-    private float valorUnitario;
+    private int codigoProd, codigoVenda, qtdeItem;
+    private float valorItem;
+
+    public int getCodigoProd() {
+        return codigoProd;
+    }
+
+    public void setCodigoProd(int codigoProd) {
+        this.codigoProd = codigoProd;
+    }
 
     public int getCodigoVenda() {
         return codigoVenda;
@@ -11,28 +19,20 @@ public class ItensVO {
         this.codigoVenda = codigoVenda;
     }
 
-    public int getCodigoProduto() {
-        return codigoProduto;
+    public int getQtdeItem() {
+        return qtdeItem;
     }
 
-    public void setCodigoProduto(int codigoProduto) {
-        this.codigoProduto = codigoProduto;
+    public void setQtdeItem(int qtdeItem) {
+        this.qtdeItem = qtdeItem;
     }
 
-    public int getQuantidade() {
-        return quantidade;
+    public float getValorItem() {
+        return valorItem;
     }
 
-    public void setQuantidade(int quantidade) {
-        this.quantidade = quantidade;
-    }
-
-    public float getValorUnitario() {
-        return valorUnitario;
-    }
-
-    public void setValorUnitario(float valorUnitario) {
-        this.valorUnitario = valorUnitario;
+    public void setValorItem(float valorItem) {
+        this.valorItem = valorItem;
     }
     
     
