@@ -10,11 +10,59 @@ int i;
 float total, valor, caixa = 0;
 
 void esvaziarOnibus(){
+	
 	for(i=0; i<42; i++){
 		onibA[i] = 0;
 		onibB[i] = 0;
 		onibC[i] = 0;
 	}
+}
+
+void gerarRelatorio(){
+	int ocupA = 0, ocupB = 0, ocupC = 0;
+	int dispA = 0, dispB = 0, dispC = 0;
+	
+	for(i=0; i<42; i++){
+		if(onibA[i]==0){
+			dispA++;
+		}else{
+			ocupA++;
+		}
+
+		if(onibB[i]==0){
+			dispB++;
+		}else{
+			ocupB++;
+		}
+		
+		if(onibC[i]==0){
+			dispC++;
+		}else{
+			ocupC++;
+		}		
+		
+	}//fechando for
+	
+		system("cls");
+	/***MONTAGEM DO RELATORIO***/
+		printf("## RELATÓRIO DE VENDAS ##\n\n");
+		printf("Destino: Rio de Janeiro \n");
+		printf("Total de Passageiros: %d\n",ocupA);
+		printf("Poltronas Livres: %d\n\n",dispA);
+		
+		printf("Destino: Belo Horizonte: \n");
+		printf("Total de Passageiros: %d\n",ocupB);
+		printf("Poltronas Livres: %d\n\n",dispB);
+		
+		printf("Destino: Acre \n");
+		printf("Total de Passageiros %d\n",ocupC);
+		printf("Poltronas Livres: %d\n\n",dispC);
+		
+		printf("------- Total em caixa --------\n ");
+		printf("Valor: R$ %.2f", caixa);
+		
+		getch();
+		system("cls");
 }
 
 void mostrarOnibus(int tmpOnib[]){
@@ -56,11 +104,13 @@ int montarMenu(){
 	return menu;
 }
 
-bool efetuarVenda(int tmpOnib[], int tmpPolt){
-	if(tmpOnib[tmpPolt - 1] == 1){
-		return false;		
+int efetuarVenda(int tmpOnib[], int tmpPolt){
+	if((tmpPolt - 1) > 41){
+		return -2;	
+	}else if(tmpOnib[tmpPolt - 1] == 1){
+		return -1;		
 	}else{
-		if(tmpPolt < 10){
+		if((tmpPolt - 1) < 10){
 			total = valor * 1.25;
 		}else{
 			total = valor;
@@ -68,15 +118,25 @@ bool efetuarVenda(int tmpOnib[], int tmpPolt){
 			caixa += total;
 			printf("Total a pagar: R$ %.2f\n",total);
 			tmpOnib[tmpPolt - 1] = 1; //poltrona ocupada 
-			return true;
+			return 1;
 		}		
 	}	
+
+void exibirDestinos(){
+	system("cls");
+	printf("## Escolha sua passagem ##\n\n");
+	printf("--------------------------------DESTINOS --------------------------------\n");
+	printf("Rio de Janeiro(A)\t\tBelo Horizonte(B)\t\tAcre(C)\n");
+	printf("R$ 75,00\t\t\tR$ 90,00\t\t\tR$ 250,00\n");
+	printf("-------------------------------------------------------------------------\n\n");
+	printf("**Poltronas VIP(1 a 10): 25%% adic.\n\n");
+}
 
 int main(){
 
 	int opcao, polt;
 	char codOnibus;
-	bool statusVenda;
+	int statusVenda;
 	
 	setlocale(LC_ALL,"");
 	esvaziarOnibus();
@@ -89,6 +149,7 @@ int main(){
 		switch(opcao){
 			
 			case 1:
+				exibirDestinos();
 				printf("Entre com o destino: ");
 				scanf("%s", &codOnibus);
 				printf("Entre com o número da poltrona:");
@@ -108,10 +169,12 @@ int main(){
 					break;
 				}
 				
-				if(statusVenda == true)
+				if(statusVenda == 1)
 					printf("Venda Efetuada!!");
-				else
+				else if(statusVenda == -1)
 					printf("Poltrona Ocupada!!");
+				else if(statusVenda == -2)
+					printf("Poltrona Inexistente!!");
 					
 				_sleep(1500);
 				//venda
@@ -137,6 +200,7 @@ int main(){
 				break;
 			case 3:
 				//relatorio
+				gerarRelatorio();
 				break;
 			case 4:
 				break;
