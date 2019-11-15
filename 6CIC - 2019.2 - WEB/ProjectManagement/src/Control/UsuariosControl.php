@@ -84,6 +84,32 @@ if($acao == 1){
     }
     
     echo "<script>location.href='../UI/DetalhesProjetoUI.php?cod=$proj';</script>";//redirecionando
-}
+
+    
+    }else if($acao == 5){ //email
+        $destinatario = $_POST['HTML_email'];
+        $remetente = $_SESSION['email'];
+        $assunto = "Mensagem do sistema - TAREFAS";
+        $mensagem = $_POST['HTML_msg'];
+        
+        $headers = "MIME Version: 1.1\r\n";
+        $headers .= "Content-type: text/plain;charset=UTF-8\r\n";
+        $headers .= "From: " . $remetente . "\r\n";
+        $headers .= "Return-path: " . $remetente . "\r\n";
+        
+        $status = mail($destinatario,$assunto,$mensagem, $headers);
+    
+        if($status){
+          echo "<script>alert('E-mail enviado.');</script>";  
+        }else{
+            echo "<script>alert('Mensagem não enviada.');</script>";
+        }
+        
+        echo "<p>" . $destinatario . "<br>" . 
+                $assunto . "<hr>". $mensagem;
+        
+    }
+    
+    
 
 ?>

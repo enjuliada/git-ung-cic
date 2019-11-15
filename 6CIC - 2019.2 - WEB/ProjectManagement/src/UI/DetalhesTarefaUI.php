@@ -9,6 +9,7 @@ session_start();
 
 $tar = $_GET['cod'];
 $tmpTarefa = TarefasDAO::consultarTarefa($tar);
+$respTar = $tmpTarefa->getEmailUsuario();
 
 $proj = $_GET['proj'];
 $tmpProjeto = ProjetosDAO::consultarProjeto($proj);
@@ -29,7 +30,9 @@ if ($tmpTarefa->getStatus() == 0) {
         <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     </head>
     <body>
-
+ <?php
+            include "NavTopoUI.php";
+        ?>
         <div class="container" style="margin-top: 10px;">
             <div class="card">
                 <div class="card-header bg-dark text-white">
@@ -67,10 +70,21 @@ if ($tmpTarefa->getStatus() == 0) {
                         <div class="col-md-5">
                             <div class="card" style="margin-top:15px;">
                                 <div class="card-header bg-success text-white">
-                                    Mensagem
+                                    Enviar Mensagem
                                 </div>
                                 <div class="card-body">
-                                    FORM                            
+                                    <form action="../Control/UsuariosControl.php" method="post">
+                                        <div class="form-group">
+                                         <input type="email" value="<?=$respTar?>" class="form-control" name="HTML_email">
+                                        </div>
+                                        <div class="form-group">
+                                            <textarea name="HTML_msg" class="form-control"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="hidden" name="acao" value="5">
+                                            <button type="submit" class="btn btn-primary">Enviar E-mail</button>                                            
+                                        </div>                                        
+                                    </form>
                                 </div>                               
                             </div>
                         </div>

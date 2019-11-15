@@ -1,10 +1,16 @@
 <?php
 require_once "../Model/Projetos.php";
 require_once "../DAO/ProjetosDAO.php";
+require_once "../DAO/TarefasDAO.php";
+
 session_start();
 
 //resgatando variavel acao(hidden) do form
-$acao = $_POST['acao'];
+if(isset($_POST['acao'])){
+    $acao = $_POST['acao'];
+}else{
+    $acao = $_GET['acao'];
+}
 
 if($acao == 1){
     //listarProjetos
@@ -33,6 +39,19 @@ if($acao == 1){
     echo "<script>alert('Projeto cadastrado!');</script>";
     echo "<script>location.href='../UI/HomeUsuariosUI.php';</script>";
     
+}else if($acao == 3){ //excluir
+  $proj = $_GET['proj']; 
+  $totalTar = TarefasDAO::contarTarefas(0, $proj, "");
+  
+  if($totalTar > 0){
+    echo "<script>alert('Não é possível excluir um projeto com tarefas internas.');</script>";
+    echo "<script>location.href='../UI/DetalhesProjetoUI.php?cod=$proj';</script>";
+  }else{
+      ProjetosDAO::excluirProjeto($proj);
+    echo "<script>alert('Projeto excluído!');</script>";
+    echo "<script>location.href='../UI/HomeUsuariosUI.php';</script>";
+  }
+  
 }
 
 

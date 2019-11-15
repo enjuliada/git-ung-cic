@@ -2,6 +2,10 @@
 require_once "../DAO/ProjetosDAO.php";
 session_start();
 
+if(!isset($_SESSION['statusLogin']) || $_SESSION['statusLogin'] != 1){
+    echo "<script>location.href='../../index.php'</script>";
+}
+
 ?>
 
 <html>
@@ -10,10 +14,14 @@ session_start();
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     </head>
     
-    <body>
+    <body>        
+        <?php
+            include "NavTopoUI.php";
+        ?>
         <div class="container">
             <div class="row" style="margin-top:10px;"> <!--1º linha-->
                 <div class="col-md-6">
+                    
                     <div class="card">
                         <div class="card-body" style="height:65px;padding-top:10px;">
                             <form class="form-inline">

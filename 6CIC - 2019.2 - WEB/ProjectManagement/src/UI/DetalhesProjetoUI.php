@@ -43,13 +43,21 @@ $fim = $tmpProjeto->getFim();
 
     </head>
     <body>
-
+ <?php
+            include "NavTopoUI.php";
+        ?>
         <div class="container" style="margin-top: 10px;">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header bg-primary text-white">
-                            <h5> <?=$tmpProjeto->getNome();?> </h5>                       
+                            <h5> 
+                                <?=$tmpProjeto->getNome();?> 
+                                <a href="../Control/ProjetosControl.php?acao=3&proj=<?=$proj?>" class="text-white float-right">
+                                    <i class="fa fa-times fa-lg"></i>
+                                    Excluir Projeto
+                                </a>
+                            </h5>                       
                         </div>
                         <div class="card-body">
                             <?=$tmpProjeto->getDescricao();?>

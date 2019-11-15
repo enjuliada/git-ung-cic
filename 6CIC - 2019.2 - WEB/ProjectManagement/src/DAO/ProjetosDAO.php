@@ -156,4 +156,14 @@ class ProjetosDAO {
         }        
                 
     }
+    
+    public static function excluirProjeto($tmpCodigo){
+        $vConn = ConexaoDAO::abrirConexao();
+        
+        $sqlEquipe = "Delete from equipes where codigoProjeto_EQUIPE = '$tmpCodigo'";
+        mysqli_query($vConn, $sqlEquipe) or die (myqsli_error($vConn));
+        
+        $sqlProj = "Delete from projetos where codigo_PROJETO = '$tmpCodigo'";
+        mysqli_query($vConn, $sqlProj) or die (myqsli_error($vConn));
+    }
 }

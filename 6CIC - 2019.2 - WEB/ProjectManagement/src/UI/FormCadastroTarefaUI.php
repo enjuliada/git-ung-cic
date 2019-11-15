@@ -21,6 +21,9 @@ $itens = UsuariosDAO::listarIntegrantes($cod);
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     </head>
     <body>
+         <?php
+            include "NavTopoUI.php";
+        ?>
         <div class="container d-flex" style="justify-content:center;">
             <div class="col-md-8"style="margin-top:100px;">
                 <center><p><h5>Informe os dados da Tarefa</h5></p></center>

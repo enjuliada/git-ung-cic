@@ -146,7 +146,6 @@ class TarefasDAO {
         mysqli_query($vConn, $sqlDelTar) or die(mysqli_error($vConn));
                 
     }
-    
     public static function consultarArquivo($tmpCodigo){
         $vConn = ConexaoDAO::abrirConexao();
         
@@ -159,6 +158,25 @@ class TarefasDAO {
             
     }
         
+    public static function contarTarefas($tmpTipo, $tmpProj, $tmpUsuario){
+        $vConn = ConexaoDAO::abrirConexao();
+        
+        if($tmpTipo == 0){ //proj
+            $sqlCont = "Select nome_TAREFA from tarefas ";
+            $sqlCont .="where codigoProjeto_TAREFA = '$tmpProj'";
+            
+        }else if($tmpTipo == 1){ //usuario
+            $sqlCont = "Select nome_TAREFA from tarefas ";
+            $sqlCont .="where emailUsuario_TAREFA = '$tmpUsuario'";            
+        }
+        
+        $rsCont = mysqli_query($vConn, $sqlCont) or die
+                            (mysqli_error($vConn));
+        
+        return mysqli_num_rows($rsCont);
+        
+    }
+    
     }
     
    
