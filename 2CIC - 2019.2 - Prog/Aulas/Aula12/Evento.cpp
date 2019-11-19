@@ -15,20 +15,16 @@ void esvaziarPoltronas(){
 	}
 }
 
-void exibirMapa(){
+void exibirMapa(int tmpInicio, int tmpFim){
 	char status[10];
 	
-	for(i=0; i<250; i++){
+	for(i=tmpInicio; i<=tmpFim; i++){
 		
 		if(i==0) 
 			printf("## SETOR VIP ##\n\n");
-		else if(i==50){
-			printf("\n\n");
-			system("pause");
+		else if(i==50){			
 			printf("\n\n## SETOR COMUM ##\n\n");
 		}else if(i==150){
-			printf("\n\n\a");
-			system("pause");
 			printf("\n\n## SETOR SUPERIOR ##\n\n");
 		}
 		
@@ -48,8 +44,10 @@ void exibirMapa(){
 		
 	}
 	
-	getch();
-	system("cls");
+	printf("\n\n");
+	system("pause");	
+	
+	
 }
 
 int montarMenu(){
@@ -133,7 +131,10 @@ int main(){
 				break;
 			
 			case 2:
-				exibirMapa();
+				exibirMapa(0,49);			
+				exibirMapa(50,149);			
+				exibirMapa(150,249);
+				
 				break;
 				
 			case 3:
