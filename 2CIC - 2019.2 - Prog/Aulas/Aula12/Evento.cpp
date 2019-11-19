@@ -5,7 +5,7 @@
 #include <conio.h>
 #include <math.h>
 
-int poltronas[250];
+int poltronas[250], ocupadas = 0, disponiveis = 250;
 int i;
 float caixa;
 
@@ -82,9 +82,9 @@ int efetuarVenda(int tmpPoltrona){
 		return -2; //polt. inex.
 		
 	}else{ //fazer venda
-		if(tmpPoltrona>=0 && tmpPoltrona<=49){
+		if((tmpPoltrona-1)>=0 && (tmpPoltrona-1)<=49){
 			preco = 300;			
-		}else if(tmpPoltrona<=149){
+		}else if((tmpPoltrona-1)<=149){
 			preco = 200;			
 		}else{
 			preco = 100;
@@ -92,6 +92,9 @@ int efetuarVenda(int tmpPoltrona){
 		printf("Valor a pagar: R$ %.2f\n", preco);
 		caixa += preco; //caixa = caixa + preco;
 		poltronas[tmpPoltrona-1] = 1;//ocupando poltrona
+		
+		ocupadas++;
+		disponiveis--;
 		
 		return 1;
 		
@@ -120,7 +123,7 @@ void menuVenda(){
 		fim = 149;
 	}else{
 		inicio = 150;
-		fim = 250;
+		fim = 249;
 	}
 	
 	exibirMapa(inicio,fim);
@@ -140,6 +143,36 @@ void menuVenda(){
 		printf("\n## Venda Efetuada: %d\n\n", nPolt);
 		_sleep(2500);
 	}
+	
+}
+
+void gerarRelatorio(){
+
+int vips=0, comuns=0, sups=0;
+
+	for(i=0; i<250; i++){
+		if(poltronas[i] == 1){
+			if(i<50){
+				vips++;
+			}else if(i<150){
+				comuns++;
+			}else{
+				sups++;
+			}	
+		}	
+	}
+	
+	system("cls");
+	printf("## RELATÓRIO DE VENDAS ## \n\n");
+	printf("Setor VIP: %d\n", vips);
+	printf("Setor Comum: %d\n", comuns);
+	printf("Setor Superior: %d\n\n", sups);
+	printf("Ingressos Vendidos: %d\n",ocupadas);
+	printf("Ingressos Restantes: %d\n\n",disponiveis);
+	printf("-- TOTAL EM CAIXA ==> %.2f\n\n",caixa);	
+	system("pause");
+	
+	
 	
 }
 
@@ -170,13 +203,14 @@ int main(){
 				
 			case 3:
 				//relatorio
+				gerarRelatorio();
 				break;
 			
 			case 4:
 				break;
 			
 			default:
-				printf("\n##ALERTA DE ERRO ## \n\n");
+				printf("\n## ALERTA DE ERRO ## \n\n");
 				printf("\nOpção Inválida! \n\n");
 				_sleep(1500);
 				system("cls");
