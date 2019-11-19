@@ -21,7 +21,7 @@ void exibirMapa(int tmpInicio, int tmpFim){
 	for(i=tmpInicio; i<=tmpFim; i++){
 		
 		if(i==0) 
-			printf("## SETOR VIP ##\n\n");
+			printf("\n## SETOR VIP ##\n\n");
 		else if(i==50){			
 			printf("\n\n## SETOR COMUM ##\n\n");
 		}else if(i==150){
@@ -83,13 +83,13 @@ int efetuarVenda(int tmpPoltrona){
 		
 	}else{ //fazer venda
 		if(tmpPoltrona>=0 && tmpPoltrona<=49){
-			preco = 300;
+			preco = 300;			
 		}else if(tmpPoltrona<=149){
 			preco = 200;			
 		}else{
 			preco = 100;
 		}
-		
+		printf("Valor a pagar: R$ %.2f\n", preco);
 		caixa += preco; //caixa = caixa + preco;
 		poltronas[tmpPoltrona-1] = 1;//ocupando poltrona
 		
@@ -101,6 +101,7 @@ int efetuarVenda(int tmpPoltrona){
 
 void menuVenda(){
 	int statusVenda, nPolt, setor;
+	int inicio, fim;
 	
 	system("cls");
 	printf("## PROCESSO DE VENDA DE INGRESSO ##\n\n");
@@ -109,7 +110,36 @@ void menuVenda(){
 	printf("2 - Setor Comum\n");
 	printf("3 - Setor Superior\n\n");
 	printf("Setor: ");
-	scanf("%d", &setor);	
+	scanf("%d", &setor);
+	
+	if(setor == 1){
+		inicio = 0;
+		fim = 49;		
+	}else if(setor == 2){
+		inicio = 50;
+		fim = 149;
+	}else{
+		inicio = 150;
+		fim = 250;
+	}
+	
+	exibirMapa(inicio,fim);
+	
+	printf("\nInforme o número da poltrona:");
+	scanf("%d", &nPolt);
+	
+	statusVenda = efetuarVenda(nPolt);
+	
+	if(statusVenda == -1){
+		printf("\n## POLTRONA OCUPADA!\n\n");
+		_sleep(1500);
+	}else if(statusVenda == -2){
+		printf("\n## POLTRONA INEXISTENTE!\n\n");
+		_sleep(1500);
+	}else{
+		printf("\n## Venda Efetuada: %d\n\n", nPolt);
+		_sleep(2500);
+	}
 	
 }
 
@@ -120,14 +150,15 @@ int main(){
 	setlocale(LC_ALL,"");
 	
 	esvaziarPoltronas();
-	
-	do{
 		
+	do{
+		system("cls");
 		menu = montarMenu();
 		
 		switch(menu){
 			case 1:
-				//efetuar venda				
+				//efetuar venda	
+				menuVenda();			
 				break;
 			
 			case 2:
