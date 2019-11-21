@@ -34,7 +34,7 @@ $tmpDados = UsuariosDAO::consultarUsuario($email);
 
                         <div class="form-group" style="text-align:right;">
                             <input type = "hidden" name="acao" value="6">
-                            <button type="submit" class="btn btn-primary">Alterar Dados</button> 
+                             <a class="dropdown-item" href="FormAlteraUsuarioUI.php?user=<?=$email?>">Alterar Dados</a>
                         </div>
                     </form>
                     
