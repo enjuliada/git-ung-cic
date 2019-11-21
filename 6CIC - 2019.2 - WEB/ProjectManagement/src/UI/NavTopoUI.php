@@ -1,8 +1,8 @@
-<nav class="navbar navbar-expand-lg bg-dark">
+ <nav class="navbar navbar-expand-lg bg-dark">
 
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="nav navbar-brand">
-                   
+                    
                 </div>
                 <div class="navbar-nav col-md-10">
                     <a class="navbar-brand text-white" href="HomeUsuariosUI.php">Sistema de Gerenciamento de Projetos</a>

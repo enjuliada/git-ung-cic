@@ -1,5 +1,5 @@
-
 <meta charset="utf-8">
+
 <?php
 
 session_start();
@@ -38,8 +38,6 @@ if($acao == 1){
     }
     
     
-    
-    
 }else if($acao == 2){
     //cadastrar
     
@@ -70,13 +68,15 @@ if($acao == 1){
     echo "<script>location.href='../../index.php';</script>";//redirecionando
     
 }else if($acao == 4){
+    //add integrante
+    
     $email = $_POST['HTML_usuario'];
     $proj = $_POST['proj'];
     
     $status = UsuariosDAO::adicionarIntegrante($email, $proj);
     
     if($status == 0){
-        echo "<script>alert('Usuário não cadastrado.');</script>";
+        echo "<script>alert('Usuário inexistente no sistema.');</script>";
     }else if($status == -1){
         echo "<script>alert('Usuário já pertence ao projeto.');</script>";
     }else{
@@ -84,32 +84,30 @@ if($acao == 1){
     }
     
     echo "<script>location.href='../UI/DetalhesProjetoUI.php?cod=$proj';</script>";//redirecionando
-
     
-    }else if($acao == 5){ //email
-        $destinatario = $_POST['HTML_email'];
-        $remetente = $_SESSION['email'];
-        $assunto = "Mensagem do sistema - TAREFAS";
-        $mensagem = $_POST['HTML_msg'];
-        
-        $headers = "MIME Version: 1.1\r\n";
-        $headers .= "Content-type: text/plain;charset=UTF-8\r\n";
-        $headers .= "From: " . $remetente . "\r\n";
-        $headers .= "Return-path: " . $remetente . "\r\n";
-        
-        $status = mail($destinatario,$assunto,$mensagem, $headers);
+}else if($acao == 5){ //enviar Email
     
-        if($status){
-          echo "<script>alert('E-mail enviado.');</script>";  
-        }else{
-            echo "<script>alert('Mensagem não enviada.');</script>";
-        }
-        
-        echo "<p>" . $destinatario . "<br>" . 
-                $assunto . "<hr>". $mensagem;
-        
+    $remetente = $_SESSION['email'];
+    $destinatario = $_POST['HTML_email'];
+    
+    $headers = "MIME-Version:1.1\r\n";
+    $headers .= "Content-type: text/plain; charset=UTF-8\r\n";
+    $headers .= "From:" . $remetente ."\r\n";
+    $headers .= "Return-Path:" . $remetente ."\r\n";
+    
+    $assunto = "Mensagem do Sistema: Tarefa";
+    $msg = $_POST['HTML_msg'];
+    
+    $status = mail($destinatario, $assunto, $msg, $headers);
+    
+    if($status){
+        echo "<script>alert('Mensagem Enviada.');</script>";
+    }else{
+        echo "<script>alert('Falha no envio.');</script>";
     }
     
+    echo $destinatario . "<hr>" . $msg;
     
+}
 
 ?>

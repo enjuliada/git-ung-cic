@@ -1,4 +1,3 @@
-
 <html>
     <head>
         <meta charset="utf-8">
@@ -6,25 +5,21 @@
 
     </head>
 
-    <body>   
-
+    <body> 
         <div class="container">
             <center>
             <div class="col-md-5 border" style="margin-top:150px;">
-                
+                             
                     <p>Deseja confirmar a exclusão?</p>
+                    
                     <div class="form-group">
-                        <a href="../UI/DetalhesTarefaUI.php?proj=<?=$proj?>&cod=<?=$tar?>" class="btn btn-success"> Não </a>
-                        <a href="TarefasControl.php?conf=t&acao=5&proj=<?=$proj?>&tar=<?=$tar?>" class="btn btn-danger"> Sim </a>
-                        
+                        <a href="../UI/DetalhesTarefaUI.php?proj=<?=$proj?>&cod=<?=$tar?>" class="btn btn-success">Não</a>
+                        <a href="?acao=5&conf=t&proj=<?=$proj?>&tar=<?=$tar?>" class="btn btn-danger">Sim</a> 
                     </div>
 
             </div>
             </center>
-
         </div>
-
-    </body>   
-
-
+    </body>
+    
 </html>

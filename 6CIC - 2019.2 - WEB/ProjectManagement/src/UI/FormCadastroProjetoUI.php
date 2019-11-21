@@ -14,7 +14,7 @@ $itens = CategoriasDAO::listarCategorias();
     <body>
          <?php
             include "NavTopoUI.php";
-        ?>
+        ?>      
         <div class="container d-flex" style="justify-content:center;">
             <div class="col-md-8"style="margin-top:100px;">
                 <center><p><h5>Informe os dados do Projeto</h5></p></center>

@@ -12,6 +12,7 @@ if(isset($_POST['acao'])){
     $acao = $_GET['acao'];
 }
 
+
 if($acao == 1){
     //listarTarefas
     
@@ -39,57 +40,50 @@ if($acao == 1){
     echo "<script>location.href='../UI/DetalhesProjetoUI.php?cod=" . $codigo . "';</script>";
     
 }else if($acao == 3){
-    //alterar status
-    
+    //alterarStatus
     $proj = $_GET['proj'];
     $tar = $_GET['tar'];
     $statusAtual = $_GET['status'];
     
     TarefasDAO::alterarStatus($tar, $statusAtual);
-    
     echo "<script>location.href='../UI/DetalhesTarefaUI.php?proj=$proj&cod=$tar';</script>";
+        
+}else if($acao == 4){ //excluir arquivo
     
-}else if($acao == 4){ //excluir arquivo da tarefa
+    //EXCLUSÃO    
     $arq = $_GET['arq'];
     $proj = $_GET['proj'];
     $tar = $_GET['tar'];
+    //Selecionar nome do arquivo
+    $nomeArq = TarefasDAO::consultarArquivo($arq);
     
-    //exclusão do arquivo fisico (nome)
-    $nomeArq = TarefasDAO::consultarArquivo($arq);    
-    unlink("../../files/" . $nomeArq);
-    
-    //exclusão do banco de dados (codigo)
+    unlink("../../files/". $nomeArq);    
     TarefasDAO::excluirArquivo($arq);
     
-    echo "<script>alert('Arquivo excluído');</script>";
+    echo "<script>alert('Arquivo Excluido!');</script>";
     echo "<script>location.href='../UI/DetalhesTarefaUI.php?proj=$proj&cod=$tar';</script>";
     
-}else if ($acao == 5){ //excluir tarefa
-    
-    $proj = $_GET['proj'];
+}else if($acao == 5){ //excluir tarefa
     $tar = $_GET['tar'];
+    $proj = $_GET['proj'];
     
-    if(!isset($_GET['conf'])){ //var conf nao existir
-        //montar tela de confirmação
-        include "../UI/ExcluirTarefaUI.php";
+    if (!isset($_GET['conf'])){
+        include "../UI/ExcluirTarefaUI.php"; //SIM NAO
     }else{
-         
-         //excluindo arquivos fisicos do disco        
+        //apagando arquivos do disco
         $itens = TarefasDAO::listarArquivos($tar);
-        
         for($i=0; $i<count($itens); $i++){
             $nomeArq = $itens[$i]->getNome();
-            unlink("../../files/" . $nomeArq);
-        }
             
-        //exclusao da tarefa
+            unlink("../../files/".$nomeArq);            
+        } //fechando for
+        
         TarefasDAO::excluirTarefa($tar);
-        echo "<script>alert('Tarefa Excluída!');</script>";
+        echo "<script>alert('Tarefa excluída!');</script>";
         echo "<script>location.href='../UI/DetalhesProjetoUI.php?cod=" . $proj . "';</script>";
-         
+    
         
     }
-    
 }
 
 

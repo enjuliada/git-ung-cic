@@ -15,10 +15,9 @@ $itens = ProjetosDAO::listarProjetos(1, $email,"");
     </head>
     
     <body>
-         <?php
+ <?php
             include "NavTopoUI.php";
-        ?>
-      
+        ?>            
         <div class="container">
             
             <div class="table-responsive border" style="margin-top:70px;">

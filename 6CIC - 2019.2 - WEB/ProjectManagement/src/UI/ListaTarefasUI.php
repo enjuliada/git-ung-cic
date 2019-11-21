@@ -25,7 +25,7 @@ $itens = TarefasDAO::listarTarefas(0, $proj);
                         
                         <tr>
                             <td>
-                                <a href="DetalhesTarefaUI.php?proj=<?=$proj;?>&cod=<?=$itens[$i]->getCodigo();?>">
+                                <a href="DetalhesTarefaUI.php?proj=<?=$proj?>&cod=<?=$itens[$i]->getCodigo();?>">
                                     <?=$itens[$i]->getNome();?>
                                 </a>
                             </td>
@@ -42,11 +42,10 @@ $itens = TarefasDAO::listarTarefas(0, $proj);
                                 ?>                                
                             </td>
                             <td align="center">
-                                <a href="../Control/TarefasControl.php?acao=5&proj=<?=$proj?>&tar=<?=$itens[$i]->getCodigo();?>">
-                                    <i class="fa fa-trash text-danger"></i>
-                                </a>                                
+                                <a href="../Control/TarefasControl.php?acao=5&tar=<?=$itens[$i]->getCodigo();?>&proj=<?=$proj?>">
+                                    <i class="fa fa-trash fa-sm text-danger"></i>
+                                </a>
                             </td>
-                            
                         </tr>
                         
                         <?php  } 
