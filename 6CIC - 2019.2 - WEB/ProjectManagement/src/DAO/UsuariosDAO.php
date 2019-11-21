@@ -145,4 +145,24 @@ class UsuariosDAO {
         return $tmpUsuario;
     }
     
+    public static function alterarUsuario($tmpUsuario, $tmpEmail){
+        $vConn = ConexaoDAO::abrirConexao();
+        $sqlAltera = "Update usuarios set ";
+        $sqlAltera .= "nome_USUARIO = '" . $tmpUsuario->getNome() . "',";
+        $sqlAltera .= "telefone_USUARIO = '" . $tmpUsuario->getTelefone() . "',";
+        $sqlAltera .= "email_USUARIO = '" . $tmpUsuario->getEmail() . "' where ";
+        $sqlAltera .= "email_USUARIO like '$tmpEmail'";
+        
+        mysqli_query($vConn, $sqlAltera) or die(mysqli_error($vConn));
+    }
+    
+    public static function alterarSenha($tmpSenha, $tmpEmail){
+        $vConn = ConexaoDAO::abrirConexao();
+        $sqlAltera = "Update usuarios set ";
+        $sqlAltera .= "senha_USUARIO = '$tmpSenha' where ";        
+        $sqlAltera .= "email_USUARIO like '$tmpEmail'";
+        
+        mysqli_query($vConn, $sqlAltera) or die(mysqli_error($vConn));
+    }
+    
 }//fechando classe

@@ -108,6 +108,32 @@ if($acao == 1){
     
     echo $destinatario . "<hr>" . $msg;
     
+}else if($acao == 6){ //alterar dados
+    
+    $tmpUsuario = new Usuarios();
+    
+    $nome = $_POST['HTML_nome'];
+    $telefone = $_POST['HTML_telefone'];
+    $email = $_POST['HTML_email'];
+    
+    $tmpUsuario->setNome($nome);
+    $tmpUsuario->setTelefone($telefone);
+    $tmpUsuario->setEmail($email);
+    
+    $emailAtual = $_SESSION['email'];
+    
+    UsuariosDAO::alterarUsuario($tmpUsuario, $emailAtual);
+    echo "<script>alert('Dados Alterados.');</script>";
+    
+    $_SESSION['nome'] = $nome;
+    $_SESSION['telefone'] = $telefone;
+    $_SESSION['email'] = $email;
+    
+    echo "<script>location.href='../UI/HomeUsuariosUI.php';</script>";//redirecionando
+    
+    
+}else if($acao == 7){ //alterar senha
+    
 }
 
 ?>
