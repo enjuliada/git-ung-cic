@@ -154,16 +154,16 @@ class ProjetosDAO {
                 return number_format($prog*100,0);
             }
         }        
-        
-        
+                
     }
     
     public static function excluirProjeto($tmpCodigo){
         $vConn = ConexaoDAO::abrirConexao();
         
-        $sqlDelEq = "Delete from equipes where codigoProjeto_EQUIPE = '$tmpCodigo'";
-        mysqli_query($vConn, $sqlDelEq)or die(mysqli_error($vConn));
-        $sqlDel = "Delete from projetos where codigo_PROJETO = '$tmpCodigo'";
-        mysqli_query($vConn, $sqlDel)or die(mysqli_error($vConn));
+        $sqlEquipe = "Delete from equipes where codigoProjeto_EQUIPE = '$tmpCodigo'";
+        mysqli_query($vConn, $sqlEquipe) or die (myqsli_error($vConn));
+        
+        $sqlProj = "Delete from projetos where codigo_PROJETO = '$tmpCodigo'";
+        mysqli_query($vConn, $sqlProj) or die (myqsli_error($vConn));
     }
 }

@@ -22,7 +22,6 @@ class TarefasDAO {
         mysqli_query($vConn, $sqlCadTar) or die (mysqli_error($vConn));
         
     }//fechando metodo
-    
     public static function listarTarefas($tmpTipo, $tmpProj) {
         //PROGRAMAR
         $vConn = ConexaoDAO::abrirConexao();
@@ -58,7 +57,6 @@ class TarefasDAO {
        }//fechando else
        
     }
-    
     public static function consultarTarefa($tmpCodigo) {
         $vConn = ConexaoDAO:: abrirConexao();
         
@@ -82,112 +80,104 @@ class TarefasDAO {
                         
         return $tmpTarefa;
     }
-    
-    public static function alterarStatus($tmpCodigo,$tmpStatusAtual) {
+    public static function alterarStatus($tmpCodigo, $tmpStatusAtual){
         
         $vConn = ConexaoDAO::abrirConexao();
         
         if($tmpStatusAtual == 0){
-            $novoStatus = 1;
+            $novoStatus = 1; //finalizando
         }else{
-            $novoStatus = 0;
+            $novoStatus = 0;//reabrindo
         }
         
-        $sqlStatus = "Update Tarefas set status_TAREFA = '$novoStatus' where codigo_TAREFA = '$tmpCodigo'";
-        mysqli_query($vConn, $sqlStatus) 
-                or die(mysqli_error($vConn));        
+        $sqlStatus = "Update tarefas set status_TAREFA = '$novoStatus' where codigo_TAREFA = '$tmpCodigo'";
+        
+        mysqli_query($vConn, $sqlStatus)
+                or die(mysqli_error($vConn));
+        
     }
-    
     public static function cadastrarArquivo($tmpArquivo){
         $vConn = ConexaoDAO::abrirConexao();
         
-        $sqlArq ="Insert into Arquivos(";
-        $sqlArq.="nome_ARQUIVO, data_ARQUIVO,codigoTarefa_ARQUIVO)";
-        $sqlArq.="values(";
-        $sqlArq.= "'" . $tmpArquivo->getNome() . "',";
-        $sqlArq.= "'" . $tmpArquivo->getData() . "',";
-        $sqlArq.= "'" . $tmpArquivo->getCodigoTarefa() . "')";
+        $sqlArq = "Insert into arquivos(";
+        $sqlArq .= "nome_ARQUIVO, data_ARQUIVO, codigoTarefa_ARQUIVO)values(";
+        $sqlArq .= "'" . $tmpArquivo->getNome() . "',";
+        $sqlArq .= "'" . $tmpArquivo->getData() . "',";
+        $sqlArq .= "'" . $tmpArquivo->getCodigoTarefa() . "')";
         
-        mysqli_query($vConn, $sqlArq)
-                or die(mysqli_error($vConn));
+        mysqli_query($vConn, $sqlArq) or die(mysqli_error($vConn));
         
-                        
     }
-
     public static function listarArquivos($tmpCodigoTar){
+        
         $vConn = ConexaoDAO::abrirConexao();
         
-        $sqlArq = "Select * from arquivos where codigoTarefa_ARQUIVO = '$tmpCodigoTar'";
+        $sqlArq = "Select * from arquivos where codigoTarefa_ARQUIVO='$tmpCodigoTar'";
+        
         $rsArq = mysqli_query($vConn, $sqlArq)
                 or die(mysqli_error($vConn));
         
         $itens = new ArrayObject();
         
         while($dados = mysqli_fetch_array($rsArq)){
-            $arqAtual = new Arquivos();
+            $tmpArquivo = new Arquivos();
+            $tmpArquivo->setCodigo($dados['codigo_ARQUIVO']);
+            $tmpArquivo->setNome($dados['nome_ARQUIVO']);
+            $tmpArquivo->setData($dados['data_ARQUIVO']);
+            $tmpArquivo->setCodigoTarefa($dados['codigoTarefa_ARQUIVO']);
             
-            $arqAtual->setCodigo($dados['codigo_ARQUIVO']);
-            $arqAtual->setNome($dados['nome_ARQUIVO']);
-            $arqAtual->setData($dados['data_ARQUIVO']);
-            $arqAtual->setCodigoTarefa($dados['codigoTarefa_ARQUIVO']);
-            
-            $itens->append($arqAtual);            
-            
-        }//fechando while
+            $itens->append($tmpArquivo);            
+        }
         
-        return $itens;
+            return $itens;
     }
-    
     public static function excluirArquivo($tmpCodigo){
         $vConn = ConexaoDAO::abrirConexao();
-        
-        $sqlDelArq = "Delete from arquivos where codigo_ARQUIVO = '$tmpCodigo'";
-        mysqli_query($vConn, $sqlDelArq)
-                or die(mysqli_error($vConn));        
+        $sqlDel = "Delete from arquivos where codigo_ARQUIVO = '$tmpCodigo'";
+        mysqli_query($vConn, $sqlDel) or die(mysqli_error($vConn));
     }
-    
     public static function excluirTarefa($tmpCodigo){
-         $vConn = ConexaoDAO::abrirConexao();
-         
-         $sqlDelArq = "Delete from arquivos where codigoTarefa_ARQUIVO = '$tmpCodigo'";
-         mysqli_query($vConn, $sqlDelArq)
-                or die(mysqli_error($vConn));
-         
-         $sqlDelTar = "Delete from tarefas where codigo_TAREFA = '$tmpCodigo'";
-         mysqli_query($vConn, $sqlDelTar)
-                or die(mysqli_error($vConn));    
-         
+        $vConn = ConexaoDAO::abrirConexao();
+        
+        $sqlDelArq = "Delete from arquivos where codigoTarefa_ARQUIVO = '$tmpCodigo'";
+        mysqli_query($vConn, $sqlDelArq) or die(mysqli_error($vConn));
+        
+        $sqlDelTar = "Delete from tarefas where codigo_TAREFA = '$tmpCodigo'";
+        mysqli_query($vConn, $sqlDelTar) or die(mysqli_error($vConn));
+                
     }
-    
     public static function consultarArquivo($tmpCodigo){
         $vConn = ConexaoDAO::abrirConexao();
         
         $sqlArq = "Select nome_ARQUIVO from arquivos where codigo_ARQUIVO = '$tmpCodigo'";
-        $rsArq = mysqli_query($vConn, $sqlArq) 
-                or die(mysqli_error($vConn));
+        $rsArq = mysqli_query($vConn, $sqlArq)
+                or die (mysqli_error($vConn));        
+        $dados = mysqli_fetch_array($rsArq);
         
-        if(mysqli_num_rows($rsArq)){
-            $dados = mysqli_fetch_array($rsArq);            
-            return $dados['nome_ARQUIVO'];
-        }else{
-            return 0;
-        }
+        return $dados['nome_ARQUIVO'];
+            
     }
-    
+        
     public static function contarTarefas($tmpTipo, $tmpProj, $tmpUsuario){
         $vConn = ConexaoDAO::abrirConexao();
         
-        if($tmpTipo == 0){ //contar tarefas do usuario
-            $sqlCont = "Select nome_TAREFA from tarefas where emailUsuario_TAREFA like '$tmpEmail'";
-        }else if($tmpTipo == 1){ //contar tarefas do projeto
-            $sqlCont = "Select nome_TAREFA from tarefas where codigoProjeto_TAREFA = '$tmpProj'";
+        if($tmpTipo == 0){ //proj
+            $sqlCont = "Select nome_TAREFA from tarefas ";
+            $sqlCont .="where codigoProjeto_TAREFA = '$tmpProj'";
+            
+        }else if($tmpTipo == 1){ //usuario
+            $sqlCont = "Select nome_TAREFA from tarefas ";
+            $sqlCont .="where emailUsuario_TAREFA = '$tmpUsuario'";            
         }
         
-        $rsCont = mysqli_query($vConn, $sqlCont) or die(mysqli_error($vConn));        
+        $rsCont = mysqli_query($vConn, $sqlCont) or die
+                            (mysqli_error($vConn));
+        
         return mysqli_num_rows($rsCont);
         
     }
     
     }
-
+    
+   
 ?>

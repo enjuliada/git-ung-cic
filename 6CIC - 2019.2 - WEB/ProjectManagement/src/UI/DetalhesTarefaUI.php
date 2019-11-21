@@ -7,19 +7,20 @@ require_once "../DAO/ProjetosDAO.php";
 require_once "../DAO/TarefasDAO.php";
 session_start();
 
-$proj = $_GET['proj'];
 $tar = $_GET['cod'];
-
 $tmpTarefa = TarefasDAO::consultarTarefa($tar);
-$tmpProjeto = ProjetosDAO::consultarProjeto($proj);
+$respTar = $tmpTarefa->getEmailUsuario();
 
+$proj = $_GET['proj'];
+$tmpProjeto = ProjetosDAO::consultarProjeto($proj);
 $responsavel = $tmpProjeto->getEmailUsuario();
-$responsavelTar = $tmpTarefa->getEmailUsuario();
 
 if ($tmpTarefa->getStatus() == 0) {
     $status = "Incompleta";
+    $textoBotao = "Finalizar";
 } else {
     $status = "Finalizada";
+    $textoBotao = "Reabrir";
 }
 ?>
 <html>
@@ -31,11 +32,13 @@ if ($tmpTarefa->getStatus() == 0) {
     <body>
  <?php
             include "NavTopoUI.php";
-        ?>      
+        ?>
         <div class="container" style="margin-top: 10px;">
             <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h4><?=$tmpProjeto->getNome();?></h4>
+                <div class="card-header bg-dark text-white">
+                    <h4>
+                    <?=$tmpProjeto->getNome();?>
+                    </h4>
                 </div>
                 <div class="card-body">
 
@@ -46,18 +49,19 @@ if ($tmpTarefa->getStatus() == 0) {
                         <div class="card-body">
 
                             <?= $tmpTarefa->getDescricao(); ?><br>
-                            Status: <b><?= $status; ?></b>                            
+                            Status: <b><?= $status; ?></b>
+                            
                             <?php
-                            if($_SESSION['email'] ==  $responsavel){
+                                if($_SESSION['email']  == $responsavel){
                             ?>
-                            <a href="../Control/TarefasControl.php?acao=5&tar=<?=$tar?>&proj=<?=$proj?>" class="btn btn-danger float-right">
+                            <a href="../Control/TarefasControl.php?acao=5&proj=<?=$proj?>&tar=<?=$tar?>" class="btn btn-danger text-white float-right">
                                 Excluir Tarefa
                             </a>
-                            <a href="../Control/TarefasControl.php?acao=3&tar=<?=$tar?>&status=<?=$tmpTarefa->getStatus();?>&proj=<?=$proj?>" class="btn btn-warning float-right">
-                                Alterar Status
+                            <a href="../Control/TarefasControl.php?acao=3&proj=<?=$proj?>&tar=<?=$tar?>&status=<?=$tmpTarefa->getStatus();?>" class="btn btn-danger text-white float-right">
+                                <?=$textoBotao;?>
                             </a>
-                            <?php
-                            }                       
+                            <?php 
+                                }
                             ?>
                             
                         </div>                               
@@ -66,23 +70,21 @@ if ($tmpTarefa->getStatus() == 0) {
                         <div class="col-md-5">
                             <div class="card" style="margin-top:15px;">
                                 <div class="card-header bg-success text-white">
-                                     Enviar Mensagem 
+                                    Enviar Mensagem
                                 </div>
                                 <div class="card-body">
-                                    
                                     <form action="../Control/UsuariosControl.php" method="post">
                                         <div class="form-group">
-                                            <input type="email" class="form-control" name="HTML_email" value="<?=$responsavelTar?>">
+                                         <input type="email" value="<?=$respTar?>" class="form-control" name="HTML_email">
                                         </div>
                                         <div class="form-group">
                                             <textarea name="HTML_msg" class="form-control"></textarea>
-                                        </div> 
+                                        </div>
                                         <div class="form-group">
                                             <input type="hidden" name="acao" value="5">
-                                            <button type="submit" class="form-control btn btn-primary">Enviar</button>
-                                        </div> 
-                                    </form>                                    
-                                                               
+                                            <button type="submit" class="btn btn-primary">Enviar E-mail</button>                                            
+                                        </div>                                        
+                                    </form>
                                 </div>                               
                             </div>
                         </div>
@@ -92,36 +94,38 @@ if ($tmpTarefa->getStatus() == 0) {
                                     Arquivos
                                 </div>
                                 <div class="card-body">
+                                    <div class="row">                                    
                                     <?php
-                                        $arquivos = TarefasDAO::listarArquivos($tar);
-                                    ?>   
-                                    <div class="row">
-                                    <?php    for($i=0; $i<count($arquivos); $i++){?>
-                                        
-                                            <div class ="col-md-3 text-center">
-                                                <a href="../../files/<?=$arquivos[$i]->getNome();?>" target="_blank">
-                                                    <i class="fa fa-file fa-2x"></i> 
-                                                    <br>
-                                                <?=$arquivos[$i]->getNome();?>                                                    
-                                                </a>
-                                                <a href="../Control/TarefasControl.php?acao=4&proj=<?=$proj;?>&tar=<?=$tar;?>&arq=<?=$arquivos[$i]->getCodigo();?>">
-                                                    <i class="fa fa-times fa-lg text-danger"></i>
-                                                </a>
-                                            </div>
+                                    $itens = TarefasDAO::listarArquivos($tar);
                                     
-                                        <?php
-                                        }
-                                        ?>
-                                    </div>
-                                    <hr>
+                                    for($i=0;$i<count($itens);$i++){
+                                    ?>
+                                        <div class="col-md-3 text-center">
+                                            
+                                            <a href="../../files/<?=$itens[$i]->getNome();?>" target="_blank">
+                                                <i class="fa fa-file fa-2x"></i>
+                                                <br>
+                                                <?=$itens[$i]->getNome();?>
+                                            </a>
+                                            
+                                            <a href="../Control/TarefasControl.php?acao=4&arq=<?=$itens[$i]->getCodigo();?>&proj=<?=$proj?>&tar=<?=$tar?>">
+                                                <i class="fa fa-trash fa-sm text-danger"></i>
+                                            </a>
+                                            
+                                        </div>
+                                    
+                                    <?php
+                                    }
+                                    ?>
+                                    </div><hr>
                                     <form action="EnviaArquivoUI.php" method="POST" enctype="multipart/form-data">
                                         <div class="form-group">
-                                            <input type="file" class="form-control-sm" name="HTML_arquivo">
+                                            <input type="file" name="HTML_arquivo" class="form-control-sm">
                                         </div>
                                         <div class="form-group">
-                                            <input type="hidden" name="proj" value="<?=$proj ?>">
-                                            <input type="hidden" name="tar" value="<?=$tar?>">
-                                            <button type="submit" class="btn btn-dark text-white">
+                                            <input type="hidden" name="proj" value="<?=$proj?>">
+                                            <input type="hidden" name="cod" value="<?=$tar?>">
+                                            <button type="submit" class="btn btn-dark float-right">
                                                 Enviar
                                             </button>
                                         </div>

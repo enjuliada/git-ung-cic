@@ -6,7 +6,7 @@ class ConexaoDAO {
         $server = "localhost";
         $user = "root";
         $pass = "";
-        $database = "6cicm";
+        $database = "dbproject";
         
         //estabelecendo conexao com base de dados
         //e armazenando conexao ativa na variavel vConn
