@@ -11,6 +11,9 @@ $tmpDados = UsuariosDAO::consultarUsuario($email);
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        
+       
+        
     </head>
 
     <body>   
@@ -34,7 +37,7 @@ $tmpDados = UsuariosDAO::consultarUsuario($email);
 
                         <div class="form-group" style="text-align:right;">
                             <input type = "hidden" name="acao" value="6">
-                             <a class="dropdown-item" href="FormAlteraUsuarioUI.php?user=<?=$email?>">Alterar Dados</a>
+                            <button type="submit" class="btn btn-primary">Alterar Dados</button> 
                         </div>
                     </form>
                     

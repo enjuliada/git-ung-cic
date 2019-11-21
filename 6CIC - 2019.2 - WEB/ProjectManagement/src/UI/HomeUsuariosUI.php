@@ -2,6 +2,8 @@
 require_once "../DAO/ProjetosDAO.php";
 session_start();
 
+$email=$_SESSION['email'];
+
 if(!isset($_SESSION['statusLogin']) || $_SESSION['statusLogin'] != 1){
     echo "<script>location.href='../../index.php'</script>";
 }
@@ -64,7 +66,7 @@ if(!isset($_SESSION['statusLogin']) || $_SESSION['statusLogin'] != 1){
                                     Opções
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-left" style="width:300px;">
-                                    <a class="dropdown-item" href="#">Alterar Dados</a>
+                                     <a class="dropdown-item" href="FormAlteraUsuarioUI.php?user=<?=$email?>">Alterar Dados</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="../Control/UsuariosControl.php?acao=3">Sair</a>                                    
                                 </div>

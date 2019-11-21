@@ -133,6 +133,25 @@ class UsuariosDAO {
         
     }
     
-    
+    public static function consultarUsuario($tmpEmail){
+         $vConn = ConexaoDAO:: abrirConexao();
+        
+        $sqlUser = "Select * from usuarios where ";
+        $sqlUser .= "email_USUARIO like '$tmpEmail'";
+               
+        $rsUser = mysqli_query($vConn, $sqlUser)
+                        or die(mysqli_error($vConn));
+        
+        $tblUser = mysqli_fetch_array($rsUser);
+        
+        $tmpUsuario = new Usuarios();
+        
+        $tmpUsuario->setEmail($tblUser['email_USUARIO']);
+        $tmpUsuario->setNome($tblUser['nome_USUARIO']);
+        $tmpUsuario->setTelefone($tblUser['telefone_USUARIO']);
+        $tmpUsuario->setSenha($tblUser['senha_USUARIO']);
+                        
+        return $tmpUsuario;
+    }
     
 }//fechando classe
