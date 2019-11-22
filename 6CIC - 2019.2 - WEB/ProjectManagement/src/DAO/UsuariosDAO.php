@@ -154,4 +154,40 @@ class UsuariosDAO {
         return $tmpUsuario;
     }
     
+    public static function alterarSenha($tmpSenha, $tmpEmail){
+        $vConn = ConexaoDAO::abrirConexao();
+        
+        $sqlSenha = "Update usuarios set ";
+        $sqlSenha .= "senha_USUARIO = '$tmpSenha' where ";
+        $sqlSenha .= "email_USUARIO like '$tmpEmail'";
+        
+        mysqli_query($vConn, $sqlSenha) or die(mysqli_error($vConn));
+        mysqli_close($vConn);
+        
+    }
+    
+    public static function alterarDados($tmpUsuario, $tmpEmail){
+        $vConn = ConexaoDAO::abrirConexao();
+        
+        $sqlAltUsu = "Update usuarios set ";
+        $sqlAltUsu .= "nome_USUARIO = '" . $tmpUsuario->getNome() . "',";
+        $sqlAltUsu .= "telefone_USUARIO = '" . $tmpUsuario->getTelefone() . "',";
+        $sqlAltUsu .= "email_USUARIO = '" . $tmpUsuario->getEmail() . "' where ";
+        $sqlAltUsu .= "email_USUARIO like '$tmpEmail'";
+        mysqli_query($vConn, $sqlAltUsu) or die(mysqli_error($vConn));
+        
+        $sqlAltProj = "Update projetos set emailUsuario_PROJETO = '" . $tmpUsuario->getEmail() . "' where ";
+        $sqlAltProj .= "emailUsuario_PROJETO like '$tmpEmail'";
+        mysqli_query($vConn, $sqlAltProj) or die(mysqli_error($vConn));
+        
+        $sqlAltTar = "Update tarefas set emailUsuario_TAREFA = '" . $tmpUsuario->getEmail() . "' where ";
+        $sqlAltTar .= "emailUsuario_TAREFA like '$tmpEmail'";
+        mysqli_query($vConn, $sqlAltTar) or die(mysqli_error($vConn));
+        
+        $sqlAltEquip = "Update equipes set emailUsuario_EQUIPE = '" . $tmpUsuario->getEmail() . "' where ";
+        $sqlAltEquip .= "emailUsuario_EQUIPE like '$tmpEmail'";
+        mysqli_query($vConn, $sqlAltEquip) or die(mysqli_error($vConn));
+        
+    }
+    
 }//fechando classe

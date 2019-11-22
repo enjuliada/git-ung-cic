@@ -1,5 +1,6 @@
 <?php
 require_once "../DAO/ProjetosDAO.php";
+require_once "../DAO/TarefasDAO.php";
 session_start();
 
 $email=$_SESSION['email'];
@@ -102,7 +103,7 @@ if(!isset($_SESSION['statusLogin']) || $_SESSION['statusLogin'] != 1){
                         </div>
                         <div class="card-body text-center" style="height:200px;line-height:120px;">
                             <font style="font-size:100pt;">
-                                10
+                                <?=TarefasDAO::contarTarefas(1, 0, $email);?>
                             </font>
                         </div>                            
                     </div>

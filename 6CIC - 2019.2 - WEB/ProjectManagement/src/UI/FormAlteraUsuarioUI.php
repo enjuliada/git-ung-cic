@@ -2,6 +2,7 @@
 require_once "../DAO/UsuariosDAO.php";
 require_once "../Model/Usuarios.php";
 
+session_start();
 $email = $_GET['user'];
 
 $tmpDados = UsuariosDAO::consultarUsuario($email);
@@ -12,11 +13,29 @@ $tmpDados = UsuariosDAO::consultarUsuario($email);
         <meta charset="utf-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         
-       
+        <script>
+        function confirmarSenha(){
+            var s = document.FormSenha.HTML_senha.value;
+            var cs = document.FormSenha.HTML_confsenha.value;
+            
+            if(s != cs){
+                alert('As senhas não conferem');
+                document.FormSenha.HTML_senha.value="";
+                document.FormSenha.HTML_confsenha.value="";
+                document.FormSenha.HTML_senha.focus();
+                return false;
+            }            
+            return true;
+        }
+        
+        </script> 
         
     </head>
 
-    <body>   
+    <body>  
+        <?php
+            include "NavTopoUI.php";
+        ?>
         <div class="container">
             <center>
                 <div class="col-md-6 border"style="margin-top:100px;">
@@ -46,7 +65,7 @@ $tmpDados = UsuariosDAO::consultarUsuario($email);
                     <p>
                         Alteração de Senha
                     </p>
-                    <form action="../Control/UsuariosControl.php" method="post">
+                    <form action="../Control/UsuariosControl.php" method="post" name="FormSenha" onsubmit="return confirmarSenha();">
                         <div class="form-group">
                             <input type="password" name="HTML_senha" placeholder="Digite a nova senha" class="form-control">
                         </div>
