@@ -106,6 +106,31 @@ int main(){
 			
 			case 2:
 				//mapa de poltronas
+				system("cls");
+				printf("## Mapa do avião ##\n\n");
+				cont=0;
+				
+				for(i=0; i<250; i++){
+					
+					if(i==0) printf("-- Business --\n\n");
+					else if(i==32) printf("\n\n-- Executiva --\n\n");
+					else if(i==96) printf("\n\n-- Econômica --\n\n");
+					
+					if(aviao[i] == 0){
+						printf("[%d]:\t\t",i+1);
+					}else{
+						printf("[%d]: OCUPADA*\t",i+1);
+					}
+					
+					cont++;
+					if(cont % 8 == 0) {
+						printf("\n");						
+					}
+				} //fechando for
+				
+				printf("\n\n");
+				system("pause");	
+				
 				break;
 				
 			case 3:
@@ -120,6 +145,42 @@ int main(){
 			
 			case 4:
 				//estorno
+				system("cls");
+				printf("## Processo de estorno ##\n\n");
+				
+				int poltEst;
+				float valorDev;
+				
+				printf("Informe o número da poltrona: ");
+				scanf("%d", &poltEst);
+				
+				if(aviao[poltEst-1] == 0){
+					printf("Poltrona Inválida.\n");
+					printf("Cancelando procedimento de estorno...");
+					_sleep(1700);
+					system("cls");
+					break;
+				}else{
+					if(poltEst <= 32){
+						valorDev = 7500 * 0.8;
+					}else if(poltEst <= 96){
+						valorDev = 4000 * 0.8;
+					}else{
+						valorDev = 2100 * 0.8;
+					}
+					caixa -= valorDev;
+					aviao[poltEst-1] = 0; //liberando poltrona
+					disponiveis++;
+					ocupadas--;
+					
+					printf("\nRealizando estorno...\n\n");
+					_sleep(1500);
+					printf("Poltrona Estornada: [%d]\n", poltEst);
+					printf("Valor a ser devolvido: R$ %.2f\n",valorDev);
+					getch();
+					system("cls");
+				}			
+				
 				break;
 			
 			case 5:
@@ -133,9 +194,6 @@ int main(){
 		
 		cont = 0;
 		system("cls");
-		
-		
-		
 			
 	}while(opcao != 5);
 	
