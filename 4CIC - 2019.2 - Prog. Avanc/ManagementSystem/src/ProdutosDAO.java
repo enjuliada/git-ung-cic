@@ -96,4 +96,30 @@ public class ProdutosDAO {
         
     }
     
+    public static int conferirEstoque(int tmpCodigo) throws Exception{
+        int qtdeAtual = 0;
+        try{
+            ConexaoDAO.abrirConexao();
+            
+            String sqlEst = "Select quantidadeEstoque_PRODUTO from produtos where codigo_PRODUTO = " + tmpCodigo;
+            stProdutos = ConexaoDAO.connSistema.createStatement();
+            rsProdutos = stProdutos.executeQuery(sqlEst);
+            
+            if(rsProdutos.next()){
+                qtdeAtual = rsProdutos.getInt("quantidadeEstoque_PRODUTO");
+            }
+            
+            ConexaoDAO.fecharConexao();
+            
+        }catch(Exception erro){
+            String msg = "Falha na consulta em estoque.\n"
+                    + "Verifique a sintaxe da instrução Select e nomes de campos e tabelas.\n\n"
+                    + "Erro Original: " + erro.getMessage();
+
+            throw new Exception(msg); 
+        }        
+        
+        return qtdeAtual;
+    }
+    
 }

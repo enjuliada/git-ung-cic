@@ -4,7 +4,7 @@ public class ManagementSystemControl {
     
     public static void main(String[] args) {
         
-        MainView tela = new MainView();
+       MainView tela = new MainView();
         
         
         

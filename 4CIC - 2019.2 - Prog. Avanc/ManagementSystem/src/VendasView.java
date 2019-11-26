@@ -36,6 +36,7 @@ public class VendasView extends JInternalFrame implements ActionListener {
     public static java.util.List<ItensVO> itens = new ArrayList<ItensVO>();
     public static float totalVenda;
     public static int novoId;
+    public static boolean clienteAtiv = false;
 
     public VendasView() {
 
@@ -83,7 +84,15 @@ public class VendasView extends JInternalFrame implements ActionListener {
 
             public void focusLost(FocusEvent evt) {
                 try {
-                    carregarCamposCli(ClientesDAO.consultarCliente(txtCliente[0].getText()));
+                    ClientesVO dadosCliente = ClientesDAO.consultarCliente(txtCliente[0].getText());
+                    
+                    if(dadosCliente != null){
+                        carregarCamposCli(dadosCliente);
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Cliente não cadastrado.");
+                    }
+                    
+                    
                 } catch (Exception erro) {
                     JOptionPane.showMessageDialog(null, erro.getMessage());
                 }
@@ -178,24 +187,51 @@ public class VendasView extends JInternalFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource() == btnAdicionar) {
-            //adicionar item na tabela 
-            adicionarItem(Integer.parseInt(txtProduto[0].getText()));
+            int qtdeAtual = 0;
+            int codProd = Integer.parseInt(txtProduto[0].getText());
+            try {
+                qtdeAtual = ProdutosDAO.conferirEstoque(codProd);
+
+            } catch (Exception erro) {
+                JOptionPane.showMessageDialog(null, erro.getMessage());
+            }
+
+            //adicionar item na tabela
+            int qtdePed = 0;
+            try {
+                qtdePed = Integer.parseInt(txtProduto[3].getText());
+            } catch (Exception erro) {
+                JOptionPane.showMessageDialog(null, "Informe uma quantidade válida.");
+            }
+
+            if (qtdePed <= qtdeAtual) {
+                adicionarItem(Integer.parseInt(txtProduto[0].getText()));
+            } else {
+                JOptionPane.showMessageDialog(null, "Quantidade insuficiente.");
+            }
+
         } else if (evt.getSource() == btnFecharPedido) {
             try {
                 //CADASTRAR VENDA - VOLTAR AQUI
-                Date dataAtual = new Date();
-                SimpleDateFormat dataFinal = new SimpleDateFormat("dd/M/yyyy");
+                if (clienteAtiv == true) {
+                    Date dataAtual = new Date();
+                    SimpleDateFormat dataFinal = new SimpleDateFormat("dd/M/yyyy");
 
-                VendasVO objVenda = new VendasVO();
-                objVenda.setCodigo(novoId);
-                objVenda.setData("" + dataFinal.format(dataAtual));
-                objVenda.setTotal(totalVenda);
-                objVenda.setCpfCliente(txtCliente[0].getText());
+                    VendasVO objVenda = new VendasVO();
+                    objVenda.setCodigo(novoId);
+                    objVenda.setData("" + dataFinal.format(dataAtual));
+                    objVenda.setTotal(totalVenda);
+                    objVenda.setCpfCliente(txtCliente[0].getText());
 
-                VendasDAO.cadastrarVenda(itens, objVenda);
-                
-                JOptionPane.showMessageDialog(null, "Venda Cadastrada!");
-                carregarProdutos(0, "");
+                    VendasDAO.cadastrarVenda(itens, objVenda);
+
+                    JOptionPane.showMessageDialog(null, "Venda Cadastrada!");
+                    carregarProdutos(0, "");
+                    zerarVenda();
+                }else{
+                    JOptionPane.showMessageDialog(null,"Informe o cpf do cliente.");
+                    txtCliente[0].grabFocus();
+                }
 
             } catch (Exception erro) {
                 JOptionPane.showMessageDialog(null, erro.getMessage());
@@ -243,6 +279,7 @@ public class VendasView extends JInternalFrame implements ActionListener {
         txtCliente[1].setText(tmpCliente.getNome());
         txtCliente[2].setText(tmpCliente.getEndereco());
         txtCliente[3].setText(tmpCliente.getBairro());
+        clienteAtiv = true;
     }
 
     public static int adicionarItem(int tmpCodigo) {
@@ -310,4 +347,25 @@ public class VendasView extends JInternalFrame implements ActionListener {
         return 1; //add novo
     }
 
-}
+    public static void zerarVenda(){
+        ///limpando campos
+        for(int i=0; i<txtCliente.length; i++){
+            txtCliente[i].setText(null);
+            txtProduto[i].setText(null);
+        }
+        
+        //limpando tabela de itens
+        while(mdlItens.getRowCount()>0){
+            mdlItens.removeRow(0);
+        }
+        
+        try{
+            txtId.setText("" + VendasDAO.gerarCodigo());
+        }catch(Exception erro){
+            JOptionPane.showMessageDialog(null, erro.getMessage());
+        }
+            
+        clienteAtiv = false;
+    }
+    
+}//fechando classe
