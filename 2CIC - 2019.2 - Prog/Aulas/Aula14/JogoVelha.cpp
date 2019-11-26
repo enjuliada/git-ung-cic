@@ -75,7 +75,10 @@ void verificarVitoria(){
 	}	
 	
 	//programar aqui
-	vencedor = jogAtual;
+	if(jogAtual == 1)
+		vencedor = jogAtual + 1;
+	else if (jogAtual == 2)
+		vencedor = jogAtual - 1	;	
 }
 
 int main(){
@@ -87,12 +90,12 @@ int main(){
 		printf("\n\n\n");
 		exibirTabuleiro();
 				
-		if(jogadas > 5){
+		if(jogadas >= 5){
 			verificarVitoria();
 			
 			if(vitoria == false && jogadas == 9){
 				printf("\n\nDEU VELHA!!! \n\n");
-			}else{
+			}else if(vitoria == true){
 				printf("\n\nJOGADOR %d VENCEU!!", vencedor);
 			break;
 		}
