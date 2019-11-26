@@ -5,7 +5,7 @@
 
 int tab[3][3];
 int i, j;
-int jogAtual = 1, jogadas = 0;
+int jogAtual = 1, jogadas = 0, vencedor = 0;
 bool vitoria = false;
 
 void iniciarTabuleiro(){
@@ -50,12 +50,62 @@ void efetuarJogada(){
 }
 
 void verificarVitoria(){
+	int var;
+	//verificando linhas
+	for(var = 0; var<3; var++){
+		if((tab[var][0] != 0) && (tab[var][0] == tab[var][1] && tab[var][0] == tab[var][2])){
+			vitoria = true;
+		}
+	}
+	//verficando colunas
+	for(var = 0; var<3; var++){
+		if((tab[0][var] != 0) && (tab[0][var] == tab[1][var] && tab[0][var] == tab[2][var])){
+			vitoria = true;
+		}
+	}
 	
+	//diagonal princ.
+	if((tab[0][0] != 0) && (tab[0][0] == tab[1][1] && tab[0][0] == tab[2][2])){
+		vitoria  = true;
+	}
+	
+	//diagonal sec.
+	if((tab[0][2] != 0) && (tab[0][2] == tab[1][1] && tab[0][2] == tab[2][0])){
+		vitoria  = true;
+	}	
+	
+	//programar aqui
+	vencedor = jogAtual;
 }
 
 int main(){
 	iniciarTabuleiro();
-	exibirTabuleiro();
+	
+	while(jogadas < 9){
+		
+		efetuarJogada();
+		printf("\n\n\n");
+		exibirTabuleiro();
+				
+		if(jogadas > 5){
+			verificarVitoria();
+			
+			if(vitoria == false && jogadas == 9){
+				printf("\n\nDEU VELHA!!! \n\n");
+			}else{
+				printf("\n\nJOGADOR %d VENCEU!!", vencedor);
+			break;
+		}
+		
+		
+			
+		}
+		
+		printf("\n\n");
+		system("pause");
+		system("cls");
+			
+	}
 }
 
 
