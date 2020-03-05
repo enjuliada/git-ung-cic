@@ -87,4 +87,10 @@ public class Conta {
         return this.extrato;
     }
 
-}
+    public String identificarCliente(){
+        return this.titular;
+    }
+    
+    
+}//FECHANDO CLASSE  
+
