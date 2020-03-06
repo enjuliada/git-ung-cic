@@ -1,0 +1,38 @@
+body{
+    background-color:rgba(0,0,0,1); /*cor fundo*/
+    color: rgba(200,200,200,1); /*cor texto*/
+    font-family: Verdana; /*estilo texto*/
+    font-size: 10pt;    
+}
+
+#DivMenu{
+    height:50px;
+}
+
+#DivBanner{
+    height:400px;
+}
+
+#DivCard1,#DivCard2,#DivCard3,#DivCard4,#DivCard5,#DivCard6{
+    height:350px;
+}
+
+#DivRodape{
+    height:50px;
+}
+
+#Cards{
+    background-color: rgba(10,10,10,1);    
+}
+
+.TituloCard{
+    font-weight: bold;
+    font-size: 10pt;
+    color: rgba(255,255,255,1);
+    text-decoration: none;
+}
+
+.ImgCard{
+    width:300px;
+    height:200px;
+}

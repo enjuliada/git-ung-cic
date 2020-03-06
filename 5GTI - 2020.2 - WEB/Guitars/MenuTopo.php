@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-lg bg-dark" style="height:50px;">
+    <div class="collapse navbar-collapse" id="DivMenu">
+        <div class="navbar navbar-brand">
+            <i class="fa fa-500px fa-lg text-white" style="padding-bottom:0px;"></i>
+        </div>
+        
+        <div class="navbar-nav col-md-8">
+            <a href="index.php" class="navbar-brand text-white" style="padding-bottom:10px;">
+                Guitars
+            </a>
+            
+            <a href="Produtos.php" class="nav-item text-white" style="padding-left:80px;padding-top:12px;">
+                <i class="fa fa-product-hunt fa-lg"></i>
+                Produtos
+            </a>
+            
+            <a href="Login.php" class="nav-item text-white" style="padding-left:80px;padding-top:12px;">
+                <i class="fa fa-lock fa-lg"></i>
+                Área Restrita
+            </a>
+            
+            <a href="Contato.php" class="nav-item text-white" style="padding-left:80px;padding-top:12px;">
+                <i class="fa fa-comments fa-lg"></i>
+                Fale Conosco
+            </a>
+        </div>
+        
+    </div>
+</nav>
