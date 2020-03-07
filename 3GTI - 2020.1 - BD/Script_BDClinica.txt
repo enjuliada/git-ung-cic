@@ -76,3 +76,169 @@ create table especialidades(
   codigo_ESPECIALIDADE int auto_increment not null primary key,
   nome_ESPECIALIDADE varchar(30) not null
 );
+
+create table planos(
+codigoConvenio_PLANO int not null,
+numeroCartaoPaciente_PLANO varchar(30) not null,
+descricao_PLANO varchar(100) not null
+);
+
+create table tipossalas(
+codigo_TIPOSALA int auto_increment not null primary key,
+descricao_TIPOSALA varchar(100) not null
+);
+
+create table laboratorios(
+	codigo_LABORATORIO int auto_increment not null primary key,
+	nome_LABORATORIO varchar(60) not null	
+);
+
+create table medicamentos(
+	codigo_MEDICAMENTO int auto_increment not null primary key,
+	nome_MEDICAMENTO varchar(60) not null,
+	descricao_MEDICAMENTO varchar(120)
+);
+
+create table medicacoes(
+	codigo_MEDICACAO int not null auto_INCREMENT primary key,
+	cpfPaciente_MEDICACAO varchar(11) not null,
+	codigoMedicamento_MEDICACAO int not null,
+	crmMedico_MEDICACAO varchar(7) not null,
+	codigoSala_MEDICACAO varchar(4) not null,
+	data_MEDICACAO datetime not null,
+
+	FOREIGN KEY(cpfPaciente_MEDICACAO) REFERENCES pacientes(cpf_PACIENTE),
+	FOREIGN KEY(codigoMedicamento_MEDICACAO) REFERENCES medicamentos(codigo_MEDICAMENTO),
+	FOREIGN KEY(crmMedico_MEDICACAO) REFERENCES medicos(crm_MEDICO),
+	FOREIGN KEY(codigoSala_MEDICACAO) REFERENCES salas(codigo_SALA)
+	
+);
+
+create table tiposexames(
+	codigo_TIPOEXAME int auto_increment not null primary key,
+	nome_TIPOEXAME varchar(100) not null
+);
+
+create table exames(
+	codigo_EXAME int not null auto_INCREMENT primary key,
+	cpfPaciente_EXAME varchar(11) not null,
+	codigoTipo_EXAME int not null,
+	crmMedico_EXAME varchar(7) not null,
+	codigoSala_EXAME varchar(4) not null,
+	data_EXAME datetime not null,
+
+	FOREIGN KEY(cpfPaciente_EXAME) REFERENCES pacientes(cpf_PACIENTE),
+	FOREIGN KEY(codigoTIPO_EXAME) REFERENCES tiposexames(codigo_TIPOEXAME),
+	FOREIGN KEY(crmMedico_EXAME) REFERENCES medicos(crm_MEDICO),
+	FOREIGN KEY(codigoSala_EXAME) REFERENCES salas(codigo_SALA)
+	
+);
+
+create table materiais(
+	codigo_MATERIAL int auto_increment not null primary key,
+	nome_MATERIAL varchar(100) not null,
+	descricao_MATERIAL varchar (120) not null,
+	quantidade_MATERIAL int not null
+); 
+
+create table receitas(
+	codigo_RECEITA int auto_INCREMENT not null primary key,
+	prescricao_RECEITA text not null,
+	codigoConsulta_RECEITA int not null,
+
+	FOREIGN KEY(codigoConsulta_RECEITA) REFERENCES consultas(codigo_CONSULTA)
+
+);
+
+create table cargos(
+	codigo_CARGO int auto_increment not null primary key,
+	nome_CARGO varchar(100) not null
+);
+
+create table departamentos(
+	codigo_DEPARTAMENTO int auto_increment not null primary key,
+	nome_DEPARTAMENTO varchar(100) not null
+);
+
+create table funcionarios(
+registro_FUNCIONARIO varchar(7) not null primary key,
+cpf_FUNCIONARIO varchar(11) not null,
+rg_FUNCIONARIO VARCHAR(9) nOT nUlL,
+nome_FUNCIONARIO varchar(120) not null,
+dataNascimento_FUNCIONARIO date not null,
+endereco_FUNCIONARIO varchar(120) not null,
+bairro_FUNCIONARIO varchar(60) not null,
+cidade_FUNCIONARIO varchar(60) not null,
+estado_FUNCIONARIO varchar(2) not null,
+telefone_FUNCIONARIO varchar(11) not null,
+email_FUNCIONARIO varchar(120)
+);
+
+
+create table internacoes(
+	registro_INTERNACAO int auto_increment not null primary key,
+	data_INTERNACAO datetime not null,
+	cpfPaciente_INTERNACAO varchar(11) not null,
+	crmMedico_INTERNACAO varchar(7) not null,
+	codigoSala_INTERNACAO varchar(4) not null,
+
+	FOREIGN KEY (cpfPaciente_INTERNACAO) references pacientes(cpf_PACIENTE),
+	FOREIGN KEY (crmMedico_INTERNACAO) references medicos(crm_MEDICO),
+	FOREIGN KEY (codigoSala_INTERNACAO) references salas(codigo_SALA)
+
+);
+
+create table cirurgia(
+	registro_CIRURGIA int auto_increment not null primary key,
+	data_CIRURGIA datetime not null,	
+	procedimento_CIRURGIA text not null, 
+	observacoes_CIRURGIA text not null, 
+	cpfPaciente_CIRURGIA varchar(11) not null,
+	crmMedico_CIRURGIA varchar(7) not null,
+	codigoSala_CIRURGIA varchar(4) not null,
+
+	FOREIGN KEY (cpfPaciente_CIRURGIA) references pacientes(cpf_PACIENTE),
+	FOREIGN KEY (crmMedico_CIRURGIA) references medicos(crm_MEDICO),
+	FOREIGN KEY (codigoSala_CIRURGIA) references salas(codigo_SALA)
+
+);
+
+create table visitantes(
+cpf_VISITANTE varchar(11) not null primary key,
+rg_VISITANTE VARCHAR(9) nOT nUlL,
+numeroCartao_VISITANTE varchar(30) not null,
+nome_VISITANTE varchar(120) not null,
+endereco_VISITANTE varchar(120) not null,
+bairro_VISITANTE varchar(60) not null,
+cidade_VISITANTE varchar(60) not null,
+estado_VISITANTE varchar(2) not null,
+telefone_VISITANTE varchar(11) not null,
+cpfPaciente_VISITANTE varchar(11) not null,
+
+FOREIGN KEY (cpfPaciente_VISITANTE) REFERENCES pacientes(cpf_PACIENTE)
+
+);
+
+create table acompanhantes(
+cpf_ACOMPANHANTE varchar(11) not null primary key,
+rg_ACOMPANHANTE VARCHAR(9) nOT nUlL,
+numeroCartao_ACOMPANHANTE varchar(30) not null,
+nome_ACOMPANHANTE varchar(120) not null,
+endereco_ACOMPANHANTE varchar(120) not null,
+bairro_ACOMPANHANTE varchar(60) not null,
+cidade_ACOMPANHANTE varchar(60) not null,
+estado_ACOMPANHANTE varchar(2) not null,
+telefone_ACOMPANHANTE varchar(11) not null,
+cpfPaciente_ACOMPANHANTE varchar(11) not null,
+
+FOREIGN KEY (cpfPaciente_ACOMPANHANTE) REFERENCES pacientes(cpf_PACIENTE)
+
+);
+
+
+
+
+
+
+
+
