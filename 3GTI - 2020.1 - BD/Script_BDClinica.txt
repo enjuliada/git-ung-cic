@@ -79,20 +79,7 @@ create table tiposexames(
 	nome_TIPOEXAME varchar(100) not null
 );
 
-create table exames(
-	codigo_EXAME int not null auto_INCREMENT primary key,
-	cpfPaciente_EXAME varchar(11) not null,
-	codigoTipo_EXAME int not null,
-	crmMedico_EXAME varchar(7) not null,
-	codigoSala_EXAME varchar(4) not null,
-	data_EXAME datetime not null,
 
-	FOREIGN KEY(cpfPaciente_EXAME) REFERENCES pacientes(cpf_PACIENTE),
-	FOREIGN KEY(codigoTIPO_EXAME) REFERENCES tiposexames(codigo_TIPOEXAME),
-	FOREIGN KEY(crmMedico_EXAME) REFERENCES medicos(crm_MEDICO),
-	FOREIGN KEY(codigoSala_EXAME) REFERENCES salas(codigo_SALA)
-	
-);
 
 create table materiais(
 	codigo_MATERIAL int auto_increment not null primary key,
@@ -128,32 +115,21 @@ email_FUNCIONARIO varchar(120)
 );
 
 
-create table internacoes(
-	registro_INTERNACAO int auto_increment not null primary key,
-	data_INTERNACAO datetime not null,
-	cpfPaciente_INTERNACAO varchar(11) not null,
-	crmMedico_INTERNACAO varchar(7) not null,
-	codigoSala_INTERNACAO varchar(4) not null,
 
-	FOREIGN KEY (cpfPaciente_INTERNACAO) references pacientes(cpf_PACIENTE),
-	FOREIGN KEY (crmMedico_INTERNACAO) references medicos(crm_MEDICO),
-	FOREIGN KEY (codigoSala_INTERNACAO) references salas(codigo_SALA)
 
-);
+create table exames(
+	codigo_EXAME int not null auto_INCREMENT primary key,
+	cpfPaciente_EXAME varchar(11) not null,
+	codigoTipo_EXAME int not null,
+	crmMedico_EXAME varchar(7) not null,
+	codigoSala_EXAME varchar(4) not null,
+	data_EXAME datetime not null,
 
-create table cirurgias(
-	registro_CIRURGIA int auto_increment not null primary key,
-	data_CIRURGIA datetime not null,	
-	procedimento_CIRURGIA text not null, 
-	observacoes_CIRURGIA text not null, 
-	cpfPaciente_CIRURGIA varchar(11) not null,
-	crmMedico_CIRURGIA varchar(7) not null,
-	codigoSala_CIRURGIA varchar(4) not null,
-
-	FOREIGN KEY (cpfPaciente_CIRURGIA) references pacientes(cpf_PACIENTE),
-	FOREIGN KEY (crmMedico_CIRURGIA) references medicos(crm_MEDICO),
-	FOREIGN KEY (codigoSala_CIRURGIA) references salas(codigo_SALA)
-
+	FOREIGN KEY(cpfPaciente_EXAME) REFERENCES pacientes(cpf_PACIENTE),
+	FOREIGN KEY(codigoTIPO_EXAME) REFERENCES tiposexames(codigo_TIPOEXAME),
+	FOREIGN KEY(crmMedico_EXAME) REFERENCES medicos(crm_MEDICO),
+	FOREIGN KEY(codigoSala_EXAME) REFERENCES salas(codigo_SALA)
+	
 );
 
 create table visitantes(
