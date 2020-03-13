@@ -262,9 +262,9 @@ create table obitos(
 create table receitas(
 	codigo_RECEITA int auto_INCREMENT not null primary key,
 	prescricao_RECEITA text not null,
-	codigoConsulta_RECEITA int not null,
+	registroConsulta_RECEITA int not null,
 
-	FOREIGN KEY(codigoConsulta_RECEITA) REFERENCES consultas(codigo_CONSULTA)
+	FOREIGN KEY(registroConsulta_RECEITA) REFERENCES consultas(registro_CONSULTA)
 
 );
 
