@@ -188,7 +188,7 @@ create table internacoes(
 
 );
 
-create table cirurgia(
+create table cirurgias(
 	registro_CIRURGIA int auto_increment not null primary key,
 	data_CIRURGIA datetime not null,	
 	procedimento_CIRURGIA text not null, 
@@ -235,7 +235,26 @@ FOREIGN KEY (cpfPaciente_ACOMPANHANTE) REFERENCES pacientes(cpf_PACIENTE)
 
 );
 
+create table visitas(
+codigo_VISITA int auto_increment not null primary key,
+cpfVisitante_VISITA varchar(11) not null,
+cpfPaciente_VISITA varchar(11) not null,
+data_VISITA datetime not null
+);
 
+create table equipes(
+codigoCirurgia_EQUIPE int not null,
+crmMedico_EQUIPE varchar(7) not null,
+funcao_EQUIPE varchar(50) not null
+);
+
+
+create table agenda(
+codigo_AGENDA int auto_increment not null primary key,
+codigoInternacao_AGENDA int not null,
+registro_AGENDA varchar(100) not null,
+dataRegistro_AGENDA datetime not null
+);
 
 
 
