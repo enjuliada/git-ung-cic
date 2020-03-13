@@ -5,16 +5,29 @@ body{
     font-size: 10pt;    
 }
 
+.TextoSimples{
+    color: rgba(200,200,200,1); /*cor texto*/
+    font-family: Verdana; /*estilo texto*/
+    font-size: 10pt;    
+}
+
+.TituloPagina{
+    font-weight:bold;
+    color: rgba(200,200,200,1); /*cor texto*/
+    font-family: Verdana; /*estilo texto*/
+    font-size: 16pt;    
+}
+
 #DivMenu{
     height:50px;
 }
 
 #DivBanner{
-    height:400px;
+    height:250px;
 }
 
 #DivCard1,#DivCard2,#DivCard3,#DivCard4,#DivCard5,#DivCard6{
-    height:350px;
+    height:380px;
 }
 
 #DivRodape{
@@ -25,6 +38,11 @@ body{
     background-color: rgba(10,10,10,1);    
 }
 
+#Cards:hover{
+    background-color: rgba(40,40,40,1);    
+}
+
+
 .TituloCard{
     font-weight: bold;
     font-size: 10pt;
@@ -33,6 +51,5 @@ body{
 }
 
 .ImgCard{
-    width:300px;
-    height:200px;
+    width:100%;    
 }
