@@ -41,7 +41,7 @@ public class Conta {
 
     public void depositar(float tmpValor) {
         this.saldoCC += tmpValor;
-        this.extrato += "Depósito -------- R$ " + tmpValor + "\n";
+        this.extrato += "Depósito -------- R$ " + BancoControl.fmtMoeda.format(tmpValor) + "\n";
     }
 
     public int sacar(float tmpValor) {
@@ -52,7 +52,7 @@ public class Conta {
         } else {
             if (this.saldoCC - tmpValor > this.limite) {
                 this.saldoCC -= tmpValor;
-                this.extrato += "Saque -------- R$ " + tmpValor + "\n";
+                this.extrato += "Saque -------- R$ " + BancoControl.fmtMoeda.format(tmpValor) + "\n";
                 return 1; //saque ok
             } else {
                 return 2;// não tem dinheiro
@@ -61,10 +61,10 @@ public class Conta {
     }
 
     public boolean resgatar(float tmpValor) { //poupança -> corrente
-        if (this.saldoPP > 0) {
+        if (this.saldoPP - tmpValor >= 0) {
             this.saldoPP -= tmpValor; //tira da PP
             this.saldoCC += tmpValor; //joga na CC
-            this.extrato += "Transf. Poup. p/ Corrente -------- R$ " + tmpValor + "\n";
+            this.extrato += "Transf. Poup. p/ Corrente -------- R$ " + BancoControl.fmtMoeda.format(tmpValor) + "\n";
             return true;
         } else {
             return false;
@@ -73,10 +73,10 @@ public class Conta {
     }
 
     public boolean aplicar(float tmpValor) { //corrente -> poupança
-        if (this.saldoCC > 0) {
+        if (this.saldoCC - tmpValor >= 0) {
             this.saldoCC -= tmpValor;
             this.saldoPP += tmpValor;
-            this.extrato += "Transf. Corrente. p/ Poup. -------- R$ " + tmpValor + "\n";
+            this.extrato += "Transf. Corrente. p/ Poup. -------- R$ " + BancoControl.fmtMoeda.format(tmpValor) + "\n";
             return true;
         } else {
             return false;
