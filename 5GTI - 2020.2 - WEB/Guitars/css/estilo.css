@@ -23,11 +23,19 @@ body{
 }
 
 #DivBanner{
-    height:250px;
+    height:350px;
 }
 
 #DivCard1,#DivCard2,#DivCard3,#DivCard4,#DivCard5,#DivCard6{
     height:380px;
+}
+
+#DivMod1,#DivMod2,#DivMod3,#DivMod4,#DivMod5,#DivMod6{
+    height:200px;
+}
+
+#CardMod1,#CardMod2, #CardMod3, #CardMod4, #CardMod5,#CardMod6{
+    background-color: rgba(0,0,0,1);
 }
 
 #DivRodape{
@@ -43,6 +51,13 @@ body{
 }
 
 
+.TituloMod{
+    font-weight: bold;
+    font-size: 14pt;
+    color: rgba(255,255,255,1);
+    text-decoration: none;
+}
+
 .TituloCard{
     font-weight: bold;
     font-size: 10pt;
@@ -52,4 +67,47 @@ body{
 
 .ImgCard{
     width:100%;    
+}
+
+.ImgMod{
+    width:350px;
+    height:250px;
+    border-color:rgba(255,255,255,1);
+    border-width:2px;
+    border-style: solid;
+    /*box-shadow: #999999 2px 2px;  -> sombra*/    
+}
+
+#ImgInfo{
+    width:550px;
+    height:130px;
+    z-index: 10;    
+}
+
+#CardInfo{
+    background-color: rgba(0,0,0,1);
+    border-color:rgba(255,0,0,1);
+    border-width:5px;
+    border-style: solid;
+}
+
+#DivInfo1{
+    position:absolute;
+    top:350px;
+    left:50%;
+    margin-left:-300px;
+    display: none; /*none - oculta      block - visivel*/
+    background-color: rgba(0,0,0,1);
+    width:600px;   
+    
+}
+#DivInfo2{
+    position:absolute;
+    top:350px;
+    left:50%;
+    margin-left:-300px;
+    display: none;
+    background-color: rgba(0,0,0,1);
+    width:600px;   
+    
 }
