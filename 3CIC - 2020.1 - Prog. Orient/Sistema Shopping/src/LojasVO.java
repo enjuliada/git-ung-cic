@@ -9,9 +9,14 @@ public class LojasVO {
     //método construtor
     public LojasVO() {
 
-        
-        
-    }
+        for (int i = 0; i < lojas.length; i++) { //length -> retorna a dimensao do vetor
+            lojas[i] = 0;
+            nomes[i] = "";
+        }//fechando for
+
+        faturamento = 0;
+
+    }//fechando construtor
 
     //métodos funcionais
     public int alocar(int andar, int numero, String nomeLoja) {
@@ -49,5 +54,40 @@ public class LojasVO {
         }
 
     }//fechando atualizarFaturamento
+
+    public float consultarFaturamento() {
+        return faturamento;
+    }
+
+    //35 -> 3º andar - loja 4
+    public int retirarLoja(int posicaoLoja) {
+        int andar = posicaoLoja / 10;
+        int numeroLoja = posicaoLoja - (andar * 10) - 1;
+
+        if (lojas[posicaoLoja - 1] == 1) {
+
+            lojas[posicaoLoja - 1] = 0; //esvaziando espaço
+            nomes[posicaoLoja - 1] = "";
+
+            switch (andar) {
+                case 0:
+                    faturamento -= 8000;
+                    break;
+                case 1:
+                    faturamento -= 9500;
+                    break;
+                case 2:
+                    faturamento -= 12000;
+                    break;
+                case 3:
+                    faturamento -= 15000;
+                    break;
+            }
+            return 1;
+        } else {
+            return 0; // nao existe loja nessa posição
+        }
+
+    }
 
 }//fechando class
