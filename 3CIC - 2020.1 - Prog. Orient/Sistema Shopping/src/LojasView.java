@@ -42,10 +42,28 @@ public class LojasView {
                 
             }else if(opcao == 2){
             
+                int status;
+                int numero = Integer.parseInt(JOptionPane.showInputDialog("Informe o número da loja: "));
+                
+                status = ShoppingControl.objLoja.retirarLoja(numero);
+                
+                if(status == 0){
+                    JOptionPane.showMessageDialog(null, "Não existe loja nessa posição");
+                }else{
+                    JOptionPane.showMessageDialog(null, "Contrato finalizado");
+                }                
+                
             }else if(opcao == 3){
-            
+                //Mapa do shopping
+                
+                String mapa = ShoppingControl.objLoja.visualizarLojas();
+                JOptionPane.showMessageDialog(null, mapa);
+                
             }else if(opcao == 4){
-            
+                float faturamento = ShoppingControl.objLoja.consultarFaturamento();
+                JOptionPane.showMessageDialog(null, "Faturamento Mensal : R$ "+ 
+                                                                    faturamento);
+                        
             }else if(opcao == 5){
             
             }else {

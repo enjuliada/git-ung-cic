@@ -62,12 +62,12 @@ public class LojasVO {
     //35 -> 3º andar - loja 4
     public int retirarLoja(int posicaoLoja) {
         int andar = posicaoLoja / 10;
-        int numeroLoja = posicaoLoja - (andar * 10) - 1;
+        //int numeroLoja = posicaoLoja - (andar * 10) - 1;
 
-        if (lojas[posicaoLoja - 1] == 1) {
+        if (lojas[posicaoLoja] == 1) {
 
-            lojas[posicaoLoja - 1] = 0; //esvaziando espaço
-            nomes[posicaoLoja - 1] = "";
+            lojas[posicaoLoja] = 0; //esvaziando espaço
+            nomes[posicaoLoja] = "";
 
             switch (andar) {
                 case 0:
@@ -90,4 +90,26 @@ public class LojasVO {
 
     }
 
+    public String visualizarLojas(){
+        String mapa = "", nomeLoja;
+        
+        for(int i = lojas.length - 1; i>=0; i--){
+            if(lojas[i] == 1){ //existe loja
+                nomeLoja = nomes[i];
+                mapa += nomeLoja + "(" + i + ")" + " || ";
+            }else{
+                nomeLoja = "      "; 
+                mapa += nomeLoja + " || ";
+            }
+            
+            if(i%10 == 0){
+                mapa+= "\n";
+            }
+            
+        }
+        
+        return mapa;
+        
+    }//fechando visualizarLojas
+    
 }//fechando class
