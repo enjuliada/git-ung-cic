@@ -9,9 +9,11 @@ public class CondView extends JFrame {
     
     public static JLabel lblBlocoA, lblBlocoB, lblTitulo1, lblTitulo2, lblTitulo3;
     public static JLabel lblTipo, lblProprietario, lblCaixa1, lblCaixa2;
+    public static JLabel lblLocais, lblValorLocal;
+    
     public static JButton btnBlocoA[][], btnBlocoB[][];
     
-    public static JComboBox cmbTipo; 
+    public static JComboBox cmbTipo, cmbLocais; 
     public static JTextField txtProprietario;
     
     public static JButton btnNovo, btnRegistrar, btnAdicionar;
@@ -22,6 +24,8 @@ public class CondView extends JFrame {
     public static Font fntDados = new Font("Verdana", Font.PLAIN, 18);
     
     public static String vTipos[] = {"Selecione a negociação","Venda", "Locação"};
+    public static String vLocais[] = {"Selecione uma área","Salão de Festas", "Churrasqueira", "Churrasqueira c/ piscina"};
+    public static float valores[] = {0,250,150,320};
 
     public CondView() { //método construtor
 
@@ -41,46 +45,70 @@ public class CondView extends JFrame {
         lblTipo = new JLabel("Tipo:");
         lblTipo.setFont(fntTexto);
         lblTipo.setForeground(new Color(60,60,60));
-        lblTipo.setBounds(20,80,100,30);
+        lblTipo.setBounds(20,140,100,30);
         ctnTela.add(lblTipo);
         
         cmbTipo = new JComboBox(vTipos);
         cmbTipo.setFont(fntDados);
         cmbTipo.setForeground(new Color(60,60,60));
-        cmbTipo.setBounds(20,120,250,30);
+        cmbTipo.setBounds(20,180,250,30);
         cmbTipo.setEnabled(false); //desabilita o campo
         ctnTela.add(cmbTipo);
         
         lblProprietario = new JLabel("Nome do Proprietário:");
         lblProprietario.setFont(fntTexto);
         lblProprietario.setForeground(new Color(60,60,60));
-        lblProprietario.setBounds(20,160,250,30);
+        lblProprietario.setBounds(20,220,250,30);
         ctnTela.add(lblProprietario);
         
         txtProprietario = new JTextField();
         txtProprietario.setFont(fntDados);
         txtProprietario.setForeground(new Color(60,60,60));
-        txtProprietario.setBounds(20,200,250,30);
+        txtProprietario.setBounds(20,260,250,30);
         txtProprietario.setEditable(false);
         ctnTela.add(txtProprietario);
         
         btnRegistrar = new JButton("Registrar Imóvel");
         btnRegistrar.setFont(fntTexto);
         btnRegistrar.setForeground(new Color(60,60,60));
-        btnRegistrar.setBounds(20,260,250,45);
+        btnRegistrar.setBounds(20,320,250,45);
         btnRegistrar.setEnabled(false);
         ctnTela.add(btnRegistrar);
         
         lblTitulo2 = new JLabel("Áreas Adicionais");
         lblTitulo2.setFont(fntTitulos);
         lblTitulo2.setForeground(new Color(0,0,60));
-        lblTitulo2.setBounds(20,320,250,30);
+        lblTitulo2.setBounds(20,380,250,30);
         ctnTela.add(lblTitulo2);
 
+        lblLocais = new JLabel("Áreas disponíveis:");
+        lblLocais.setFont(fntTexto);
+        lblLocais.setForeground(new Color(0,0,60));
+        lblLocais.setBounds(20,420,250,30);
+        ctnTela.add(lblLocais);
+        
+        cmbLocais = new JComboBox(vLocais);
+        cmbLocais.setFont(fntDados);
+        cmbLocais.setForeground(new Color(60,60,60));
+        cmbLocais.setBounds(20,460,250,30);
+        ctnTela.add(cmbLocais);
+        
+        lblValorLocal = new JLabel("Valor: R$ 0,00");
+        lblValorLocal.setFont(fntDados);
+        lblValorLocal.setForeground(new Color(0,0,60));
+        lblValorLocal.setBounds(20,500,250,30);
+        ctnTela.add(lblValorLocal);
+        
+        btnAdicionar = new JButton("Solicitar área");
+        btnAdicionar.setFont(fntTexto);
+        btnAdicionar.setForeground(new Color(60,60,60));
+        btnAdicionar.setBounds(20,540,250,45);
+        ctnTela.add(btnAdicionar);
+        
         lblTitulo3 = new JLabel("Relatórios");
         lblTitulo3.setFont(fntTitulos);
         lblTitulo3.setForeground(new Color(0,0,60));
-        lblTitulo3.setBounds(20,520,250,30);
+        lblTitulo3.setBounds(20,620,250,30);
         ctnTela.add(lblTitulo3);
         
         lblBlocoA = new JLabel("Bloco A");
