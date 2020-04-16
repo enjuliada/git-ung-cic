@@ -12,7 +12,7 @@ public class CondVO {
     private float mensal, caixa, valorCond;
 
     private float vLocais[] = {0, 250, 150, 320};
-    private float vVenda[] = {300, 315, 320, 330};
+    private float vVenda[] = {300000, 315000, 320000, 330000};
     private float vAluguel[] = {1800, 2000, 2200, 2500};
 
     public CondVO() {
@@ -29,7 +29,7 @@ public class CondVO {
 
         valorCond = 500;
         ocupados = 0;
-        disponiveis = 0;
+        disponiveis = 120;
         mensal = 0;
         caixa = 0;
 
@@ -71,6 +71,10 @@ public class CondVO {
                         caixa += vVenda[3];
                     }
                 }
+                
+                ocupados++;
+                disponiveis--;
+                
                 return true;
             } else {
                 return false;
@@ -105,12 +109,30 @@ public class CondVO {
                         caixa += vVenda[3];
                     }
                 }
+                
+                ocupados++;
+                disponiveis--;
+                
                 return true;
             } else {
                 return false;
             }
         }
 
+    }//fechando registrarImovel
+
+    public float getDados(int tmpTipo) {
+        if (tmpTipo == 1) {
+            return (float) ocupados;
+        } else if (tmpTipo == 2) {
+            return (float) disponiveis;
+        } else if (tmpTipo == 3) {
+            return mensal;
+        } else if (tmpTipo == 4) {
+            return caixa;
+        }
+        
+        return 0;
     }
 
 }//fechando class

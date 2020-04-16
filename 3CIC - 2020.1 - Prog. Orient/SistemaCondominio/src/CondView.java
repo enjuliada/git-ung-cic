@@ -29,9 +29,12 @@ public class CondView extends JFrame implements ActionListener {
     public static Font fntTexto = new Font("Tahoma", Font.PLAIN, 18);
     public static Font fntDados = new Font("Verdana", Font.PLAIN, 18);
 
-    public static String vTipos[] = {"Selecione a negociação", "Venda", "Locação"};
+    public static String vTipos[] = {"Selecione a negociação", "Locação", "Venda"};
     public static String vLocais[] = {"Selecione uma área", "Salão de Festas", "Churrasqueira", "Churrasqueira c/ piscina"};
     public static float valores[] = {0, 250, 150, 320};
+
+    public static int tmpBloco, tmpApto, tmpTipo;
+    public static String tmpProp;
 
     public CondView() { //método construtor
 
@@ -220,28 +223,26 @@ public class CondView extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent evt) {
         //Programação dos botões
-        
-        int tmpBloco, tmpApto;
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 6; j++) {
                 if (evt.getSource() == btnBlocoA[i][j]) {
                     //Selecionado apto Bl. A
                     tmpBloco = 1;
-                    tmpApto = Integer.parseInt(i+""+(j+1));
-                    btnBlocoA[i][j].setBackground(new Color(0,200,200));
-                    habilitarCampos(1,false);
-                    habilitarCampos(2,true);
+                    tmpApto = Integer.parseInt(i + "" + (j + 1));
+                    btnBlocoA[i][j].setBackground(new Color(0, 200, 200));
+                    habilitarCampos(1, false);
+                    habilitarCampos(2, true);
                     JOptionPane.showMessageDialog(null, "Preencha os dados de registro.");
-                    
+
                 } else if (evt.getSource() == btnBlocoB[i][j]) {
                     //Selecionado apto Bl. B
                     tmpBloco = 2;
-                    tmpApto = Integer.parseInt(i+""+(j+1));
-                    btnBlocoB[i][j].setBackground(new Color(0,200,200));                    
-                    habilitarCampos(1,false);
-                    habilitarCampos(2,true);
-                    JOptionPane.showMessageDialog(null, "Preencha os dados de registro.");                    
+                    tmpApto = Integer.parseInt(i + "" + (j + 1));
+                    btnBlocoB[i][j].setBackground(new Color(0, 200, 200));
+                    habilitarCampos(1, false);
+                    habilitarCampos(2, true);
+                    JOptionPane.showMessageDialog(null, "Preencha os dados de registro.");
                 }
             } //for i
         }//for j
@@ -249,6 +250,41 @@ public class CondView extends JFrame implements ActionListener {
         if (evt.getSource() == btnNovo) {
             habilitarCampos(1, true);
             JOptionPane.showMessageDialog(null, "Selecione um apartamento");
+
+        } else if (evt.getSource() == btnRegistrar) {
+
+            tmpTipo = cmbTipo.getSelectedIndex(); //pega o índice do elemento selecionado
+            tmpProp = txtProprietario.getText();
+
+            int l, c;
+            if (tmpApto < 10) {
+                l = 0;
+                c = tmpApto - 1;
+            } else {
+                l = tmpApto / 10;
+                c = tmpApto - (l * 10) - 1;
+            }
+
+            Color cor = null;
+            if (tmpTipo == 1) {
+                cor = new Color(255, 165, 0);
+            } else if (tmpTipo == 2) {
+                cor = new Color(255, 69, 0);
+            }
+            
+            if(tmpBloco == 1){
+                btnBlocoA[l][c].setBackground(cor);
+            }else if(tmpBloco == 2){
+                btnBlocoB[l][c].setBackground(cor);
+            }
+            
+            SistemaControl.objDados.registrarImovel(tmpTipo, tmpBloco, tmpApto, tmpProp);
+            
+            atualizarRelatorio();
+            
+            habilitarCampos(1, false);
+            habilitarCampos(2, false);
+
         }
 
     }//fechando actionPerformed
@@ -270,5 +306,13 @@ public class CondView extends JFrame implements ActionListener {
         }
 
     } //fechando habilitarCampos
+    
+    public void atualizarRelatorio(){
+        lblOcup.setText("Aptos. Ocupados: " + (int) SistemaControl.objDados.getDados(1));
+        lblDisp.setText("Aptos. Disponíveis: " + (int) SistemaControl.objDados.getDados(2));
+        lblTotal1.setText("" + SistemaControl.objDados.getDados(3));
+        lblTotal2.setText("" + SistemaControl.objDados.getDados(4));
+                
+    }
 
 } //fechando class
