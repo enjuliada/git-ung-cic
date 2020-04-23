@@ -15,6 +15,7 @@ public class CondVO {
     private float vVenda[] = {300000, 315000, 320000, 330000};
     private float vAluguel[] = {1800, 2000, 2200, 2500};
 
+    //Método construtor
     public CondVO() {
 
         //definindo situação inicial dos aptos.    
@@ -71,10 +72,10 @@ public class CondVO {
                         caixa += vVenda[3];
                     }
                 }
-                
+
                 ocupados++;
                 disponiveis--;
-                
+
                 return true;
             } else {
                 return false;
@@ -109,10 +110,10 @@ public class CondVO {
                         caixa += vVenda[3];
                     }
                 }
-                
+
                 ocupados++;
                 disponiveis--;
-                
+
                 return true;
             } else {
                 return false;
@@ -131,8 +132,72 @@ public class CondVO {
         } else if (tmpTipo == 4) {
             return caixa;
         }
-        
+
         return 0;
     }
 
+    public boolean removerProp(int tmpBloco, int tmpAndar, int tmpApto) {
+
+        System.out.println(tmpAndar + "," + tmpApto);
+        
+        if (tmpBloco == 1) {
+            if (blocoA[tmpAndar][tmpApto] == 0) {
+                return false; //apto Vazio
+            } else {
+
+                if (blocoA[tmpAndar][tmpApto] == 1) { //2
+                    if (tmpAndar <= 3) { //1
+                        mensal -= vAluguel[0];
+                    } else if (tmpAndar <= 6) {
+                        mensal -= vAluguel[1];
+                    } else if (tmpAndar <= 8) {
+                        mensal -= vAluguel[2];
+                    } else if (tmpAndar <= 9) {
+                        mensal -= vAluguel[3];
+                    } //1'
+                }//2' 
+
+                blocoA[tmpAndar][tmpApto] = 0;
+                propA[tmpAndar][tmpApto] = "";
+                ocupados--;
+                disponiveis++;
+                mensal -= valorCond;
+                return true;
+            }//else
+
+        } else if (tmpBloco == 2) {
+            if (blocoB[tmpAndar][tmpApto] == 0) {
+                return false; //apto Vazio
+            } else {
+
+                if (blocoB[tmpAndar][tmpApto] == 1) { //2
+                    if (tmpAndar <= 3) { //1
+                        mensal -= vAluguel[0];
+                    } else if (tmpAndar <= 6) {
+                        mensal -= vAluguel[1];
+                    } else if (tmpAndar <= 8) {
+                        mensal -= vAluguel[2];
+                    } else if (tmpAndar <= 9) {
+                        mensal -= vAluguel[3];
+                    } //1'
+                }//2'    
+                blocoB[tmpAndar][tmpApto] = 0;
+                propB[tmpAndar][tmpApto] = "";
+                ocupados--;
+                disponiveis++;
+                mensal -= valorCond;
+                return true;
+            }//else
+        }
+        return true;
+    }//fechando removerProp
+
+    public void reservarArea(int tmpArea){
+        caixa+= vLocais[tmpArea];                
+    }
+    
+    public float getValorLocal(int tmpArea){
+        return vLocais[tmpArea];
+    }
+    
 }//fechando class

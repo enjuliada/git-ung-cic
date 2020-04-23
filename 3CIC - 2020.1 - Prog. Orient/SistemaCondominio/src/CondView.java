@@ -20,7 +20,7 @@ public class CondView extends JFrame implements ActionListener {
     public static JComboBox cmbTipo, cmbLocais;
     public static JTextField txtProprietario;
 
-    public static JButton btnNovo, btnRegistrar, btnAdicionar;
+    public static JButton btnNovo, btnRegistrar, btnAdicionar, btnRemoverA, btnRemoverB;
 
     /**
      * **Declaração de Objetos/Variáveis Auxiliares ***
@@ -111,6 +111,15 @@ public class CondView extends JFrame implements ActionListener {
         cmbLocais.setForeground(new Color(60, 60, 60));
         cmbLocais.setBounds(20, 460, 250, 30);
         ctnTela.add(cmbLocais);
+
+        //o que vai acontecer ao 'selecionar item' na lista
+        cmbLocais.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent evt) {
+                lblValorLocal.setText("Valor: R$ " + SistemaControl.objDados.getValorLocal(
+                        cmbLocais.getSelectedIndex()));
+            }
+        }
+        );
 
         lblValorLocal = new JLabel("Valor: R$ 0,00");
         lblValorLocal.setFont(fntDados);
@@ -209,8 +218,22 @@ public class CondView extends JFrame implements ActionListener {
             yInicial += 70;
         }
 
+        btnRemoverA = new JButton("Remover Proprietário (A)");
+        btnRemoverA.addActionListener(this);
+        btnRemoverA.setEnabled(false);
+        btnRemoverA.setFont(fntTexto);
+        btnRemoverA.setBounds(350, 800, 410, 40);
+        ctnTela.add(btnRemoverA);
+
+        btnRemoverB = new JButton("Remover Proprietário (B)");
+        btnRemoverB.addActionListener(this);
+        btnRemoverB.setEnabled(false);
+        btnRemoverB.setFont(fntTexto);
+        btnRemoverB.setBounds(820, 800, 410, 40);
+        ctnTela.add(btnRemoverB);
+
         /**
-         * ***** 3. CONFIGURAÇÕES DA JANELA **********
+         * *** 3. CONFIGURAÇÕES DA JANELA ******
          */
         this.setLocation(340, 80);
         //this.setLocationRelativeTo(null); - centraliza a janela
@@ -271,19 +294,98 @@ public class CondView extends JFrame implements ActionListener {
             } else if (tmpTipo == 2) {
                 cor = new Color(255, 69, 0);
             }
-            
-            if(tmpBloco == 1){
+
+            if (tmpBloco == 1) {
                 btnBlocoA[l][c].setBackground(cor);
-            }else if(tmpBloco == 2){
+                btnRemoverA.setEnabled(true);
+            } else if (tmpBloco == 2) {
                 btnBlocoB[l][c].setBackground(cor);
+                btnRemoverB.setEnabled(true);
             }
-            
+
             SistemaControl.objDados.registrarImovel(tmpTipo, tmpBloco, tmpApto, tmpProp);
-            
+
             atualizarRelatorio();
-            
+
             habilitarCampos(1, false);
             habilitarCampos(2, false);
+
+        } else if (evt.getSource() == btnRemoverA) {
+            int numero = Integer.parseInt(JOptionPane.showInputDialog(
+                    "Informe o número do Apto. (Bloco A)"));
+
+            int opcao = JOptionPane.showConfirmDialog(null,
+                    "Deseja remover o proprietário da unidade A-" + numero + "?", "Remover",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (opcao == JOptionPane.YES_OPTION) {
+                int l, c;
+                if (numero < 10) { //3
+                    l = 0;
+                    c = numero - 1;
+                } else { //94
+                    l = numero / 10;
+                    c = numero - (l * 10) - 1;
+                }
+
+                boolean status = SistemaControl.objDados.removerProp(1, l, c);
+
+                if (status == true) {
+                    JOptionPane.showMessageDialog(null, "Apto. " + numero + " está disponível.");
+                    btnBlocoA[l][c].setBackground(new Color(0, 255, 150));
+                    atualizarRelatorio();
+                } else {
+                    JOptionPane.showMessageDialog(null, "O apto. já encontra-se vazio.");
+                }
+
+            }
+
+        } else if (evt.getSource() == btnRemoverB) {
+            int numero = Integer.parseInt(JOptionPane.showInputDialog(
+                    "Informe o número do Apto. (Bloco B)"));
+
+            int opcao = JOptionPane.showConfirmDialog(null,
+                    "Deseja remover o proprietário da unidade B-" + numero + "?", "Remover",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (opcao == JOptionPane.YES_OPTION) {
+                int l, c;
+                if (numero < 10) { //3
+                    l = 0;
+                    c = numero - 1;
+                } else { //94
+                    l = numero / 10;
+                    c = numero - (l * 10) - 1;
+                }
+
+                boolean status = SistemaControl.objDados.removerProp(2, l, c);
+
+                if (status == true) {
+                    JOptionPane.showMessageDialog(null, "Apto. " + numero + " está disponível.");
+                    btnBlocoB[l][c].setBackground(new Color(0, 255, 150));
+                    atualizarRelatorio();
+                } else {
+                    JOptionPane.showMessageDialog(null, "O apto. já encontra-se vazio.");
+                }
+            }
+
+        } else if (evt.getSource() == btnAdicionar) {
+
+            int area = cmbLocais.getSelectedIndex(); //pegando o indice da opção selecionada na combo
+
+            if (area == 0) {
+                JOptionPane.showMessageDialog(null, "Selecione uma área.");
+            } else {
+                //Reserva do espaço
+                //pegando o texto do indice selecionado
+                String nomeArea = cmbLocais.getSelectedItem().toString();
+
+                SistemaControl.objDados.reservarArea(area);
+
+                JOptionPane.showMessageDialog(null, nomeArea + " reservada.");
+                atualizarRelatorio();
+
+            }
 
         }
 
@@ -306,13 +408,13 @@ public class CondView extends JFrame implements ActionListener {
         }
 
     } //fechando habilitarCampos
-    
-    public void atualizarRelatorio(){
+
+    public void atualizarRelatorio() {
         lblOcup.setText("Aptos. Ocupados: " + (int) SistemaControl.objDados.getDados(1));
         lblDisp.setText("Aptos. Disponíveis: " + (int) SistemaControl.objDados.getDados(2));
         lblTotal1.setText("" + SistemaControl.objDados.getDados(3));
         lblTotal2.setText("" + SistemaControl.objDados.getDados(4));
-                
+
     }
 
 } //fechando class
