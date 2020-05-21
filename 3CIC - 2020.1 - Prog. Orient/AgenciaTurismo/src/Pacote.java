@@ -30,14 +30,19 @@ public class Pacote {
     
     public List<Adicional> listaAdic = new ArrayList<Adicional>();
     
+    public String item, dadosNF;
+    
     public Pacote(){ //método construtor
         
         totVoo=0;
         totAd=0;
-        totalFinal=0;                
+        totalFinal=0; 
+        item = "";
+        dadosNF = "";
     }
     
     public float atualizarVoo(int tmpDest, int tmpNPess, int tmpComp, int tmpClasse, boolean tmpOp1, boolean tmpOp2, boolean tmpOp3){        
+        dadosNF = "";
         //Valor do Destino (Econ / Exec)
         if(tmpClasse == 1){
             totVoo = vDestinosEcon[tmpDest];
@@ -58,14 +63,35 @@ public class Pacote {
             totVoo += totVoo * 0.18;            
         }
         
+        String opc = "";
+        
         //Opcionais de viagem
-        if(tmpOp1) totVoo+=150;
-        if(tmpOp2) totVoo+=120;
-        if(tmpOp3) totVoo+=30;
+        if(tmpOp1) {
+            totVoo+=150;
+            opc+="Opc.1 - Bagagem Adicional\r\n";
+        }
+        
+        if(tmpOp2) {
+            totVoo+=120;
+            opc+="Opc.2 - Refeição Extra\r\n";
+        }
+        
+        if(tmpOp3) {
+            totVoo+=30;
+            opc+="Opc.3 - Champagne\r\n";
+        }
         
         
         //Mult. pelo numero de pessoas
-        totVoo *= tmpNPess;              
+        totVoo *= tmpNPess; 
+        
+        dadosNF += "Destino: " + destinos[tmpDest] + "\r\n";
+        dadosNF += "Número de Passageiros: " + tmpNPess + "\r\n";
+        dadosNF += "Companhia Aérea: " + aereas[tmpComp] + "\r\n";
+        dadosNF += "Classe: " + classes[tmpClasse] + "\r\n";
+        dadosNF += "-------------------------------------------------------------\r\n\r\n";
+        dadosNF += "***** Opcionais de Vôo ******\r\n";
+        dadosNF += opc + "\r\n";
         
         return totVoo;
     }
@@ -73,11 +99,49 @@ public class Pacote {
     public void limparDados(){
         totVoo=0;
         totAd=0;
-        totalFinal=0;                        
+        totalFinal=0;    
+        
+        listaAdic.clear();
     }
     
-    public void AdicionarItem(Adicional tmpAdic){
-        //Semana que vem
+    public float adicionarItem(Adicional tmpAdic){
+       
+        int tmpId = tmpAdic.getId();
+        boolean achou = false;
+        
+        for(Adicional atual: listaAdic){
+            if(atual.getId() == tmpId){
+                achou = true;
+                atual.setQtde(atual.getQtde()+1);
+                atual.setValor(atual.getValor() + vAdicionais[tmpId]);
+                break;
+            }
+        }
+        
+        if(achou == false){
+            listaAdic.add(tmpAdic); //adiciona um objeto a uma arraylist do mesmo tipo
+        }
+        
+        totAd += tmpAdic.getValor();        
+        
+        item = "";
+        for(Adicional atual: listaAdic){
+            item += atual.getNome() + " -------- " + atual.getQtde();
+            item += " -------- " + atual.getValor() + "\r\n";
+        }
+        
+        return totAd;
+        
+    }
+    
+    
+    public float getTotal(){
+        return totVoo + totAd;
+    }
+    
+    public String getNF(){
+        dadosNF+=item;
+        return dadosNF;
     }
     
 }

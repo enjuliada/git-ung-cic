@@ -19,7 +19,7 @@ public class AgenciaView extends JFrame implements ActionListener {
 
     public static JScrollPane scrItens;
     public static JTable tblItens;
-    public static DefaultTableModel mdlItens;
+    public static DefaultTableModel mdlItens; //manipular dos dados tabela
 
     public static JCheckBox chkExtras[];
 
@@ -225,7 +225,8 @@ public class AgenciaView extends JFrame implements ActionListener {
             
             auxTotVoo = AgenciaControl.objPacote.atualizarVoo(auxDest, auxNPess, auxComp, auxClasse, op1, op2, op3);
             
-            lblValorVoo.setText("R$ " + auxTotVoo);            
+            lblValorVoo.setText("R$ " + auxTotVoo); 
+            lblValorTotal.setText("R$ " + AgenciaControl.objPacote.getTotal());
             
         } else if(evt.getSource() == btnLimpar){
             
@@ -239,12 +240,58 @@ public class AgenciaView extends JFrame implements ActionListener {
             txtPessoas.setText("1");
             
             lblValorVoo.setText("R$ 0.00");
+            lblValorAdic.setText("R$ 0.00");
+            lblValorTotal.setText("R$ 0.00");
+            
+            while(mdlItens.getRowCount()>0){
+                mdlItens.removeRow(0);
+            }
             
             AgenciaControl.objPacote.limparDados();
             
+        }//if btnLimpar
+        
+        for(int i=0; i<btnAdicionais.length;i++){
+            if(evt.getSource() == btnAdicionais[i]){
+                Adicional tmpAdic = new Adicional();
+                tmpAdic.setId(i);
+                tmpAdic.setNome(AgenciaControl.objPacote.adicionais[i]);
+                tmpAdic.setValor(AgenciaControl.objPacote.vAdicionais[i]);
+                tmpAdic.setQtde(1);
+                
+                lblValorAdic.setText("R$ " + AgenciaControl.objPacote.adicionarItem(tmpAdic));
+                lblValorTotal.setText("R$ " + AgenciaControl.objPacote.getTotal());             
+                atualizarTabela();
+                
+            }
         }
         
         
-    }//fchando actPerformed    
+        if(evt.getSource() == btnFechar){
+            String texto = AgenciaControl.objPacote.getNF();
+            JOptionPane.showMessageDialog(null, texto);
+        }
+        
+    }//fchando actPerformed 
+    
+    public void atualizarTabela(){
+        
+        //limpar tabela
+        while(mdlItens.getRowCount()>0){
+            mdlItens.removeRow(0);
+        }
+        
+        //inserir os elementos da array na tabela
+        for(Adicional adicAtual: AgenciaControl.objPacote.listaAdic){
+            String dados[] = new String[4];
+            int tmpId = adicAtual.getId();
+            dados[0] = adicAtual.getNome();
+            dados[1] = "" + adicAtual.getQtde();
+            dados[2] = "R$ " + adicAtual.getValor();
+            
+            mdlItens.addRow(dados);            
+        }//for
+        
+    }//fechando atualizarTabela
 
 }//fechando classe
