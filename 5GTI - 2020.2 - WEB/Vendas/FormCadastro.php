@@ -11,14 +11,19 @@
     </head>
 
     <body>
+
+        <?php
+        include "Conexao.php";
         
-          <?php
+        $sqlCat = "Select * from Categorias";
+        $rsCat = mysqli_query($vc, $sqlCat) or die(mysqli_error($vc)); //execução do select guardando o resultado no RS
+        
         include "Topo.php";
         ?>
         <hr>
 
         <div class="container border" id="DivCadastro">
-            <form action="" class="form" method="">
+            <form action="Cadastro.php" class="form" method="post">
 
                 <div class="row BarraTopo">
                     <div class="col text-center">
@@ -36,7 +41,20 @@
 
                     <div class="col">
                         <label class="TextoForm">Categoria:</label>
-                        <select name="HTML_nome" class="form-control">
+                        <select name="HTML_categoria" class="form-control">
+                            
+                            <?php
+                            while($tblCat = mysqli_fetch_array($rsCat)){
+                            ?>
+                            
+                            <option value="<?=$tblCat['codigo']?>">
+                                <?=$tblCat['nome'];?>
+                            </option>
+                            
+                            <?php
+                            }
+                            ?>
+                            
                         </select>
                     </div>
                 </div>

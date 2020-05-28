@@ -8,6 +8,7 @@ $banco = "bdvendas_5GTI";
 
 //linha de conexao
 $vc = mysqli_connect($servidor,$usuario,$senha,$banco);
+mysqli_set_charset($vc, "utf8");
 
 
 ?>
