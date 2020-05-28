@@ -1,0 +1,28 @@
+******* Agência de Turismo - UNGCICTUR *********
+
+------------ Comprovante do Pedido ------------- 
+
+Cliente: 12345678900
+Data: 27/05/2020
+Venda gerada às: 20:40:41
+-------------------------------------------------------
+------------ Informações do Pedido ------------- 
+
+Destino: Miami
+Número de Passageiros: 2
+Companhia Aérea: Delta
+Classe: Econômica
+-------------------------------------------------------------
+
+***** Opcionais de Vôo ******
+
+Hospedagem -------- 2 -------- 300.0
+Jantar Rom. -------- 1 -------- 240.0
+Passeio de Lancha -------- 1 -------- 200.0
+
+Total do Pacote: R$ 11780.0
+
+******* Obrigado por viajar com a UNGCICTUR *********
+
+------------ Boa Sorte !!! ------------- 
+

@@ -4,6 +4,8 @@ import javax.swing.table.*; //gerenciamento de tabelas
 import java.awt.*; //Container
 import java.awt.event.*; //ActionListener (botoes)
 import java.io.*; //gravação em disco
+import java.text.*; //formatar Data
+import java.util.*; //Classe Date
 
 public class AgenciaView extends JFrame implements ActionListener {
 
@@ -35,6 +37,11 @@ public class AgenciaView extends JFrame implements ActionListener {
 
     public static String extras[] = {"Bagagem Adic.", "Refeição Extra", "Champagne"};
     public static String legenda[] = {"Nome", "Qtde", "Valor"};
+    
+    public static DateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
+    public static DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
+    public static DateFormat formatoArquivo = new SimpleDateFormat("ddMMyyyy-HHmmss");
+    public static Date dataHoje = new Date();
 
     public AgenciaView() {
 
@@ -268,11 +275,57 @@ public class AgenciaView extends JFrame implements ActionListener {
         
         
         if(evt.getSource() == btnFechar){
-            String texto = AgenciaControl.objPacote.getNF();
-            JOptionPane.showMessageDialog(null, texto);
+           
+            String cpf = JOptionPane.showInputDialog("Informe o CPF do cliente:");            
+            String texto = "";
+            
+            //Montagem do cabeçalho do comprovante
+            
+            texto = "******* Agência de Turismo - UNGCICTUR *********\r\n\r\n";
+            texto+= "------------ Comprovante do Pedido ------------- \r\n\r\n";
+            texto+= "Cliente: " + cpf + "\r\n";
+            texto+= "Data: "  + formatoData.format(dataHoje) +"\r\n";
+            texto+= "Venda gerada às: "  + formatoHora.format(dataHoje) +"\r\n";
+            texto+= "\r\n";
+            texto+= "------------ Informações do Pedido ------------- \r\n\r\n";
+            texto+= AgenciaControl.objPacote.getNF() + "\r\n";
+            texto+= "Total do Pacote: R$ " + AgenciaControl.objPacote.getTotal() + "\r\n\r\n";
+            texto+= "******* Obrigado por viajar com a UNGCICTUR *********\r\n\r\n";
+            texto+= "------------ Boa Sorte !!! ------------- \r\n\r\n";
+            
+            gravarArquivo(texto, cpf);
+            
         }
         
     }//fchando actPerformed 
+    
+    public void gravarArquivo(String texto, String cpf){
+        
+        //gravação e escrita do arquivo TXT
+        
+        try{
+            String nomeArq = "NF_" + formatoArquivo.format(dataHoje) + "_" + cpf + ".txt";
+            
+            //Criar o arquivo em disco
+            FileWriter arquivo = new FileWriter("docs\\" + nomeArq);
+            
+            //Escrever no arquivo
+            PrintWriter dados = new PrintWriter(arquivo);
+            dados.write(texto);
+            arquivo.close(); //fechando arquivo
+            
+            //JOptionPane.showMessageDialog(null, "Arquivo de Comprovante gerado.");
+            //abrindo o arquivo
+            Runtime.getRuntime().exec("notepad docs\\" + nomeArq);
+            
+            
+            
+            
+        }catch(Exception erro){
+            JOptionPane.showMessageDialog(null, "Falha na gravação do arquivo.\n" + erro.getMessage());
+        }
+        
+    }
     
     public void atualizarTabela(){
         

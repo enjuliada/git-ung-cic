@@ -89,7 +89,7 @@ public class Pacote {
         dadosNF += "Número de Passageiros: " + tmpNPess + "\r\n";
         dadosNF += "Companhia Aérea: " + aereas[tmpComp] + "\r\n";
         dadosNF += "Classe: " + classes[tmpClasse] + "\r\n";
-        dadosNF += "-------------------------------------------------------------\r\n\r\n";
+        dadosNF += "\r\n\r\n";
         dadosNF += "***** Opcionais de Vôo ******\r\n";
         dadosNF += opc + "\r\n";
         
@@ -140,7 +140,7 @@ public class Pacote {
     }
     
     public String getNF(){
-        dadosNF+=item;
+        dadosNF+=item;        
         return dadosNF;
     }
     
