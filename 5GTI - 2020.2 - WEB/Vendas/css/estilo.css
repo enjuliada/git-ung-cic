@@ -1,0 +1,73 @@
+.BarraTopo{
+    background-color: rgba(70,130,180,1);
+    height: 65px;
+}
+
+.FormPesquisa{
+    padding-top:25px;
+}
+
+.Botao{
+    background-color:rgba(255,255,255,1);
+    margin-bottom:8px;
+    font-weight: bold;
+    color: rgba(25,25,25,1);
+    width:150px;
+    border-color: rgba(200,200,200,1);
+}
+
+.Botao:hover{
+    background-color:rgba(255,255,255,0.4);;
+    margin-bottom:8px;
+    font-weight: bold;
+    color: rgba(255,255,255,1);
+    width:150px;
+    border-color: rgba(255,255,255,1);
+}
+
+.Botao2{
+    background-color:rgba(70,130,180,1);
+    margin-bottom:8px;
+    font-weight: bold;
+    color: rgba(225,225,225,1);
+    width:150px;
+    border-color: rgba(200,200,200,1);
+}
+
+.Botao2:hover{
+    background-color:rgba(255,255,255,1);;
+    margin-bottom:8px;
+    font-weight: bold;
+    color: rgba(70,130,180,1);
+    width:150px;
+    border-color: rgba(70,130,180,1);;
+}
+
+.Logo{
+    color:rgba(255,255,255,1);
+    text-shadow: 2px 2px #000000;
+}
+
+.TituloLogo{
+    color:rgba(255,255,255,1);
+    font-family: Tahoma;
+    font-size: 20pt;
+    font-weight:bold;
+    padding-left: 10px;
+    text-shadow: 2px 2px #000000;
+    
+}
+
+.TituloProduto{
+    font-family:Tahoma;
+    font-size:14px;
+    font-weight: bold;
+    color: rgba(30,30,30,1);
+}
+
+.InfoProduto{
+    font-family:Tahoma;
+    font-size:12px;    
+    color: rgba(30,30,30,1);
+}
+
