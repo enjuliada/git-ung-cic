@@ -1,4 +1,4 @@
-
+import java.io.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
@@ -114,28 +114,80 @@ public class View extends JFrame implements ActionListener {
 
                 total = Control.objPedido.atualizarPedido(2, i);
                 lblValorPedido.setText("R$ " + total);
-                lista = Control.objPedido.adicionarItem(i);
+                lista = Control.objPedido.adicionarItem(i + 8);
                 atualizarTabela();
 
             }
         }
 
-    }
-    
-    public void atualizarTabela(){
-        
-        while(mdlItens.getRowCount()>0){ //limpando tabela
-            mdlItens.removeRow(0);
+        if (evt.getSource() == btnFecharPedido) {
+
+            int opc = JOptionPane.showConfirmDialog(null, "CPF na nota?","NF", JOptionPane.YES_NO_OPTION);
+            
+            if(opc == JOptionPane.YES_OPTION){
+                String cpf = JOptionPane.showInputDialog("Informe o cpf:");
+                
+                gravarNota(cpf);
+                
+            }
+            
+            //limpar tabela
+            while (mdlItens.getRowCount() > 0) { //limpando tabela
+                mdlItens.removeRow(0);
+            }
+            
+            lblValorPedido.setText("R$ 0.00");
         }
         
-        for(Item itemAtual: lista){
+    }//fechando actionPerformed
+    
+    public void gravarNota(String cpf){
+        
+        try{
+         //tentar gravar o txt   
+            String textoNF = "CPF do Cliente: " + cpf + "\r\n";
+            textoNF = "-----------------------------------\r\n";
+            //ler a array
+            
+            for(Item itemAtual: lista){
+                textoNF+= itemAtual.getNome() + "-----" + itemAtual.getQtde();
+                textoNF += "------" + (itemAtual.getQtde()* itemAtual.getValor());
+                textoNF += "\r\n";
+            }
+            
+            textoNF += "-----------------------\r\n";
+            textoNF += "Total a pagar: " + lblValorPedido.getText();
+            
+            //gravando arquivo
+            String nomeArq = cpf + "_NF.txt";
+            FileWriter arq = new FileWriter("docs\\" + nomeArq);
+            PrintWriter dados = new PrintWriter(arq);
+            dados.write(textoNF);
+            
+            arq.close();
+
+            JOptionPane.showMessageDialog(null, "Arquivo Gerado");
+            
+        }catch(Exception erro){
+            JOptionPane.showMessageDialog(null, "Erro ao gerar arquivo.");
+        }
+        
+    }
+
+    public void atualizarTabela() {
+
+        while (mdlItens.getRowCount() > 0) { //limpando tabela
+            mdlItens.removeRow(0);
+        }
+
+        for (Item itemAtual : lista) {
             String teste[] = new String[2];
             teste[0] = itemAtual.getNome();
             teste[1] = "" + itemAtual.getQtde();
-                        
+
             mdlItens.addRow(teste);
         }
-        
+
     }
 
 }//fechando classe
