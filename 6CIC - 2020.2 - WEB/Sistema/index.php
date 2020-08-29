@@ -27,16 +27,16 @@
             <div class="row justify-content-md-center"> <!-- 2ºLinha -->
                 <div class="col-lg-5 border" id="DivFormLogin">
                     
-                    <form>
+                        <form action="Login.php" method="post">
                         <h5>Preencha os dados abaixo para efetuar login</h5>                        
                         <div class="form-group">
                             <label>E-mail:</label>
-                            <input type="email" name="" class="form-control">
+                            <input type="text" name="HTML_email" class="form-control">
                         </div>
                         
                         <div class="form-group">
                             <label>Senha:</label>
-                            <input type="password" name="" class="form-control">
+                            <input type="password" name="HTML_senha" class="form-control">
                         </div>    
                         <div class="form-group">
                             <button type="submit" class="btn btn-dark float-right">Acessar Sistema</button>
@@ -51,13 +51,13 @@
                     
                     <div class="card">
                         <div class="card-header bg-dark text-white">
-                            TITULO1
+                            PESSOAS
                         </div>
                         <div class="card-body">
                             <p>
-                                bla bla bla bla bla bla bla bla bla 
-                                bla bla bla bla bla bla bla bla bla 
-                                bla bla bla bla bla bla bla bla bla 
+                                Gerenciamento e classificação de clientes, funcionários e 
+                                fornecedores.
+                                
                             </p>
                            
                         </div>
@@ -70,13 +70,12 @@
                 <div class="col-lg-4 DivCards">
                     <div class="card">
                         <div class="card-header bg-dark text-white">
-                            TITULO2
+                            PRODUTOS
                         </div>
                         <div class="card-body">
                             <p>
-                                bla bla bla bla bla bla bla bla bla 
-                                bla bla bla bla bla bla bla bla bla 
-                                bla bla bla bla bla bla bla bla bla 
+                                Manipulação de estoque, fornecedores e gerenciamento
+                                de dados de produtos.
                             </p>
                         </div>
                         <div class="card-footer">
@@ -88,13 +87,12 @@
                 <div class="col-lg-4 DivCards">
                     <div class="card">
                         <div class="card-header bg-dark text-white">
-                            TITULO
+                            VENDAS
                         </div>
                         <div class="card-body">
                             <p>
-                                bla bla bla bla bla bla bla bla bla 
-                                bla bla bla bla bla bla bla bla bla 
-                                bla bla bla bla bla bla bla bla bla 
+                                Registro de vendas, itens de produtos e 
+                                armazenamento de valores em caixa.
                             </p>
                         </div>
                         <div class="card-footer">
