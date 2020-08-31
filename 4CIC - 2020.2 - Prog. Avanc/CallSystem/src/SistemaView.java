@@ -26,10 +26,10 @@ public class SistemaView extends JFrame implements ActionListener{
         ctnPrincipal.add(dskJanelas, BorderLayout.CENTER);
         
         String strModulos[]={"Clientes", "Produtos", "Fornecedores", "Funcionários",
-                             "Vendas", "Chamados", "Usuários", "Sair"};
+                             "Vendas", "Transportadores", "Caixa", "Chamados", "Usuários", "Sair"};
         
-        imgModulos = new ImageIcon[8];
-        btnModulos = new JButton[8];
+        imgModulos = new ImageIcon[10];
+        btnModulos = new JButton[10];
         for(int i=0; i<strModulos.length;i++){
             imgModulos[i] = new ImageIcon("img/icons/" + i + ".png");
             btnModulos[i] = new JButton(imgModulos[i]);
