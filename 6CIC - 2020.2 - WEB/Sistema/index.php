@@ -20,7 +20,7 @@
             
             <div class="row"> <!-- 1ºLinha -->
                 <div class="col-lg-12">
-                    <img src="img/banner.jpg" class="img-fluid">
+                    <img src="img/banner.jpg" class="img-thumbnail">
                 </div>
             </div>
             
@@ -50,6 +50,7 @@
                 <div class="col-lg-4 DivCards">
                     
                     <div class="card">
+                        <img src="img/pessoas.jpg" class="card-img-top">
                         <div class="card-header bg-dark text-white">
                             PESSOAS
                         </div>
@@ -69,6 +70,7 @@
                 
                 <div class="col-lg-4 DivCards">
                     <div class="card">
+                        <img src="img/produtos.jpg" class="card-img-top">
                         <div class="card-header bg-dark text-white">
                             PRODUTOS
                         </div>
@@ -86,6 +88,7 @@
                 
                 <div class="col-lg-4 DivCards">
                     <div class="card">
+                        <img src="img/vendas.jpg" class="card-img-top">
                         <div class="card-header bg-dark text-white">
                             VENDAS
                         </div>
