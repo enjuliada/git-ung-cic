@@ -14,7 +14,7 @@
         
     </head>
     
-    <body bgcolor="orange">
+    <body>
         <!-- Conteudo da página -->
         <div class="container border">
             
