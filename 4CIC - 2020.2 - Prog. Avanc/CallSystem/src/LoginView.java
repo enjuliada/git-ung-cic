@@ -64,8 +64,65 @@ public class LoginView extends JInternalFrame implements ActionListener{
     public void actionPerformed(ActionEvent evt){
         if(evt.getSource() == btnAcesso){
             
+            if(validarCampos()){ //verificar se campos foram preenchidos
+                
+                try{
+                    String tmpLogin = txtUsuario.getText();
+                    String tmpSenha = pwdSenha.getText();
+                    
+                   SistemaControl.perfilUsuario = UsuariosDAO.validarUsuario(tmpLogin, tmpSenha);
+                    
+                    if(SistemaControl.perfilUsuario == null){
+                        JOptionPane.showMessageDialog(null, "Dados Inválidos!", "LOGIN", JOptionPane.ERROR_MESSAGE);
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Acesso ao Sistema: " + SistemaControl.perfilUsuario.getNome());
+                        
+                        this.dispose(); //fechando tela de login
+                        SistemaView.habilitarBotoes(true);
+                        
+                        String tmpPermissao = "Administrador";
+                        
+                        if(SistemaControl.perfilUsuario.getPermissao() == 2){
+                            SistemaView.btnModulos[6].setEnabled(false);
+                            SistemaView.btnModulos[8].setEnabled(false);
+                            tmpPermissao = "Usuário Comum";
+                        }
+                        
+                        SistemaView.lblLogin.setText(SistemaView.lblLogin.getText() + SistemaControl.perfilUsuario.getLogin());
+                        SistemaView.lblNome.setText(SistemaView.lblNome.getText() + SistemaControl.perfilUsuario.getNome());
+                        SistemaView.lblPermissao.setText(SistemaView.lblPermissao.getText() + tmpPermissao);
+                        
+                    }
+                    
+                    
+                }catch(Exception erro){
+                    JOptionPane.showMessageDialog(null, erro.getMessage(),"ERRO",JOptionPane.ERROR_MESSAGE);
+                }
+                
+            }
+            
+            
         }
         
     }//fechando actPerf
+    
+    public static boolean validarCampos(){
+        
+        String tmpLogin = txtUsuario.getText().trim();
+        String tmpSenha = pwdSenha.getText().trim();
+        
+        if(tmpLogin.compareTo("") == 0){
+            JOptionPane.showMessageDialog(null, "Preencha o nome de usuário!","LOGIN",JOptionPane.WARNING_MESSAGE);
+            txtUsuario.grabFocus(); //move o cursos para o campo
+            return false;
+        }else if(tmpSenha.compareTo("") == 0){
+            JOptionPane.showMessageDialog(null, "Preencha a senha!","LOGIN",JOptionPane.WARNING_MESSAGE);
+            pwdSenha.grabFocus();
+            return false;
+        }else{
+            return true;
+        }
+        
+    } //fechando validarCampos
     
 }//fechando class

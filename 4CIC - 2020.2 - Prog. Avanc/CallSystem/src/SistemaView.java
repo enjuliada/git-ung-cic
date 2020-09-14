@@ -5,7 +5,8 @@ import java.awt.event.*;
 public class SistemaView extends JFrame implements ActionListener{
 
     /***** 1 - DECLARAÇÃO DOS OBJETOS ******/
-        public static Container ctnPrincipal, ctnModulos;
+        public static Container ctnPrincipal, ctnModulos, ctnPerfil;
+        public static JLabel lblLogin, lblNome, lblPermissao, lblImagem;
         public static JDesktopPane dskJanelas;
         public static ImageIcon imgModulos[];
         public static JButton btnModulos[];
@@ -19,14 +20,18 @@ public class SistemaView extends JFrame implements ActionListener{
         this.add(ctnPrincipal);//add ctnPrinc na janela
         
         ctnModulos = new Container();
-        ctnModulos.setLayout(new GridLayout(1,8));
-        ctnPrincipal.add(ctnModulos, BorderLayout.NORTH); //add ctnMd no norte do princ
-        
+        ctnModulos.setLayout(new GridLayout(1,10));
+        ctnPrincipal.add(ctnModulos, BorderLayout.NORTH); //add ctnMd no norte do princ     
+               
+        ctnPerfil = new Container();
+        ctnPerfil.setLayout(new GridLayout(1,4));
+        ctnPrincipal.add(ctnPerfil, BorderLayout.SOUTH);
+       
         dskJanelas = new JDesktopPane();
         ctnPrincipal.add(dskJanelas, BorderLayout.CENTER);
-        
+               
         String strModulos[]={"Clientes", "Produtos", "Fornecedores", "Funcionários",
-                             "Vendas", "Transportadores", "Caixa", "Chamados", "Usuários", "Sair"};
+                                "Vendas", "Transportadores", "Caixa", "Chamados", "Usuários", "Sair"};
         
         imgModulos = new ImageIcon[10];
         btnModulos = new JButton[10];
@@ -40,10 +45,22 @@ public class SistemaView extends JFrame implements ActionListener{
             ctnModulos.add(btnModulos[i]);
         }        
         
+        lblLogin = new JLabel("Login: ");        
+        ctnPerfil.add(lblLogin);
+        
+        lblNome = new JLabel("Usuário: ");
+        ctnPerfil.add(lblNome);
+        
+       lblPermissao = new JLabel("Permissao: ");
+       ctnPerfil.add(lblPermissao);
+        
+       lblImagem = new JLabel("FOTO");
+       ctnPerfil.add(lblImagem);
+        
         //this.setUndecorated(true);tira as bordas da janela
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
-        this.setSize(this.getFullScreen().width, this.getFullScreen().height-30);
+        this.setSize(this.getFullScreen().width, this.getFullScreen().height-40);
         this.setVisible(true);
         
         LoginView telaLogin = new LoginView();//instanciando tela de login
@@ -61,7 +78,17 @@ public class SistemaView extends JFrame implements ActionListener{
     
     public void actionPerformed(ActionEvent evt){ //ação botoes
         
-        
+        if(evt.getSource() == btnModulos[0]){
+            dskJanelas.add(new ClientesView());
+        }
     }//fechando actPerf
+    
+    public static void habilitarBotoes(boolean tmpStatus){
+        for(int i=0; i < btnModulos.length; i++){
+            btnModulos[i].setEnabled(tmpStatus);
+        }
+    }
+    
+ 
     
 }//fechando class
