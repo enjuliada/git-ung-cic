@@ -259,24 +259,32 @@
                 if ($idPg == 10) {
                     //Clientes
                     $tabela = "customers";
-                } else if ($idPg == 20) {
+                    include "Lista.php";
+                } else if($idPg == 11){
+                    include "InfoCliente.php";
+                }else if ($idPg == 20) {
                     //Funcionários
                     $tabela = "employees";
+                    include "Lista.php";
                 } else if ($idPg == 30) {
                     //Fornecedores
                     $tabela = "suppliers";
+                    include "Lista.php";
                 } else if ($idPg == 40) {
                     //Transportadoras
                     $tabela = "shippers";
+                    include "Lista.php";
                 } else if ($idPg == 50) {
                     //Estoque
                     $tabela = "products";
+                    include "Lista.php";
                 } else if ($idPg == 60) {
                     //Vendas
                     $tabela = "orders";
+                    include "Lista.php";
                 }
 
-                include "Modulos.php";
+                
             }//fechando else (!isset)
             ?>
 

@@ -19,6 +19,8 @@ function listarCampos($vConn, $tabela){
     return $rsCampos; //retornando rsult com os dados do banco    
 }
 
+/*----------------------------------------------------------------------------*/
+
 function listarDadosHome($vConn, $id){
  
 if($id == 10)
@@ -40,4 +42,43 @@ return $rsDados;
     
 }
 
+/*----------------------------------------------------------------------------*/
+
+function consultarCliente($vConn, $idCli){
+    $sqlCliente = "Select * from customers where CustomerId like '$idCli'";    
+    $rsCliente = mysqli_query($vConn, $sqlCliente) or die(mysqli_error($vConn));
+    
+    return $rsCliente;
+}
+
+/*----------------------------------------------------------------------------*/
+
+function listarVendas($vConn, $idCli){
+    $sqlVendas = "Select * from orders O, employees E, Shippers S where O.CustomerId like '$idCli' and O.EmployeeID = E.EmployeeID and O.ShipVia = S.ShipperID";    
+    $rsVendas = mysqli_query($vConn, $sqlVendas) or die(mysqli_error($vConn));
+    
+    return $rsVendas;
+    
+}
+/*----------------------------------------------------------------------------*/
+function calcularCompra($vConn, $idVenda){
+    $sqlTotal = "SELECT sum(OD.UnitPrice * OD.Quantity) as total FROM Orderdetails OD,";
+    $sqlTotal .= "Orders O where OD.orderid = O.orderid and O.orderid = $idVenda";
+    $rsTotal = mysqli_query($vConn, $sqlTotal) or die(mysqli_error($vConn));
+    
+    $tblTotal = mysqli_fetch_array($rsTotal);
+    
+    return $tblTotal['total'];
+    
+}
+
+/*----------------------------------------------------------------------------*/
+function corrigirData($tmpData){
+ 
+    $vData = explode("-", $tmpData);
+    $vDia = explode(" ", $vData[2]);
+    
+    return $vDia[0] . "/" . $vData[1] . "/" . $vData[0];  
+    
+}
 ?>
