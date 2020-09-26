@@ -262,6 +262,8 @@
                     include "Lista.php";
                 } else if($idPg == 11){
                     include "InfoCliente.php";
+                }else if ($idPg == 12){                    
+                    include "FormCadastroCliente.php";
                 }else if ($idPg == 20) {
                     //Funcionários
                     $tabela = "employees";
@@ -278,6 +280,8 @@
                     //Estoque
                     $tabela = "products";
                     include "Lista.php";
+                }else if ($idPg == 52){
+                    include "FormCadastroProduto.php";
                 } else if ($idPg == 60) {
                     //Vendas
                     $tabela = "orders";

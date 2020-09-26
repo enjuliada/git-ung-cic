@@ -11,6 +11,10 @@ while($campos = mysqli_fetch_array($rsCampos)){
 
 <h5><?=strtoupper($tabela);?></h5>
 <hr>
+<a href="?idPg=<?=$idPg + 2;?>">
+    <i class="fa fa-md fa-plus-square"></i>
+    Adicionar Novo
+</a>
 <table class="table-sm table-striped">
 
     <thead class="table-dark">
