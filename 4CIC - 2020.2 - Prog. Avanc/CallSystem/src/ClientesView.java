@@ -1,3 +1,4 @@
+
 import java.io.*;
 import java.nio.file.*;
 import java.nio.channels.*;
@@ -15,30 +16,30 @@ public class ClientesView extends JInternalFrame implements ActionListener {
     public static JMenuBar mbrClientes;
     public static JMenu mnuArquivo, mnuDados, mnuAjuda;
     public static JMenuItem mniNovo, mniEditar, mniSalvar,
-                            mniExcluir, mniFechar,
-                            mniConsulta, mniDesativar,
-                            mniSobre;
-    
+            mniExcluir, mniFechar,
+            mniConsulta, mniDesativar,
+            mniSobre;
+
     public static Container ctnClientes;
-    
+
     public static JToolBar tbrClientes;
     public static ImageIcon icnNovo, icnEditar,
-                            icnSalvar, icnDesativar,
-                            icnBuscar, icnExcluir,
-                            icnImprimir, icnFechar;
+            icnSalvar, icnDesativar,
+            icnBuscar, icnExcluir,
+            icnImprimir, icnFechar;
     public static BotoesBarra bbrNovo, bbrEditar,
-                              bbrSalvar, bbrDesativar, 
-                              bbrBuscar, bbrExcluir,
-                              bbrImprimir, bbrFechar;
+            bbrSalvar, bbrDesativar,
+            bbrBuscar, bbrExcluir,
+            bbrImprimir, bbrFechar;
 
-    public static String strCampos[] = {"CPF:", "Nome:", "Data de Nascimento:", "Endereço:", "Bairro:", "Cidade:", "Telefone:", "E-mail:"};
+    public static String strCampos[] = {"Id:", "Empresa:", "Contato:", "Cargo:", "Endereço:", "Cidade:", "Estado:", "CEP:", "Pais:", "Telefone:", "E-mail:"};
     public static JLabel lblCampos[];
     public static JTextField txtCampos[];
 
     public static ImageIcon imgFoto;
     public static JLabel lblFoto;
 
-    public static String strTopo[] = {"CPF", "Nome", "Cidade", "Telefone"};
+    public static String strTopo[] = {"ID", "Nome", "Cidade", "Telefone"};
     public static JScrollPane scrClientes; //barra de rolagem da tabela
     public static JTable tblClientes;//tabela
     public static DefaultTableModel mdlClientes;//Classe que gerencia o conteudo da tabela
@@ -57,8 +58,10 @@ public class ClientesView extends JInternalFrame implements ActionListener {
     public static FileOutputStream flsSaida;//leitura
     public static String strCaminhoOrigem, strCaminhoDestino, strNomeArquivoOrigem, extensao;
     public static int statusFoto;
-    public static int statusAtual = 0,acao;
+    public static int statusAtual = 0, acao;
     public static boolean status;
+
+    public static java.util.List<ClientesVO> lstClientes = new ArrayList<ClientesVO>();
 
     public ClientesView() {//construtor
         super("Gerenciamento de Clientes");
@@ -72,100 +75,102 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         icnExcluir = new ImageIcon("img/icons/delete.png");
         icnImprimir = new ImageIcon("img/icons/report.png");
         icnFechar = new ImageIcon("img/icons/exit.png");
-        
+
         mbrClientes = new JMenuBar();
         this.setJMenuBar(mbrClientes);
-        
+
         mnuArquivo = new JMenu("Arquivo");
         mnuArquivo.setMnemonic('a');
         mbrClientes.add(mnuArquivo);
-        
-        mniNovo = new JMenuItem("Novo Cliente",icnNovo);
+
+        mniNovo = new JMenuItem("Novo Cliente", icnNovo);
         mniNovo.addActionListener(this);
         mnuArquivo.add(mniNovo);
-        
+
         mnuArquivo.add(new JSeparator());
-        
+
         mniEditar = new JMenuItem("Editar Dados", icnEditar);
         mniEditar.setEnabled(false);
         mniEditar.addActionListener(this);
         mnuArquivo.add(mniEditar);
-        
+
         mniSalvar = new JMenuItem("Salvar Informações", icnSalvar);
         mniSalvar.addActionListener(this);
         mnuArquivo.add(mniSalvar);
-        
+
         mnuArquivo.add(new JSeparator());
-        
+
         mniExcluir = new JMenuItem("Excluir cliente atual", icnExcluir);
         mniExcluir.setEnabled(false);
         mniExcluir.addActionListener(this);
         mnuArquivo.add(mniExcluir);
-        
+
         mnuArquivo.add(new JSeparator());
-        
+
         mniFechar = new JMenuItem("Fechar módulo CLIENTES", icnFechar);
         mniFechar.addActionListener(this);
         mnuArquivo.add(mniFechar);
-        
+
         mnuDados = new JMenu("Dados");
         mnuDados.setMnemonic('d');
         mbrClientes.add(mnuDados);
-        
-        mniConsulta = new JMenuItem("Consulta por CPF",icnBuscar);
+
+        mniConsulta = new JMenuItem("Consulta por CPF", icnBuscar);
         mniConsulta.addActionListener(this);
         mnuDados.add(mniConsulta);
-        
+
         mnuDados.add(new JSeparator());
-        
-        mniDesativar = new JMenuItem("Alterar Status",icnBloquear);
+
+        mniDesativar = new JMenuItem("Alterar Status", icnBloquear);
         mniDesativar.setEnabled(false);
         mniDesativar.addActionListener(this);
         mnuDados.add(mniDesativar);
-        
+
         mnuAjuda = new JMenu("Ajuda");
         mnuAjuda.setMnemonic('h');
         mbrClientes.add(mnuAjuda);
-        
+
         mniSobre = new JMenuItem("Sobre o sistema");
         mniSobre.addActionListener(this);
         mnuAjuda.add(mniSobre);
-        
+
         ctnClientes = new Container();
         ctnClientes.setLayout(null);
         this.add(ctnClientes);
-        
+
         tbrClientes = new JToolBar();
-        tbrClientes.setBounds(0,0,285,35);
+        tbrClientes.setBounds(0, 0, 285, 35);
         ctnClientes.add(tbrClientes);
-        
-        /********************************BARRA DE FERRAMENTAS******************************/
-        
-        bbrNovo = new BotoesBarra(0,icnNovo,"Novo Cliente");
+
+        /**
+         * ******************************BARRA DE
+         * FERRAMENTAS*****************************
+         */
+        bbrNovo = new BotoesBarra(0, icnNovo, "Novo Cliente");
         tbrClientes.add(bbrNovo);
-        
-        bbrEditar = new BotoesBarra(1,icnEditar,"Editar Dados");
+
+        bbrEditar = new BotoesBarra(1, icnEditar, "Editar Dados");
         bbrEditar.setEnabled(false);
         tbrClientes.add(bbrEditar);
-        
-        bbrSalvar = new BotoesBarra(2,icnSalvar,"Salvar Informações");
+
+        bbrSalvar = new BotoesBarra(2, icnSalvar, "Salvar Informações");
         tbrClientes.add(bbrSalvar);
-        
-        bbrDesativar = new BotoesBarra(3,icnDesativar,"Alterar Status");
+
+        bbrDesativar = new BotoesBarra(3, icnDesativar, "Alterar Status");
         bbrDesativar.setEnabled(false);
         tbrClientes.add(bbrDesativar);
-        
-        bbrBuscar = new BotoesBarra(4,icnBuscar,"Buscar por CPF");
+
+        bbrBuscar = new BotoesBarra(4, icnBuscar, "Buscar por CPF");
         tbrClientes.add(bbrBuscar);
-        
-        bbrExcluir = new BotoesBarra(5,icnExcluir,"Remover cliente atual");
+
+        bbrExcluir = new BotoesBarra(5, icnExcluir, "Remover cliente atual");
         bbrExcluir.setEnabled(false);
         tbrClientes.add(bbrExcluir);
-        
-        bbrImprimir = new BotoesBarra(6,icnImprimir,"Gerar arquivo texto");
+
+        bbrImprimir = new BotoesBarra(6, icnImprimir, "Gerar arquivo texto");
         tbrClientes.add(bbrImprimir);
-        
-        bbrFechar = new BotoesBarra(7,icnFechar,"Fechar módulo");
+
+        bbrFechar = new BotoesBarra(7, icnFechar, "Fechar módulo");
         tbrClientes.add(bbrFechar);
 
         lblCampos = new JLabel[strCampos.length];
@@ -183,9 +188,9 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         }//fechando for
 
         btnEditar = new JButton("Editar Dados");
-        btnEditar.setEnabled(false);        
+        btnEditar.setEnabled(false);
         btnEditar.addActionListener(this);
-        btnEditar.setBounds(250, 315, 150, 30);
+        btnEditar.setBounds(250, 415, 150, 30);
         ctnClientes.add(btnEditar);
 
         imgFoto = new ImageIcon("img/user.png");
@@ -210,7 +215,24 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         scrClientes.setBounds(600, 105, 550, 290);
         ctnClientes.add(scrClientes);
 
-        
+        /*CARREGAR DADOS NA TABELA*/
+        carregarClientes(1, "");
+
+        tblClientes.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+
+                String idCliente = tblClientes.getValueAt(tblClientes.getSelectedRow(), 0).toString();
+
+                try {
+                    carregarCampos(ClientesDAO.consultarCliente(idCliente));
+                } catch (Exception erro) {
+                    JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+                }
+
+            }
+        }
+        );
+
         lblBusca = new JLabel("Busca Rápida:");
         lblBusca.setBounds(600, 75, 100, 20);
         ctnClientes.add(lblBusca);
@@ -221,17 +243,25 @@ public class ClientesView extends JInternalFrame implements ActionListener {
 
         txtBusca.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent evt) {
-               
+
+                String tmpBusca = txtBusca.getText();
+
+                try {
+                    carregarClientes(2, tmpBusca);
+                } catch (Exception erro) {
+                    JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+                }
+
             }
         }
         );
 
-        btnNovo = new JButton("Novo Cliente");
+        btnNovo = new JButton("Novo Cliente", icnNovo);
         btnNovo.addActionListener(this);
         btnNovo.setBounds(430, 265, 150, 30);
         ctnClientes.add(btnNovo);
 
-        btnSalvar = new JButton("Salvar dados");
+        btnSalvar = new JButton("Salvar dados", icnSalvar);
         btnSalvar.addActionListener(this);
         btnSalvar.setBounds(430, 315, 150, 30);
         ctnClientes.add(btnSalvar);
@@ -264,9 +294,7 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         ctnClientes.add(btnRestaurar);
 
         desbloquearCampos(false);
-        
 
-        
         this.setIconifiable(true);
         this.setClosable(true);
         this.setSize(1400, 550);
@@ -301,49 +329,40 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         } else if (evt.getSource() == btnSalvar || evt.getSource() == mniSalvar) {
             status = validarCampos();
 
-            if (acao == 1) {
-            
-            if (status == true) {
+            if (acao == 1) { //CADASTRANDO
 
-                if (statusFoto == JFileChooser.APPROVE_OPTION) {
-                    //salvar a foto
-                    int ultimoPonto = strNomeArquivoOrigem.lastIndexOf(".");//pegando a posição do ultimo ponto
-                    extensao = strNomeArquivoOrigem.substring(ultimoPonto + 1, strNomeArquivoOrigem.length());
-                    strCaminhoDestino = "img\\system\\" + txtCampos[0].getText() + "." + extensao;
+                if (status) {
+                    ClientesVO tmpCliente = new ClientesVO();
+                    tmpCliente.setId(txtCampos[0].getText());
+                    tmpCliente.setNomeEmpresa(txtCampos[1].getText());
+                    tmpCliente.setRepresentante(txtCampos[2].getText());
+                    tmpCliente.setCargo(txtCampos[3].getText());
+                    tmpCliente.setEndereco(txtCampos[4].getText());
+                    tmpCliente.setCidade(txtCampos[5].getText());
+                    tmpCliente.setEstado(txtCampos[6].getText());
+                    tmpCliente.setCep(txtCampos[7].getText());
+                    tmpCliente.setPais(txtCampos[8].getText());
+                    tmpCliente.setTelefone(txtCampos[9].getText());
+                    tmpCliente.setEmail(txtCampos[10].getText());
 
                     try {
-                        flsEntrada = new FileInputStream(strCaminhoOrigem);
-                        flsSaida = new FileOutputStream(strCaminhoDestino);
-
-                        flcOrigem = flsEntrada.getChannel();
-                        flcDestino = flsSaida.getChannel();
-
-                        //cópia total do arquivo
-                        flcOrigem.transferTo(0, flcOrigem.size(), flcDestino);
-
-                        flcOrigem.close();
-                        flcDestino.close();
-
+                        ClientesDAO.cadastrarCliente(tmpCliente);
                     } catch (Exception erro) {
-                        JOptionPane.showMessageDialog(null, erro.getMessage());
+                        JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
                     }
+
+                    carregarClientes(1, "");
+
+                    JOptionPane.showMessageDialog(null, "Cliente " + tmpCliente.getNomeEmpresa() + " cadastrado!");
+
+                    desbloquearCampos(false);
+                    limparCampos();
+
                 }
 
-                  
+            } else if (acao == 2) { //EDITANDO
+
             }
-            
-             } else if (acao == 2) {
-                    //ALTERAÇÃO
-                    try {
-                        ClientesVO clienteAtual = new ClientesVO();
-                        String tmpCpf = txtCampos[0].getText();
-                        //preenchendo objeto
-                       
-                        
-                    } catch (Exception erro) {
-                        JOptionPane.showMessageDialog(null, erro.getMessage());
-                    }
-                }
 
         } else if (evt.getSource() == btnFoto) {
 
@@ -358,14 +377,20 @@ public class ClientesView extends JInternalFrame implements ActionListener {
             lblFoto.setIcon(new ImageIcon(strCaminhoOrigem));
 
         } else if (evt.getSource() == btnDesativar || evt.getSource() == mniDesativar) {
-           
 
+        } else if (evt.getSource() == btnCidade) {
+            String tmpBusca = JOptionPane.showInputDialog("Entre com o nome da cidade:");
+            carregarClientes(4, tmpBusca);
+
+        } else if (evt.getSource() == btnNome) {
+            String tmpBusca = JOptionPane.showInputDialog("Entre com o nome do cliente:");
+            carregarClientes(3, tmpBusca);
+            
+        }else if (evt.getSource() == btnRestaurar){
+            carregarClientes(1, "");
         }
+
     }//fechando actionPerformed
-
-   
-
-   
 
     public static void desbloquearCampos(boolean tmpStatus) {
         for (int i = 0; i < txtCampos.length; i++) {
@@ -402,5 +427,50 @@ public class ClientesView extends JInternalFrame implements ActionListener {
         }//fechando for                
         return true;
     }//fechando validar
+
+    public static void carregarClientes(int tmpTipo, String tmpBusca) {
+
+        while (mdlClientes.getRowCount() > 0) {
+            mdlClientes.removeRow(0);
+        }
+
+        try {
+            lstClientes = ClientesDAO.listarClientes(tmpTipo, tmpBusca);
+
+            for (ClientesVO tmpCliente : lstClientes) {
+                String dados[] = new String[4];
+
+                dados[0] = tmpCliente.getId();
+                dados[1] = tmpCliente.getNomeEmpresa();
+                dados[2] = tmpCliente.getCidade();
+                dados[3] = tmpCliente.getTelefone();
+
+                mdlClientes.addRow(dados);
+            }
+
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+    }//fechando carregarClientes
+
+    public static void carregarCampos(ClientesVO tmpCliente) {
+
+        try {
+            txtCampos[0].setText(tmpCliente.getId());
+            txtCampos[1].setText(tmpCliente.getNomeEmpresa());
+            txtCampos[2].setText(tmpCliente.getRepresentante());
+            txtCampos[3].setText(tmpCliente.getCargo());
+            txtCampos[4].setText(tmpCliente.getEndereco());
+            txtCampos[5].setText(tmpCliente.getCidade());
+            txtCampos[6].setText(tmpCliente.getEstado());
+            txtCampos[7].setText(tmpCliente.getCep());
+            txtCampos[8].setText(tmpCliente.getPais());
+            txtCampos[9].setText(tmpCliente.getTelefone());
+            txtCampos[10].setText(tmpCliente.getEmail());
+
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
 }//fechando classe

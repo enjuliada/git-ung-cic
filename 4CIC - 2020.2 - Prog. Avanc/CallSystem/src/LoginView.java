@@ -39,7 +39,7 @@ public class LoginView extends JInternalFrame implements ActionListener{
         lblSenha.setBounds(15,150,250,30);
         ctnLogin.add(lblSenha);
         
-        txtUsuario = new JTextField();
+        txtUsuario = new JTextField("administrador");
         txtUsuario.setFont(fntTexto);
         txtUsuario.setBounds(120,100,290,30);
         ctnLogin.add(txtUsuario);

@@ -80,6 +80,8 @@ public class SistemaView extends JFrame implements ActionListener{
         
         if(evt.getSource() == btnModulos[0]){
             dskJanelas.add(new ClientesView());
+        }else if(evt.getSource() == btnModulos[7]){
+            dskJanelas.add(new ChamadosView());
         }
     }//fechando actPerf
     
