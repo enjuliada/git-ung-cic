@@ -1,10 +1,12 @@
 <?php
-$idCli = $_GET['idCli']; //objeto GET acessa o valor de uma variavel passada via URL
+$idCli = $_GET['idReg']; //objeto GET acessa o valor de uma variavel passada via URL
 
 $rsCliente = consultarCliente($vConn, $idCli); //chamando metodo que retorna dados do cliente selecionado
 $rsVenda = listarVendas($vConn, $idCli); //chamando metodo que retorna dados do cliente selecionado
 
 $tblCliente = mysqli_fetch_array($rsCliente); //abrindo o resultset para exibição dos dados
+
+$totalGasto = 0;
 ?>
 
 <div class="row">
@@ -52,6 +54,7 @@ $tblCliente = mysqli_fetch_array($rsCliente); //abrindo o resultset para exibiç
             <tbody>                
                 <?php
                 while ($tblVenda = mysqli_fetch_array($rsVenda)) {
+                    $totalGasto += calcularCompra($vConn, $tblVenda['OrderID']);
                     ?>
                     <tr>
                         <td><?= $tblVenda['OrderID'] ?></td>            
@@ -67,3 +70,8 @@ $tblCliente = mysqli_fetch_array($rsCliente); //abrindo o resultset para exibiç
                 <?php } ?>
             </tbody>
         </table>
+        
+        <hr>
+        <div class="float-right">
+            <h5>Total em Compras: R$ <?=number_format($totalGasto,2);?>
+        </div>

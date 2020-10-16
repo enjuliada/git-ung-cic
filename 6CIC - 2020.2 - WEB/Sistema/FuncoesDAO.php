@@ -44,8 +44,8 @@ return $rsDados;
 
 /*----------------------------------------------------------------------------*/
 
-function consultarCliente($vConn, $idCli){
-    $sqlCliente = "Select * from customers where CustomerId like '$idCli'";    
+function consultarCliente($vConn, $Id){
+    $sqlCliente = "Select * from customers where CustomerID like '$Id'";    
     $rsCliente = mysqli_query($vConn, $sqlCliente) or die(mysqli_error($vConn));
     
     return $rsCliente;
@@ -53,14 +53,69 @@ function consultarCliente($vConn, $idCli){
 
 /*----------------------------------------------------------------------------*/
 
-function listarVendas($vConn, $idCli){
-    $sqlVendas = "Select * from orders O, employees E, Shippers S where O.CustomerId like '$idCli' and O.EmployeeID = E.EmployeeID and O.ShipVia = S.ShipperID";    
+function consultarPorFornecedor($vConn, $Id){
+    $sqlFornecedor = "Select * from suppliers where SupplierID like '$Id'";    
+    $rsFornecedor = mysqli_query($vConn, $sqlFornecedor) or die(mysqli_error($vConn));
+    
+    return $rsFornecedor;
+}
+
+/*----------------------------------------------------------------------------*/
+
+function consultarPorFuncionario($vConn, $Id){
+    $sqlFuncionario = "Select * from employees where EmployeeID like '$Id'";    
+    $rsFuncionario = mysqli_query($vConn, $sqlFuncionario) or die(mysqli_error($vConn));
+    
+    return $rsFuncionario;
+}
+
+/*----------------------------------------------------------------------------*/
+
+function consultarPorProduto($vConn, $Id){
+    $sqlProduto = "Select * from products where ProductID like '$Id'";    
+    $rsProduto = mysqli_query($vConn, $sqlProduto) or die(mysqli_error($vConn));
+    
+    return $rsProduto;
+}
+
+/*----------------------------------------------------------------------------*/
+
+function listarVendas($vConn, $id){
+    $sqlVendas = "Select * from orders O, employees E, Shippers S where O.CustomerId like '$id' and O.EmployeeID = E.EmployeeID and O.ShipVia = S.ShipperID";    
     $rsVendas = mysqli_query($vConn, $sqlVendas) or die(mysqli_error($vConn));
     
     return $rsVendas;
     
 }
 /*----------------------------------------------------------------------------*/
+
+function listarVendasFuncionario($vConn, $id){
+    $sqlVendas = "Select * from orders O, employees E, Shippers S where O.EmployeeID like '$id' and O.EmployeeID = E.EmployeeID and O.ShipVia = S.ShipperID";    
+    $rsVendas = mysqli_query($vConn, $sqlVendas) or die(mysqli_error($vConn));
+    
+    return $rsVendas;
+    
+}
+
+/*----------------------------------------------------------------------------*/
+function listarProdutosFornecedor($vConn, $id){
+    $sqlVendas = "Select * from products where SupplierID like '$id'";    
+    $rsVendas = mysqli_query($vConn, $sqlVendas) or die(mysqli_error($vConn));
+    
+    return $rsVendas;
+    
+}
+
+/*----------------------------------------------------------------------------*/
+function listarFornecedoresProduto($vConn, $id){
+    $sqlVendas = "SELECT * FROM suppliers  INNER JOIN products ON products.SupplierID = suppliers.SupplierID WHERE ProductID = $id";    
+    $rsVendas = mysqli_query($vConn, $sqlVendas) or die(mysqli_error($vConn));
+    
+    return $rsVendas;
+    
+}
+/*----------------------------------------------------------------------------*/
+
 function calcularCompra($vConn, $idVenda){
     $sqlTotal = "SELECT sum(OD.UnitPrice * OD.Quantity) as total FROM Orderdetails OD,";
     $sqlTotal .= "Orders O where OD.orderid = O.orderid and O.orderid = $idVenda";

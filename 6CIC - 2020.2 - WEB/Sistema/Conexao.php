@@ -9,6 +9,7 @@ $senhaBD = "";
 $nomeBD = "northwind";
 
 $vConn = mysqli_connect($servidorBD, $usuarioBD, $senhaBD, $nomeBD);
+mysqli_set_charset($vConn, "utf8");
 
 
 ?>

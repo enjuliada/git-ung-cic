@@ -20,7 +20,7 @@
             <?php
             include "FuncoesDAO.php";
 
-            if (!isset($_GET['idPg'])) { //se a variavel URL idPg nao existir (monta a home)                
+            if (!isset($_GET['idPg'])) { //se a variavel URL idPg nao existir (monta a home)            
                 ?>
 
                 <div class="row"> <!--1º LINHA (row) -->
@@ -262,30 +262,44 @@
                     include "Lista.php";
                 } else if($idPg == 11){
                     include "InfoCliente.php";
-                }else if ($idPg == 12){                    
+                } else if ($idPg == 12){                    
                     include "FormCadastroCliente.php";
-                }else if ($idPg == 20) {
+                } else if ($idPg == 20) {
                     //Funcionários
                     $tabela = "employees";
                     include "Lista.php";
+                } else if ($idPg == 21) {
+                    include "InfoFuncionario.php";
+                } else if ($idPg == 22) {
+                    include "FormCadastroFuncionario.php";
                 } else if ($idPg == 30) {
                     //Fornecedores
                     $tabela = "suppliers";
                     include "Lista.php";
+                } else if ($idPg == 31) {
+                    include "InfoFornecedor.php";
+                } else if ($idPg == 32) {
+                    include "FormCadastroFornecedor.php";
                 } else if ($idPg == 40) {
                     //Transportadoras
                     $tabela = "shippers";
                     include "Lista.php";
+                } else if ($idPg == 42) {
+                    include "FormCadastroTransportadora.php";
                 } else if ($idPg == 50) {
                     //Estoque
                     $tabela = "products";
                     include "Lista.php";
-                }else if ($idPg == 52){
+                } else if ($idPg == 51) {
+                    include "InfoProduto.php";
+                } else if ($idPg == 52){
                     include "FormCadastroProduto.php";
                 } else if ($idPg == 60) {
                     //Vendas
                     $tabela = "orders";
                     include "Lista.php";
+                } else if ($idPg == 62) {
+                    include "FormCadastroVenda.php";
                 }
 
                 

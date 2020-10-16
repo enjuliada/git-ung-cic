@@ -23,7 +23,7 @@ while($campos = mysqli_fetch_array($rsCampos)){
         
         $cont = 0;
         foreach($nomeCampos as $valor){ 
-            if($cont < 10){
+            if($cont < 13){
         ?>
             <th><?=$valor;?></th>
         <?php 
@@ -41,12 +41,22 @@ while($campos = mysqli_fetch_array($rsCampos)){
         <tr>
             <?php 
             for($i=0; $i<$numCampos; $i++){ 
-                if ($i < 10){
+                if ($i < 13){
                     if($i <= 1){ //duas primeiras col (0 e 1)
+                        
+                        
+                        $cor="#000000";
+                        
+                        if($idPg==10){
+                            $rsVendas = listarVendas($vConn, $dadosLista[0]);
+                            
+                            if(mysqli_num_rows($rsVendas) == 0) $cor = "#FD9D90";
+                            else $cor = "#3D76E0";
+                        }
             ?>
                 <td>
-                    <a href="?idPg=11&idCli=<?=$dadosLista[0];?>" class="LinkDados">
-                        <?=$dadosLista[$i];?>
+                    <a href="?idPg=<?=$idPg + 1;?>&idReg=<?=$dadosLista[0];?>" class="LinkDados">
+                        <font color="<?=$cor?>"><?=$dadosLista[$i];?>
                     </a>
                 </td>
             

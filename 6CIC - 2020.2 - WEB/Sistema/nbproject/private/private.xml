@@ -3,13 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/PHP/Sistema/index.php</file>
-            <file>file:/D:/PHP/Sistema/css/estilo.css</file>
-            <file>file:/D:/PHP/Sistema/Login.php</file>
-            <file>file:/D:/PHP/Sistema/Conexao.php</file>
-            <file>file:/D:/PHP/Sistema/Painel.php</file>
+            <file>file:/D:/PHP/Sistema/FormCadastroCliente.php</file>
             <file>file:/D:/PHP/Sistema/FuncoesDAO.php</file>
-            <file>file:/D:/PHP/Sistema/Modulos.php</file>
+            <file>file:/D:/PHP/Sistema/FormCadastroTransportadora.php</file>
+            <file>file:/D:/PHP/Sistema/Painel.php</file>
+            <file>file:/D:/PHP/Sistema/Conexao.php</file>
+            <file>file:/D:/PHP/Sistema/CadastroDados.php</file>
+            <file>file:/D:/PHP/Sistema/FormCadastroProduto.php</file>
+            <file>file:/D:/PHP/Sistema/Lista.php</file>
+            <file>file:/D:/PHP/Sistema/FormCadastroFornecedor.php</file>
+            <file>file:/D:/PHP/Sistema/FormCadastroFuncionario.php</file>
+            <file>file:/D:/PHP/Sistema/InfoCliente.php</file>
         </group>
     </open-files>
 </project-private>
