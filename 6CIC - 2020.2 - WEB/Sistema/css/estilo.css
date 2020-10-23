@@ -12,16 +12,28 @@
 
 .TextoDados{
     font-family:Verdana;
-    font-size: 8pt; 
-    
+    font-size: 7pt;     
 }
 
 .LinkDados{
     font-family:Verdana;
-    font-size: 8pt;    
-    color:#4DA8DC;
+    font-size: 7pt;    
+    color:rgba(178,34,34,1);
 }
 
 .LinhaForm{
     margin-top:15px;
+}
+
+.MenuTopo{
+    background-color: rgba(54,54,54,1);
+}
+
+.LinkTopo{
+    color: rgba(255,255,255,1);
+}
+
+.TopoTabela{
+    font-family:Verdana;
+    font-size: 8pt;    
 }

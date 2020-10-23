@@ -15,6 +15,10 @@
     </head>
 
     <body>
+        
+        <?php
+            include "NavMenu.php";
+        ?>
         <div class="container">
 
             <?php
@@ -255,9 +259,9 @@
                 <?php
             } else { //se a variavel idPg existir
                 $idPg = $_GET['idPg'];
-
+                
                 if ($idPg == 10) {
-                    //Clientes
+                    //Clientes                    
                     $tabela = "customers";
                     include "Lista.php";
                 } else if($idPg == 11){
@@ -287,7 +291,7 @@
                 } else if ($idPg == 42) {
                     include "FormCadastroTransportadora.php";
                 } else if ($idPg == 50) {
-                    //Estoque
+                    //Estoque                    
                     $tabela = "products";
                     include "Lista.php";
                 } else if ($idPg == 51) {
