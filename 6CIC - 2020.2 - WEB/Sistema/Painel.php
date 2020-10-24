@@ -268,7 +268,9 @@
                     include "InfoCliente.php";
                 } else if ($idPg == 12){                    
                     include "FormCadastroCliente.php";
-                } else if ($idPg == 20) {
+                } else if($idPg == 19){
+                    include "ExcluiCliente.php";
+                } else if ($idPg == 20) {                    
                     //Funcionários
                     $tabela = "employees";
                     include "Lista.php";

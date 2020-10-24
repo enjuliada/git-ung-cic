@@ -79,7 +79,7 @@ while($campos = mysqli_fetch_array($rsCampos)){
                 </a>
             </td>
             <td>
-                <a href="?idPg=<?=$idPg + 9?>">
+                <a href="?idPg=<?=$idPg + 9?>&conf=0&id=<?=$dadosLista[0]?>">
                     <i class="fa fa-trash fa-sm" style="color:red;"></i>
                 </a>
             </td>
