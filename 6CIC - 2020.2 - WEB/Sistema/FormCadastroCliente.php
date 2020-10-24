@@ -2,20 +2,26 @@
 $acao = $_GET['acao'];
 
 $dadosForm = array("","","","","","","","","","","");
+$textoBotao = "Cadastrar Cliente";
+$destino = "CadastroDados.php";
+
 
 if($acao == 2){
     $idCli = $_GET['id'];
     $rsDados = consultarCliente($vConn, $idCli);
     
-    $i=0;
-    while($tblDados = mysqli_fetch_array($rsDados)){
+    $tblDados = mysqli_fetch_array($rsDados);
+    
+    for($i=0;$i<count($dadosForm); $i++){
         $dadosForm[$i] = $tblDados[$i];
-        $i=$i+1;
-    }
+    }    
+    
+    $textoBotao = "Alterar Dados";
+    $destino = "AlteraCliente.php";
 }
 ?>
 
-<form action="CadastroDados.php" method="post">
+<form action="<?=$destino?>" method="post">
     <div class="row LinhaForm">
         <div class="col-lg-5">
             <label>Id do Cliente: </label>
@@ -52,11 +58,11 @@ if($acao == 2){
             <input type="text" name="data[6]" class="form-control" value="<?=$dadosForm[6];?>">
         </div>
         <div class="col-lg-4">
-            <label>País: </label>
+            <label>CEP: </label>
             <input type="text" name="data[7]" class="form-control" value="<?=$dadosForm[7];?>">
         </div>
         <div class="col-lg-4">
-            <label>CEP: </label>
+            <label>País: </label>
             <input type="text" name="data[8]" class="form-control" value="<?=$dadosForm[8];?>">
         </div>
     </div>
@@ -72,8 +78,9 @@ if($acao == 2){
     </div>
     <div class="row LinhaForm">
         <div class="col-lg-12">  
-                <input type="hidden" name="tabela" value="customers">
-                <button type="submit" class="btn btn-dark float-right">Cadastrar Cliente</button>            
+                <input type="hidden" name="tabela" value="customers">                
+                <input type="hidden" name="id" value="<?=$idCli?>">
+                <button type="submit" class="btn btn-dark float-right"><?=$textoBotao;?></button>            
         </div>
     </div>
     

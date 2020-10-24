@@ -25,13 +25,14 @@ $totalGasto = 0;
                 Representante: <?= $tblCliente['ContactName'] ?><br>
                 Cargo: <?= $tblCliente['ContactTitle'] ?><br>
                 Telefone: <?= $tblCliente['Phone'] ?><br>
-                Fax: <?= $tblCliente['ContactTitle'] ?><br>
+                E-mail: <?= $tblCliente['Fax'] ?><br>
             </div>
 
             <div class="col-lg-6">
                 Endereço: <?= $tblCliente['Address'] ?><br>
                 Cidade: <?= $tblCliente['City'] ?><br>
                 País: <?= $tblCliente['Country'] ?><br>
+                CEP: <?= $tblCliente['PostalCode'] ?><br>
 
             </div>
         </div>
