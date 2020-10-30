@@ -27,7 +27,7 @@
             if (!isset($_GET['idPg'])) { //se a variavel URL idPg nao existir (monta a home)            
                 ?>
 
-                <div class="row"> <!--1º LINHA (row) -->
+                <div class="row" style="margin-top:10px;"> <!--1º LINHA (row) -->
 
                     <div class="col-lg-4">
                         <div class="card">

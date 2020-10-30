@@ -8,16 +8,15 @@ while($campos = mysqli_fetch_array($rsCampos)){
 }
 
 ?>
-
-<img src="img/b<?=$tabela?>.jpg">
-<h5 class="text-center"><?=strtoupper($tabela);?></h5>
+<br>
+<img src="img/b<?=$tabela?>.jpg" class="img-fluid">
 <hr>
 <a href="?idPg=<?=$idPg + 2;?>&acao=1" class="float-right">
     <i class="fa fa-md fa-plus-square"></i>
     Adicionar Novo
 </a>
 <br>
-<table class="table-sm table-striped" align="center">
+<table class="table-sm table-striped" align="center" width="100%">
 
     <thead class="table-dark">
         <tr>

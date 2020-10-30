@@ -43,13 +43,13 @@ $totalGasto = 0;
         
         <table class="table table-sm table-striped">
             <thead>
-                    <th>Cód. Venda</th>
-                    <th>Data</th>
-                    <th>Entrega</th>
-                    <th>Valor Total</th>
-                    <th>Frete</th>
-                    <th>Transportadora</th>
-                    <th>Vendedor</th>
+                    <th class="TopoTabela">Cód. Venda</th>
+                    <th class="TopoTabela">Data</th>
+                    <th class="TopoTabela">Entrega</th>
+                    <th class="TopoTabela">Valor Total</th>
+                    <th class="TopoTabela">Frete</th>
+                    <th class="TopoTabela">Transportadora</th>
+                    <th class="TopoTabela">Vendedor</th>
                     
             </thead>
             <tbody>                
@@ -58,13 +58,13 @@ $totalGasto = 0;
                     $totalGasto += calcularCompra($vConn, $tblVenda['OrderID']);
                     ?>
                     <tr>
-                        <td><?= $tblVenda['OrderID'] ?></td>            
-                        <td><?= corrigirData($tblVenda['OrderDate']) ?></td>
-                        <td><?= corrigirData($tblVenda['ShippedDate']) ?></td>
-                        <td>U$ <?=number_format(calcularCompra($vConn, $tblVenda['OrderID']),2) ?></td>
-                        <td>U$ <?= number_format($tblVenda['Freight'], 2) ?></td>
-                        <td><?= $tblVenda['CompanyName'] ?></td>
-                        <td><?= $tblVenda['FirstName'] . " " . $tblVenda['LastName'] ?></td>
+                        <td class="TextoDados"><?= $tblVenda['OrderID'] ?></td>            
+                        <td class="TextoDados"><?= corrigirData($tblVenda['OrderDate']) ?></td>
+                        <td class="TextoDados"><?= corrigirData($tblVenda['ShippedDate']) ?></td>
+                        <td class="TextoDados">U$ <?=number_format(calcularCompra($vConn, $tblVenda['OrderID']),2) ?></td>
+                        <td class="TextoDados">U$ <?= number_format($tblVenda['Freight'], 2) ?></td>
+                        <td class="TextoDados"><?= $tblVenda['CompanyName'] ?></td>
+                        <td class="TextoDados"><?= $tblVenda['FirstName'] . " " . $tblVenda['LastName'] ?></td>
 
                     </tr>
 

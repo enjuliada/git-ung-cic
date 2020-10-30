@@ -61,10 +61,7 @@
                                 
                             </p>
                            
-                        </div>
-                        <div class="card-footer">
-                            Saiba mais(+)
-                        </div>                        
+                        </div>                                          
                     </div>    
                 </div>
                 
@@ -79,9 +76,6 @@
                                 Manipulação de estoque, fornecedores e gerenciamento
                                 de dados de produtos.
                             </p>
-                        </div>
-                        <div class="card-footer">
-                            Saiba mais(+)
                         </div>                        
                     </div>
                 </div>
@@ -98,9 +92,7 @@
                                 armazenamento de valores em caixa.
                             </p>
                         </div>
-                        <div class="card-footer">
-                            Saiba mais(+)
-                        </div>                        
+                        
                     </div>
                 </div>                
             </div>            
