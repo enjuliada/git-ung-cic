@@ -8,7 +8,7 @@
 char nomePers[21];
 int classe;
 float atributos[6];
-char nomeAtributos[6][10];
+char nomeAtributos[6][10], ambientes[15][15];
 
 void definirAtrib(int tmpClasse){
 	
@@ -100,18 +100,35 @@ void exibirDados(int tmpClasse){
 	
 }
 
-int main(){
-	
-	int classe;
-	
-	setlocale(LC_ALL,"");
-	
+void gerarDados(){
 	strcpy(nomeAtributos[0],"Vida");
 	strcpy(nomeAtributos[1],"Dano");
 	strcpy(nomeAtributos[2],"Crítico");
 	strcpy(nomeAtributos[3],"Força");
 	strcpy(nomeAtributos[4],"Destreza");
 	strcpy(nomeAtributos[5],"Vitalidade");
+	
+	strcpy(ambientes[0],"Bosque");
+	strcpy(ambientes[1],"Taverna");
+	strcpy(ambientes[2],"Floresta");
+	strcpy(ambientes[3],"Catacumba");
+	strcpy(ambientes[4],"Cemitério");
+	strcpy(ambientes[5],"Caverna");
+	strcpy(ambientes[6],"Pântano");
+	strcpy(ambientes[7],"Vilarejo");
+	strcpy(ambientes[8],"Campo"); 
+	strcpy(ambientes[9],"Castelo"); 
+	strcpy(ambientes[10],"Riacho"); 
+	strcpy(ambientes[11],"Mausoléu");
+}
+
+int main(){
+	
+	int classe;
+	
+	setlocale(LC_ALL,"");
+	
+	gerarDados();	
 	
 	printf("**** CRAZY DUNGEONS ****\n\n");
 	
