@@ -4,11 +4,15 @@
 #include<string.h>
 #include<math.h>
 #include<conio.h>
+#include<time.h>
 
 char nomePers[21];
 int classe;
 float atributos[6];
 char nomeAtributos[6][10], ambientes[15][15];
+char m1[5][12];
+float vM1[5], dM1[5];
+int contTela = 0;
 
 void definirAtrib(int tmpClasse){
 	
@@ -120,6 +124,92 @@ void gerarDados(){
 	strcpy(ambientes[9],"Castelo"); 
 	strcpy(ambientes[10],"Riacho"); 
 	strcpy(ambientes[11],"Mausoléu");
+	
+	strcpy(m1[0],"Aranha");
+	strcpy(m1[1],"morcego");
+	strcpy(m1[2],"Rato");
+	strcpy(m1[3],"Lobo");
+	strcpy(m1[4],"Cobra");
+	
+	vM1[0] = 30;
+	vM1[1] = 40;
+	vM1[2] = 55;
+	vM1[3] = 70;
+	vM1[4] = 60;
+	
+	dM1[0] = 10;
+	dM1[1] = 5;
+	dM1[2] = 8;
+	dM1[3] = 13;
+	dM1[4] = 9;	
+	
+}
+
+int gerarBatalha(int idMonstro){
+			
+		int vidaGanha = vM1[idMonstro]*(float)0.1;
+		
+		while(vM1[idMonstro]>0){
+		
+			vM1[idMonstro]-=atributos[1];// tirando vida do monstro de acordo com meu dano
+			printf("Seu Dano: %.1f\n",atributos[1]);
+			printf("Vida do inimigo: %.1f\n",vM1[idMonstro]);
+		
+			_sleep(1000);
+		
+			if(vM1[idMonstro] <= 0){
+				printf("\n\nVOCÊ MATOU O %s!\n\n",m1[idMonstro]);
+				atributos[0] += vidaGanha;
+				printf("Bonus de vida: %1.f\n\n", atributos[0]);
+				 
+			}else{
+				atributos[0]-=dM1[idMonstro];
+				printf("\n\nDano do Inimigo: %.1f\n",dM1[idMonstro]);
+				printf("Sua vida: %.1f\n\n",atributos[0]);
+				
+				_sleep(1000);
+				
+				if(atributos[0]<=0){
+					printf("**** GAME OVER!!! ***");
+					break;					
+				}
+		}	
+	}
+}
+	
+void criarAmbiente(){
+	
+	vM1[0] = 30;
+	vM1[1] = 40;
+	vM1[2] = 55;
+	vM1[3] = 70;
+	vM1[4] = 60;
+	
+	int opc, idMonstro=0, idTela=0;	
+		
+	idMonstro = rand() % 4;
+	
+	if(contTela<=1){
+		idTela = contTela;
+	}else{
+		idTela = 2 + rand() % 9;
+	}
+	
+		
+	printf("%s está andando em um %s, e se depara com um %s.\nEscolha a opção desejada:\n\n",nomePers, ambientes[idTela], m1[idMonstro]);
+	printf("1 - Enfrentar inimigo\n");
+	printf("2 - Avançar \n\n");
+	printf("Opção: ");
+	scanf("%d", &opc);
+	
+	if(opc == 1){
+		gerarBatalha(idMonstro);
+		system("pause");
+		
+		
+	}
+	system("cls");
+	contTela++;		
 }
 
 int main(){
@@ -127,6 +217,7 @@ int main(){
 	int classe;
 	
 	setlocale(LC_ALL,"");
+	srand(time(NULL));	
 	
 	gerarDados();	
 	
@@ -150,5 +241,13 @@ int main(){
 	
 	printf("\n\n\n");
 	system("pause");
+	
+	system("cls");
+	
+	printf ("Início do jogo...\n\n\n");
+	
+	while(contTela<5){
+		criarAmbiente();
+	}
 	
 }
