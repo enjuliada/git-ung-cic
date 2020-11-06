@@ -4,7 +4,7 @@ $acao = $_GET['acao'];
 $dadosForm = array("","","","","","","","","","","");
 $textoBotao = "Cadastrar Cliente";
 $destino = "CadastroDados.php";
-
+$tituloForm = "Cadastro";
 
 if($acao == 2){
     $idCli = $_GET['id'];
@@ -18,8 +18,14 @@ if($acao == 2){
     
     $textoBotao = "Alterar Dados";
     $destino = "AlteraCliente.php";
+    $tituloForm = "Alteração";
 }
 ?>
+<img src="img/bcustomers.jpg" class="img-fluid" style="margin-top:15px;">
+<center>
+    <u><h5 style="margin-top:15px;">Formulário de <?=$tituloForm?> de dados de Clientes</h5></u>
+</center>
+<hr>
 
 <form action="<?=$destino?>" method="post">
     <div class="row LinhaForm">
@@ -79,7 +85,10 @@ if($acao == 2){
     <div class="row LinhaForm">
         <div class="col-lg-12">  
                 <input type="hidden" name="tabela" value="customers">                
-                <input type="hidden" name="id" value="<?=$idCli?>">
+                <?php if ($acao == 2){ ?>
+                    <input type="hidden" name="id" value="<?=$idCli?>">
+                <?php } ?>
+                
                 <button type="submit" class="btn btn-dark float-right"><?=$textoBotao;?></button>            
         </div>
     </div>

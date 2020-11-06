@@ -6,10 +6,12 @@ $rsFornecedor = listarFornecedoresProduto($vConn, $id); //chamando metodo que re
 
 $tblProduto = mysqli_fetch_array($rsProduto); //abrindo o resultset para exibição dos dados
 ?>
+ <img src="img/bproducts.jpg" class="img-fluid" style="margin-top:15px;">
+<hr>
 
 <div class="row">
     <div class="col-lg-2">
-        <img src="img/user.jpg" class="img-thumbnail">
+        <img src="img/product.jpg" class="img-thumbnail">
     </div>
 
     <div class="col-lg-10">
@@ -35,27 +37,31 @@ $tblProduto = mysqli_fetch_array($rsProduto); //abrindo o resultset para exibiç
 </div>
 
         <hr>
+        <center>
+            <u><h5 style="margin-top:15px;">Dados do Fornecedor</h5></u>
+        </center>
+        <hr>
         
         <table class="table table-sm table-striped">
             <thead>
-                    <th>Código</th>
-                    <th>Nome</th>
-                    <th>Representante</th>
-                    <th>Cargo</th>
-                    <th>Telefone</th>
-                    <th>Fax</th>
+                    <th class="TopoTabela">Código</th>
+                    <th class="TopoTabela">Nome</th>
+                    <th class="TopoTabela">Representante</th>
+                    <th class="TopoTabela">Cargo</th>
+                    <th class="TopoTabela">Telefone</th>
+                    <th class="TopoTabela">Fax</th>
             </thead>
             <tbody>                
                 <?php
                 while ($tblFornecedor = mysqli_fetch_array($rsFornecedor)) {
                     ?>
                     <tr>
-                        <td><?= $tblFornecedor['SupplierID'] ?></td>            
-                        <td><?= $tblFornecedor['CompanyName'] ?></td>
-                        <td><?= $tblFornecedor['ContactName'] ?></td>
-                        <td><?= $tblFornecedor['ContactTitle'] ?></td>
-                        <td><?= $tblFornecedor['Phone'] ?></td>
-                        <td><?= $tblFornecedor['Fax'] ?></td>
+                        <td class="TextoDados"><?= $tblFornecedor['SupplierID'] ?></td>            
+                        <td class="TextoDados"><?= $tblFornecedor['CompanyName'] ?></td>
+                        <td class="TextoDados"><?= $tblFornecedor['ContactName'] ?></td>
+                        <td class="TextoDados"><?= $tblFornecedor['ContactTitle'] ?></td>
+                        <td class="TextoDados"><?= $tblFornecedor['Phone'] ?></td>
+                        <td class="TextoDados"><?= $tblFornecedor['Fax'] ?></td>
                     </tr>
 
                 <?php } ?>

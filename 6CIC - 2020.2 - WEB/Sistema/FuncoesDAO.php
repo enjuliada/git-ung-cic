@@ -126,14 +126,31 @@ function calcularCompra($vConn, $idVenda){
     return $tblTotal['total'];
     
 }
+/*----------------------------------------------------------------------------*/
+
+function listarItens($idVenda){
+    $sqlItens = "select P.productID, P.ProductName, C.categoryName, OD.quantity, OD.UnitPrice, (OD.Quantity * OD.UnitPrice) as parcial
+                from Orders O, orderdetails OD, products P, categories C where 
+                O.orderid = $idVenda and O.OrderID = OD.OrderID and 
+                OD.ProductID = P.ProductID and P.CategoryID = C.CategoryID";
+    
+    $rsItens = mysqli_query($vConn, $sqlItens) or die(mysqli_error($vConn));
+    
+    return $rsItens;
+}
 
 /*----------------------------------------------------------------------------*/
 function corrigirData($tmpData){
+    
+    if($tmpData == NULL) {
+        return "";
+    }else{
  
-    $vData = explode("-", $tmpData);
-    $vDia = explode(" ", $vData[2]);
+        $vData = explode("-", $tmpData);
+        $vDia = explode(" ", $vData[2]);
     
-    return $vDia[0] . "/" . $vData[1] . "/" . $vData[0];  
-    
+        return $vDia[0] . "/" . $vData[1] . "/" . $vData[0];  
+    }
 }
 ?>
+

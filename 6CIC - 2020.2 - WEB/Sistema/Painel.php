@@ -17,6 +17,10 @@
     <body>
         
         <?php
+        
+            session_start();
+            
+            include "Seguranca.php";
             include "NavMenu.php";
         ?>
         <div class="container">

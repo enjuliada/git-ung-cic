@@ -8,7 +8,8 @@ $tblCliente = mysqli_fetch_array($rsCliente); //abrindo o resultset para exibiç
 
 $totalGasto = 0;
 ?>
-
+<img src="img/bcustomers.jpg" class="img-fluid" style="margin-top:15px;">
+<hr>
 <div class="row">
     <div class="col-lg-2">
         <img src="img/user.jpg" class="img-thumbnail">
@@ -40,37 +41,47 @@ $totalGasto = 0;
 </div>
 
         <hr>
+        <center>
+            <u><h5 style="margin-top:15px;">Compras Efetuadas</h5></u>
+        </center>
+        <hr>
         
-        <table class="table table-sm table-striped">
-            <thead>
-                    <th class="TopoTabela">Cód. Venda</th>
-                    <th class="TopoTabela">Data</th>
-                    <th class="TopoTabela">Entrega</th>
-                    <th class="TopoTabela">Valor Total</th>
-                    <th class="TopoTabela">Frete</th>
-                    <th class="TopoTabela">Transportadora</th>
-                    <th class="TopoTabela">Vendedor</th>
+        <div class="row">
+                    <div class="col-lg-2 TopoTabela">Cód. Venda</div>
+                    <div class="col-lg-1 TopoTabela">Data</div>
+                    <div class="col-lg-1 TopoTabela">Entrega</div>
+                    <div class="col-lg-2 TopoTabela">Valor Total</div>
+                    <div class="col-lg-2 TopoTabela">Frete</div>
+                    <div class="col-lg-2 TopoTabela">Transportadora</div>
+                    <div class="col-lg-2 TopoTabela">Vendedor</div>
                     
-            </thead>
-            <tbody>                
+        </div>
                 <?php
                 while ($tblVenda = mysqli_fetch_array($rsVenda)) {
+                    $idVenda = $tblVenda['OrderId'];
+                    $rsItens = listarItens($idVenda);
+                    
                     $totalGasto += calcularCompra($vConn, $tblVenda['OrderID']);
                     ?>
-                    <tr>
-                        <td class="TextoDados"><?= $tblVenda['OrderID'] ?></td>            
-                        <td class="TextoDados"><?= corrigirData($tblVenda['OrderDate']) ?></td>
-                        <td class="TextoDados"><?= corrigirData($tblVenda['ShippedDate']) ?></td>
-                        <td class="TextoDados">U$ <?=number_format(calcularCompra($vConn, $tblVenda['OrderID']),2) ?></td>
-                        <td class="TextoDados">U$ <?= number_format($tblVenda['Freight'], 2) ?></td>
-                        <td class="TextoDados"><?= $tblVenda['CompanyName'] ?></td>
-                        <td class="TextoDados"><?= $tblVenda['FirstName'] . " " . $tblVenda['LastName'] ?></td>
+                    <div class="row border-top" style="padding-top:5px;padding-bottom:5px;">
+                        <div class="col-lg-2 TextoDados">
+                            <button class="BotaoDetalhes" onclick=""><?= $tblVenda['OrderID']?></button>
+                        </div>            
+                        <div class="col-lg-1 TextoDados"><?= corrigirData($tblVenda['OrderDate']) ?></div>
+                        <div class="col-lg-1 TextoDados"><?= corrigirData($tblVenda['ShippedDate']) ?></div>
+                        <div class="col-lg-2 TextoDados">U$ <?=number_format(calcularCompra($vConn, $tblVenda['OrderID']),2) ?></div>
+                        <div class="col-lg-2 TextoDados">U$ <?= number_format($tblVenda['Freight'], 2) ?></div>
+                        <div class="col-lg-2 TextoDados"><?= $tblVenda['CompanyName'] ?></div>
+                        <div class="col-lg-2 TextoDados"><?= $tblVenda['FirstName'] . " " . $tblVenda['LastName'] ?></div>
 
-                    </tr>
-
-                <?php } ?>
-            </tbody>
-        </table>
+                    </div>
+                <?php
+                    while(){ ?>
+                 
+                <?php        
+                    }
+                 } ?>
+        
         
         <hr>
         <div class="float-right">
