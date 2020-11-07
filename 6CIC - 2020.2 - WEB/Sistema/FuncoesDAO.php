@@ -79,6 +79,14 @@ function consultarPorProduto($vConn, $Id){
 }
 
 /*----------------------------------------------------------------------------*/
+function consultarVenda($vConn, $Id){
+    $sqlCliente = "Select * from Orders O, Shippers S, Employees E where O.OrderID = $Id and O.EmployeeID = E.EmployeeID and O.ShipVia = S.ShipperID";    
+    $rsCliente = mysqli_query($vConn, $sqlCliente) or die(mysqli_error($vConn));
+    
+    return $rsCliente;
+}
+
+/*----------------------------------------------------------------------------*/
 
 function listarVendas($vConn, $id){
     $sqlVendas = "Select * from orders O, employees E, Shippers S where O.CustomerId like '$id' and O.EmployeeID = E.EmployeeID and O.ShipVia = S.ShipperID";    
@@ -128,7 +136,7 @@ function calcularCompra($vConn, $idVenda){
 }
 /*----------------------------------------------------------------------------*/
 
-function listarItens($idVenda){
+function listarItens($vConn, $idVenda){
     $sqlItens = "select P.productID, P.ProductName, C.categoryName, OD.quantity, OD.UnitPrice, (OD.Quantity * OD.UnitPrice) as parcial
                 from Orders O, orderdetails OD, products P, categories C where 
                 O.orderid = $idVenda and O.OrderID = OD.OrderID and 

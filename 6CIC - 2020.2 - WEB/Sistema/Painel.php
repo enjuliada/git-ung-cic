@@ -12,6 +12,19 @@
 
         <link rel="stylesheet" href="css/estilo.css">
 
+        <script>
+            function mostrarItens(linha){
+                //pegando estado atual da DIV selecionada
+                var status = document.getElementById(linha).style.display;
+                
+                if(status == "block"){
+                    document.getElementById(linha).style.display = "none";
+                }else{
+                    document.getElementById(linha).style.display = "block";
+                }
+            }
+        </script>
+        
     </head>
 
     <body>
@@ -308,6 +321,8 @@
                     //Vendas
                     $tabela = "orders";
                     include "Lista.php";
+                }else if($idPg == 61){
+                    include "InfoVenda.php";
                 } else if ($idPg == 62) {
                     include "FormCadastroVenda.php";
                 }
