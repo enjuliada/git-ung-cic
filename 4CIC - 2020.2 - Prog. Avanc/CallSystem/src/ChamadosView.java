@@ -10,8 +10,12 @@ import java.awt.event.*;
 import java.awt.*;
 import java.util.*;
 
-public class ChamadosView extends JInternalFrame {
+public class ChamadosView extends JInternalFrame implements ActionListener {
 
+    public static JMenuBar mbrChamados;
+    public static JMenu mnuArquivo;
+    public static JMenuItem mniNovo, mniFechar;    
+    
     public static String strCampos[] = {"ID", "Titulo:", "Data de Abertura:", "Responsável:", "Cód. Cliente:", "Nome do Cliente:", "Categoria:"};
     public static JLabel lblCampos[], lblIdCli, lblIdCham;
     public static JTextField txtCampos[], txtIdCli, txtIdCham;
@@ -33,12 +37,31 @@ public class ChamadosView extends JInternalFrame {
         ctnChamados.setLayout(null);
         this.add(ctnChamados);
 
+        mbrChamados = new JMenuBar();
+        this.setJMenuBar(mbrChamados);
+        
+        mnuArquivo = new JMenu("Arquivo");
+        mnuArquivo.setMnemonic('a');
+        mbrChamados.add(mnuArquivo);
+        
+        mniNovo = new JMenuItem("Novo Chamado", new ImageIcon("img/icons/new.png"));
+        mniNovo.addActionListener(this);
+        mnuArquivo.add(mniNovo);
+        
+        mnuArquivo.add(new JSeparator());
+        
+        mniFechar = new JMenuItem("Fechar", new ImageIcon("img/icons/exit.png"));
+        mniFechar.addActionListener(this);
+        mnuArquivo.add(mniFechar);
+                
         btnRegistrar = new JButton("Registrar Solicitação");
+        btnRegistrar.addActionListener(this);
         btnRegistrar.setEnabled(false);
         btnRegistrar.setBounds(30, 460, 370, 30);
         ctnChamados.add(btnRegistrar);
 
         btnEncerrar = new JButton("Encerrar Chamado");
+        btnEncerrar.addActionListener(this);
         btnEncerrar.setEnabled(false);
         btnEncerrar.setBounds(450, 460, 350, 30);
         ctnChamados.add(btnEncerrar);
@@ -48,6 +71,7 @@ public class ChamadosView extends JInternalFrame {
         ctnChamados.add(lblDescricao);
 
         txaDescricao = new JTextArea();
+        txaDescricao.setLineWrap(true);
         txaDescricao.setBounds(30, 295, 370, 150);
         ctnChamados.add(txaDescricao);
 
@@ -109,16 +133,87 @@ public class ChamadosView extends JInternalFrame {
             }
 
         }
+        
+        txtCampos[4].addFocusListener(new FocusAdapter() {
+            public void focusLost(FocusEvent evt){                
+                try{
+                    ClientesVO tmpCliente = ClientesDAO.consultarCliente(txtCampos[4].getText());
+                    txtCampos[5].setText(tmpCliente.getNomeEmpresa());
+                }catch(Exception erro){
+                    JOptionPane.showMessageDialog(null, erro.getMessage());
+                }
+            }
+        });
 
         cmbTipos = new JComboBox(carregarTipos());
         cmbTipos.setBounds(160, 235, 240, 20);
         ctnChamados.add(cmbTipos);
 
+        desbloquearCampos(false);
+        
         this.setClosable(true);
         this.setSize(1350, 540);
         this.show();
 
     }//fechando construtor
+    
+    public void actionPerformed(ActionEvent evt){
+        if(evt.getSource() == mniNovo){
+            desbloquearCampos(true);
+            txtCampos[0].setEditable(false);
+            txtCampos[5].setEditable(false);
+            txtCampos[0].setText(gerarId());
+        }
+        else if(evt.getSource() == btnRegistrar){
+            try{
+                
+                ChamadosVO tmpChamado = new ChamadosVO();
+                
+                tmpChamado.setId(Integer.parseInt(txtCampos[0].getText()));
+                tmpChamado.setStatus(0);
+                tmpChamado.setTitulo(txtCampos[1].getText());
+                tmpChamado.setDataAbertura(txtCampos[2].getText());
+                tmpChamado.setLoginUsuario(txtCampos[3].getText());
+                tmpChamado.setIdCliente(txtCampos[4].getText());
+                tmpChamado.setIdCategoria(cmbTipos.getSelectedIndex()+1);
+                tmpChamado.setDescricao(txaDescricao.getText());
+                tmpChamado.setSolucao("");
+                tmpChamado.setDataFechamento("2020-12-31");
+                
+                ChamadosDAO.registrarChamado(tmpChamado);
+                
+                JOptionPane.showMessageDialog(null, "Um novo chamado foi registrado");
+                desbloquearCampos(false);
+                
+                
+            }catch(Exception erro){
+                JOptionPane.showMessageDialog(null, erro.getMessage());
+            }
+        }
+        
+    }
+    
+    public static String gerarId(){
+        int novoId = 0;
+        
+        try{
+            novoId = ChamadosDAO.gerarId();
+        }catch(Exception erro){
+            JOptionPane.showMessageDialog(null, erro);
+        }
+        return "" + novoId;
+    }
+    
+    public static void desbloquearCampos(boolean tmpStatus){
+        for(int i=0; i<txtCampos.length;i++){
+            txtCampos[i].setEditable(tmpStatus);
+        }        
+        cmbTipos.setEnabled(tmpStatus);      
+        txaDescricao.setEditable(tmpStatus);
+        txaSolucao.setEditable(tmpStatus);
+        
+        btnRegistrar.setEnabled(tmpStatus);
+    }
     
     public static String[] carregarTipos(){
         
