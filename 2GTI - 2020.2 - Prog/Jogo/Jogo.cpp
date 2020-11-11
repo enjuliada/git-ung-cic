@@ -8,11 +8,16 @@
 
 char nomePers[21];
 int classe;
-float atributos[6];
+int atributos[6];
 char nomeAtributos[6][10], ambientes[15][15];
-char m1[5][12];
-float vM1[5], dM1[5];
+char m1[5][12], m2[5][12];
+int vM1[5], dM1[5];
+int vM2[5], dM2[5];
 int contTela = 0;
+
+char nBoss[20];
+int atribBoss[2];
+
 
 void definirAtrib(int tmpClasse){
 	
@@ -99,7 +104,7 @@ void exibirDados(int tmpClasse){
 	
 	int i;
 	for(i=0;i<6;i++){
-		printf("%s: %.1f\n",nomeAtributos[i], atributos[i]);
+		printf("%s: %d\n",nomeAtributos[i], atributos[i]);
 	}
 	
 }
@@ -126,46 +131,120 @@ void gerarDados(){
 	strcpy(ambientes[11],"Mausoléu");
 	
 	strcpy(m1[0],"Aranha");
-	strcpy(m1[1],"morcego");
+	strcpy(m1[1],"Morcego");
 	strcpy(m1[2],"Rato");
 	strcpy(m1[3],"Lobo");
 	strcpy(m1[4],"Cobra");
 	
-	vM1[0] = 30;
-	vM1[1] = 40;
-	vM1[2] = 55;
-	vM1[3] = 70;
-	vM1[4] = 60;
+	strcpy(m2[0],"Zumbi");
+	strcpy(m2[1],"Esqueleto");
+	strcpy(m2[2],"Goblin");
+	strcpy(m2[3],"Mago Sombrio");
+	strcpy(m2[4],"Elfo");
 	
-	dM1[0] = 10;
-	dM1[1] = 5;
-	dM1[2] = 8;
-	dM1[3] = 13;
-	dM1[4] = 9;	
+	vM1[0] = 45;
+	vM1[1] = 50;
+	vM1[2] = 75;
+	vM1[3] = 90;
+	vM1[4] = 80;
+	
+	vM2[0] = 85;
+	vM2[1] = 100;
+	vM2[2] = 90;
+	vM2[3] = 110;
+	vM2[4] = 95;
+	
+	dM1[0] = 15;
+	dM1[1] = 10;
+	dM1[2] = 13;
+	dM1[3] = 18;
+	dM1[4] = 14;	
+	
+	dM2[0] = 35;
+	dM2[1] = 45;
+	dM2[2] = 35;
+	dM2[3] = 50;
+	dM2[4] = 40;	
+	
+	strcpy(nBoss, "Horn - The King");
+	
+	atribBoss[0] = 150;
+	atribBoss[1] = 40;	
 	
 }
 
 int gerarBatalha(int idMonstro){
+	
+	bool morteC = false, morteB = false;
+	int dBoss, dChar;
+	
+	
+	if(idMonstro == 100){
+		
+		while(morteB == false && morteC == false){
+					
+			
+			dBoss = rand() % atribBoss[1];
+			
+			atributos[0]-= dBoss;
+			printf("\n\nDano do Inimigo: %d\n",dBoss);
+			printf("Sua vida: %d\n\n",atributos[0]);
+			
+			_sleep(1000);
+			
+			if(atributos[0] <= 0){
+				morteC = true;
+			}
+			
+			if(morteC == true){
+				printf("VOCÊ MORREU!");
+				break;
+			} 
+			
+			dChar = rand() % atributos[1];
+				
+			atribBoss[0]-= dChar;// tirando vida do monstro de acordo com meu dano
+			printf("Seu Dano: %d\n",dChar);
+			printf("Vida do inimigo: %d\n\n",atribBoss[0]);
+			
+			_sleep(1000);
+			
+			if(atribBoss[0] <= 0){
+				morteB = true;
+			}
+			
+			if(morteB == true){
+				printf("VOCÊ VENCEU!");
+				break;
+			} 
+			
+		}
+		
+		
+	}else{
+		
+		if(contTela < 6){
+		
 			
 		int vidaGanha = vM1[idMonstro]*(float)0.1;
 		
 		while(vM1[idMonstro]>0){
 		
 			vM1[idMonstro]-=atributos[1];// tirando vida do monstro de acordo com meu dano
-			printf("Seu Dano: %.1f\n",atributos[1]);
-			printf("Vida do inimigo: %.1f\n",vM1[idMonstro]);
+			printf("Seu Dano: %d\n",atributos[1]);
+			printf("Vida do inimigo: %d\n",vM1[idMonstro]);
 		
 			_sleep(1000);
 		
 			if(vM1[idMonstro] <= 0){
 				printf("\n\nVOCÊ MATOU O %s!\n\n",m1[idMonstro]);
 				atributos[0] += vidaGanha;
-				printf("Bonus de vida: %1.f\n\n", atributos[0]);
+				printf("Bonus de vida: %d\n\n", atributos[0]);
 				 
 			}else{
 				atributos[0]-=dM1[idMonstro];
-				printf("\n\nDano do Inimigo: %.1f\n",dM1[idMonstro]);
-				printf("Sua vida: %.1f\n\n",atributos[0]);
+				printf("\n\nDano do Inimigo: %d\n",dM1[idMonstro]);
+				printf("Sua vida: %d\n\n",atributos[0]);
 				
 				_sleep(1000);
 				
@@ -174,6 +253,39 @@ int gerarBatalha(int idMonstro){
 					break;					
 				}
 		}	
+	}
+	
+	}else{
+				
+		int vidaGanha = vM2[idMonstro]*(float)0.1;
+		
+		while(vM2[idMonstro]>0){
+		
+			vM2[idMonstro]-=atributos[1];// tirando vida do monstro de acordo com meu dano
+			printf("Seu Dano: %d\n",atributos[1]);
+			printf("Vida do inimigo: %d\n",vM2[idMonstro]);
+		
+			_sleep(1000);
+		
+			if(vM2[idMonstro] <= 0){
+				printf("\n\nVOCÊ MATOU O %s!\n\n",m2[idMonstro]);
+				atributos[0] += vidaGanha;
+				printf("Bonus de vida: %d\n\n", atributos[0]);
+				 
+			}else{
+				atributos[0]-=dM2[idMonstro];
+				printf("\n\nDano do Inimigo: %d\n",dM2[idMonstro]);
+				printf("Sua vida: %d\n\n",atributos[0]);
+				
+				_sleep(1000);
+				
+				if(atributos[0]<=0){
+					printf("**** GAME OVER!!! ***");
+					break;					
+				}
+		}	
+	}
+	}
 	}
 }
 	
@@ -187,7 +299,7 @@ void criarAmbiente(){
 	
 	int opc, idMonstro=0, idTela=0;	
 		
-	idMonstro = rand() % 4;
+	idMonstro = rand() % 5;
 	
 	if(contTela<=1){
 		idTela = contTela;
@@ -195,8 +307,44 @@ void criarAmbiente(){
 		idTela = 2 + rand() % 9;
 	}
 	
-		
-	printf("%s está andando em um %s, e se depara com um %s.\nEscolha a opção desejada:\n\n",nomePers, ambientes[idTela], m1[idMonstro]);
+	switch(idTela){
+		case 0:
+			system("COLOR BF");
+			break;
+		case 1:
+			system("COLOR CF");
+			break;
+		case 2:
+			system("COLOR 1F");
+			break;
+		case 3:
+			system("COLOR 06");
+			break;	
+		case 4:
+			system("COLOR 0B");
+			break;	
+		case 5:
+			system("COLOR 87");
+			break;
+		case 6:
+			system("COLOR CF");
+			break;
+		case 7:
+			system("COLOR 1F");
+			break;
+		case 8:
+			system("COLOR 06");
+			break;	
+		case 9:
+			system("COLOR 0B");
+			break;	
+	}	
+	
+	if(contTela < 6)	
+		printf("#%d - %s está andando em um %s, e se depara com um %s.\nEscolha a opção desejada:\n\n",contTela, nomePers, ambientes[idTela], m1[idMonstro]);
+	else
+		printf("#%d - %s está andando em um %s, e se depara com um %s.\nEscolha a opção desejada:\n\n",contTela, nomePers, ambientes[idTela], m2[idMonstro]);
+	
 	printf("1 - Enfrentar inimigo\n");
 	printf("2 - Avançar \n\n");
 	printf("Opção: ");
@@ -246,8 +394,14 @@ int main(){
 	
 	printf ("Início do jogo...\n\n\n");
 	
-	while(contTela<5){
+	while(contTela<10){
 		criarAmbiente();
 	}
+	
+	//Batalha Final
+	system("cls");
+	system("COLOR 4F");
+	printf("*******Chegou o momento de enfrentar o %s.******\n\n", nBoss);
+	gerarBatalha(100);	
 	
 }
