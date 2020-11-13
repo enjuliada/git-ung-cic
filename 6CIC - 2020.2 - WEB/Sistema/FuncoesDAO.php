@@ -2,6 +2,18 @@
 
 include "Conexao.php";
 
+function gerarIdVenda($vConn){
+    $sqlId = "Select OrderId from orders order by orderid desc limit 1";
+    $rsId = mysqli_query($vConn, $sqlId) or die(mysqli_error($vConn));
+    
+    $tblId = mysqli_fetch_array($rsId);
+    
+    $novoId = $tblId['OrderId'];
+    return $novoId + 1;
+    
+}
+
+
 function listarRegistros($vConn, $tabela){
     
     $sqlLista = "Select * from $tabela";
@@ -137,7 +149,7 @@ function calcularCompra($vConn, $idVenda){
 /*----------------------------------------------------------------------------*/
 
 function listarItens($vConn, $idVenda){
-    $sqlItens = "select P.productID, P.ProductName, C.categoryName, OD.quantity, OD.UnitPrice, (OD.Quantity * OD.UnitPrice) as parcial
+    $sqlItens = "Select P.productID, P.ProductName, C.categoryName, OD.quantity, OD.UnitPrice, (OD.Quantity * OD.UnitPrice) as parcial
                 from Orders O, orderdetails OD, products P, categories C where 
                 O.orderid = $idVenda and O.OrderID = OD.OrderID and 
                 OD.ProductID = P.ProductID and P.CategoryID = C.CategoryID";
