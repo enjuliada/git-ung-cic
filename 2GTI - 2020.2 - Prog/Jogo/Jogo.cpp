@@ -18,6 +18,31 @@ int contTela = 0;
 char nBoss[20];
 int atribBoss[2];
 
+int sorteados[12];
+
+void desenhaBoss(){
+printf("    .                                                      .\n");     
+printf("        .n                   .                 .                  n.\n");
+printf("  .   .dP                  dP                   9b                 9b.    .\n");  
+printf(" 4    qXb         .       dX                     Xb       .        dXp     t\n");  
+printf("dX.    9Xb      .dXb    __                         __    dXb.     dXP     .Xb\n");
+printf("9XXb._       _.dXXXXb dXXXXbo.                 .odXXXXb dXXXXb._       _.dXXP\n");
+printf(" 9XXXXXXXXXXXXXXXXXXXVXXXXXXXXOo.           .oOXXXXXXXXVXXXXXXXXXXXXXXXXXXXP\n");
+printf("` 9XXXXXXXXXXXXXXXXXXXXX'~   ~`OOO8b   d8OOO'~   ~`XXXXXXXXXXXXXXXXXXXXXP'\n");
+printf("`   9XXXXXXXXXXXP' `9XX'   DIE    `98v8P'  HUMAN   `XXP' `9XXXXXXXXXXXP'\n");
+printf("       ~~~~~~~       9X.          .db|db.          .XP       ~~~~~~~\n");
+printf("                       )b.  .dbo.dP'`v'`9b.odb.  .dX(\n");
+printf("                     ,dXXXXXXXXXXXb     dXXXXXXXXXXXb.\n");
+printf("                    dXXXXXXXXXXXP'   .   `9XXXXXXXXXXXb\n");
+printf("                   dXXXXXXXXXXXXb   d|b   dXXXXXXXXXXXXb\n");
+printf("                   9XXb'   `XXXXXb.dX|Xb.dXXXXX'   `dXXP\n");
+printf("                    `'      9XXXXXX(   )XXXXXXP      `'\n");
+printf("                             XXXX X.`v'.X XXXX\n");
+printf("                             XP^X'`b   d'`X^XX\n");
+printf("                             X. 9  `   '  P )X\n");
+printf("                             `b  `       '  d'\n");
+printf("                              `             '\n");                 
+}
 
 void definirAtrib(int tmpClasse){
 	
@@ -110,6 +135,11 @@ void exibirDados(int tmpClasse){
 }
 
 void gerarDados(){
+	int i;
+	for(i=0; i<12; i++){
+		sorteados[i] = -1;
+	}
+	
 	strcpy(nomeAtributos[0],"Vida");
 	strcpy(nomeAtributos[1],"Dano");
 	strcpy(nomeAtributos[2],"Crítico");
@@ -289,6 +319,17 @@ int gerarBatalha(int idMonstro){
 	}
 }
 	
+int sortear(){	
+	int i;
+	int num;
+		for(i=0; i<12; i++){
+			num = 2 + rand() % 9;
+			//printf("%d    ",num);			
+		}	
+	
+	return num;	
+}	
+	
 void criarAmbiente(){
 	
 	vM1[0] = 30;
@@ -298,16 +339,75 @@ void criarAmbiente(){
 	vM1[4] = 60;
 	
 	int opc, idMonstro=0, idTela=0;	
+	int i,j;
+	int repetiu=0;	
+	int qtde=0;
 		
 	idMonstro = rand() % 5;
 	
 	if(contTela<=1){
 		idTela = contTela;
-	}else{
-		idTela = 2 + rand() % 9;
-	}
+		sorteados[contTela] = idTela;
+		printf("#%d - %s está andando em um %s, e se depara com um %s.\nEscolha a opção desejada:\n\n",contTela, nomePers, ambientes[idTela], m1[idMonstro]);				
+		contTela++;
+		
+		printf("1 - Enfrentar inimigo\n");
+	printf("2 - Avançar \n\n");
+	printf("Opção: ");
+	scanf("%d", &opc);
 	
-	switch(idTela){
+	if(opc == 1){
+		gerarBatalha(idMonstro);
+		system("pause");
+		
+		
+	}
+	system("cls");
+
+
+		
+	}else{
+				
+		for(i=0; i<12; i++){
+		repetiu = 0;
+		idTela = sortear();
+		
+		if(contTela>0){		
+			for(j=contTela-1; j>=0; j--){
+				if(idTela == sorteados[j]){
+				//printf("%d",idTela);
+					//printf("**\n");
+					repetiu = 1;
+					i--;				
+				}		
+			}
+			
+			if(repetiu == 0){
+				if(contTela < 6)	
+					printf("#%d - %s está andando em um %s, e se depara com um %s.\nEscolha a opção desejada:\n\n",contTela, nomePers, ambientes[idTela], m1[idMonstro]);
+				else
+					printf("#%d - %s está andando em um %s, e se depara com um %s.\nEscolha a opção desejada:\n\n",contTela, nomePers, ambientes[idTela], m2[idMonstro]);
+					
+				sorteados[contTela] = idTela;
+				printf("1 - Enfrentar inimigo\n");
+	printf("2 - Avançar \n\n");
+	printf("Opção: ");
+	scanf("%d", &opc);
+	
+	if(opc == 1){
+		gerarBatalha(idMonstro);
+		system("pause");
+		
+		
+	}
+	system("cls");
+
+				contTela++;
+			}
+			
+		}
+		
+	/*	switch(idTela){
 		case 0:
 			system("COLOR BF");
 			break;
@@ -339,25 +439,16 @@ void criarAmbiente(){
 			system("COLOR 0B");
 			break;	
 	}	
+	*/
 	
-	if(contTela < 6)	
-		printf("#%d - %s está andando em um %s, e se depara com um %s.\nEscolha a opção desejada:\n\n",contTela, nomePers, ambientes[idTela], m1[idMonstro]);
-	else
-		printf("#%d - %s está andando em um %s, e se depara com um %s.\nEscolha a opção desejada:\n\n",contTela, nomePers, ambientes[idTela], m2[idMonstro]);
-	
-	printf("1 - Enfrentar inimigo\n");
-	printf("2 - Avançar \n\n");
-	printf("Opção: ");
-	scanf("%d", &opc);
-	
-	if(opc == 1){
-		gerarBatalha(idMonstro);
-		system("pause");
+		
+	}
 		
 		
 	}
-	system("cls");
-	contTela++;		
+	
+	
+	
 }
 
 int main(){
@@ -394,7 +485,7 @@ int main(){
 	
 	printf ("Início do jogo...\n\n\n");
 	
-	while(contTela<10){
+	while(contTela<11){
 		criarAmbiente();
 	}
 	
@@ -402,6 +493,10 @@ int main(){
 	system("cls");
 	system("COLOR 4F");
 	printf("*******Chegou o momento de enfrentar o %s.******\n\n", nBoss);
+	
+	desenhaBoss();
+	printf("\n\n");
+	
 	gerarBatalha(100);	
 	
 }
