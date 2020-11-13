@@ -22,18 +22,25 @@ $totalGasto = 0;
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-5">
                 Representante: <?= $tblCliente['ContactName'] ?><br>
                 Cargo: <?= $tblCliente['ContactTitle'] ?><br>
                 Telefone: <?= $tblCliente['Phone'] ?><br>
                 E-mail: <?= $tblCliente['Fax'] ?><br>
             </div>
 
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 Endereço: <?= $tblCliente['Address'] ?><br>
                 Cidade: <?= $tblCliente['City'] ?><br>
                 País: <?= $tblCliente['Country'] ?><br>
                 CEP: <?= $tblCliente['PostalCode'] ?><br>
+
+            </div>
+            <div class="col-lg-2 text-center">
+                <a href="?idPg=62" class="text-danger">
+                    <i class="fa fa-3x fa-shopping-bag"></i><br>
+                    Nova Venda
+                </a>
 
             </div>
         </div>
