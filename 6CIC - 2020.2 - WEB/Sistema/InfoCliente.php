@@ -37,7 +37,7 @@ $totalGasto = 0;
 
             </div>
             <div class="col-lg-2 text-center">
-                <a href="?idPg=62" class="text-danger">
+                <a href="?idPg=62&idCli=<?=$idCli;?>" class="text-danger">
                     <i class="fa fa-3x fa-shopping-bag"></i><br>
                     Nova Venda
                 </a>
