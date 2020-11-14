@@ -84,7 +84,7 @@ function consultarPorFuncionario($vConn, $Id){
 /*----------------------------------------------------------------------------*/
 
 function consultarPorProduto($vConn, $Id){
-    $sqlProduto = "Select * from products where ProductID like '$Id'";    
+    $sqlProduto = "Select * from products P, categories C where P.ProductID like '$Id' and P.CategoryId = C.categoryID";    
     $rsProduto = mysqli_query($vConn, $sqlProduto) or die(mysqli_error($vConn));
     
     return $rsProduto;
@@ -137,8 +137,8 @@ function listarFornecedoresProduto($vConn, $id){
 /*----------------------------------------------------------------------------*/
 
 function calcularCompra($vConn, $idVenda){
-    $sqlTotal = "SELECT sum(OD.UnitPrice * OD.Quantity) as total FROM Orderdetails OD,";
-    $sqlTotal .= "Orders O where OD.orderid = O.orderid and O.orderid = $idVenda";
+    $sqlTotal = "SELECT sum(P.UnitPrice * OD.Quantity) as total FROM Orderdetails OD, Products P,";
+    $sqlTotal .= "Orders O where OD.orderid = O.orderid and O.orderid = $idVenda and OD.ProductId = P.ProductId";
     $rsTotal = mysqli_query($vConn, $sqlTotal) or die(mysqli_error($vConn));
     
     $tblTotal = mysqli_fetch_array($rsTotal);
@@ -149,7 +149,7 @@ function calcularCompra($vConn, $idVenda){
 /*----------------------------------------------------------------------------*/
 
 function listarItens($vConn, $idVenda){
-    $sqlItens = "Select P.productID, P.ProductName, C.categoryName, OD.quantity, OD.UnitPrice, (OD.Quantity * OD.UnitPrice) as parcial
+    $sqlItens = "Select P.productID, P.ProductName, C.categoryName, OD.quantity, P.UnitPrice, (OD.Quantity * P.UnitPrice) as parcial
                 from Orders O, orderdetails OD, products P, categories C where 
                 O.orderid = $idVenda and O.OrderID = OD.OrderID and 
                 OD.ProductID = P.ProductID and P.CategoryID = C.CategoryID";
@@ -171,6 +171,27 @@ function corrigirData($tmpData){
     
         return $vDia[0] . "/" . $vData[1] . "/" . $vData[0];  
     }
+}
+
+/*----------------------------------------------------------------------------*/
+
+function registrarItens($vConn, $sessItens, $idPed){
+    
+    $vItens = explode("#",$sessItens);
+    
+    for($i=0;$i<count($vItens)-1;$i++){
+        $dadosItem = explode("-", $vItens[$i]);
+        $idProd = $dadosItem[0];
+        $qProd = $dadosItem[1];
+        
+        $sqlCadItem = "Insert into orderdetails(orderId, ProductId, quantity) values(";
+        $sqlCadItem .= "$idPed,$idProd,$qProd)";
+        
+        mysqli_query($vConn, $sqlCadItem) or die(mysqli_error($vConn));
+        
+        //echo $sqlCadItem . "<br><br>";
+    }
+    
 }
 ?>
 

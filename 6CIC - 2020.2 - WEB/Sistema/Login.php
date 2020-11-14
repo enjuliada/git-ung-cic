@@ -35,6 +35,7 @@ if(mysqli_num_rows($rsLogin) > 0){
     $_SESSION['horaLogin'] = "Acesso em " . date("d-m-Y") . " às " . date("h:i:s");
     $_SESSION['permissao'] = $dadosLogin['Permission'];    
     $_SESSION['statusLogin'] = 1;   
+    $_SESSION['itens'] = "";
                  
     echo "<script>location.href='Painel.php';</script>";
     
