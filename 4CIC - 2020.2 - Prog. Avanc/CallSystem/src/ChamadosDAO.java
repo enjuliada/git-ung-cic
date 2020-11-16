@@ -1,4 +1,4 @@
-
+import java.util.*;
 import java.sql.*;
 
 public class ChamadosDAO {
@@ -81,6 +81,101 @@ public class ChamadosDAO {
         } catch (Exception erro) {
             throw new Exception(erro.getMessage());
         }
+    }
+    
+    public static List<ChamadosVO> listarChamados() throws Exception{
+        List<ChamadosVO> lista = new ArrayList<ChamadosVO>();
+        
+        try {
+            ConexaoDAO.abreConexao();
+        } catch (Exception erro) {
+            throw new Exception(erro.getMessage());
+        }
+           
+        try {
+            //PROGRAMAR
+            String sqlChamados = "Select * from Calls C, CallTypes CT where C.TypeID = CT.TypeID order by CallDate desc";
+            stChamados = ConexaoDAO.connSistema.createStatement();
+            rsChamados = stChamados.executeQuery(sqlChamados);
+            
+            while(rsChamados.next()){
+                ChamadosVO tmpChamado = new ChamadosVO();
+                
+                tmpChamado.setId(rsChamados.getInt("CallID"));
+                tmpChamado.setStatus(rsChamados.getInt("Status"));
+                tmpChamado.setIdCategoria(rsChamados.getInt("TypeID"));
+                tmpChamado.setDataAbertura(rsChamados.getString("CallDate"));
+                tmpChamado.setDataFechamento(rsChamados.getString("FinishDate"));
+                tmpChamado.setTitulo(rsChamados.getString("Title"));
+                tmpChamado.setDescricao(rsChamados.getString("Description"));
+                tmpChamado.setSolucao(rsChamados.getString("Solution"));
+                tmpChamado.setIdCliente(rsChamados.getString("CustomerID"));
+                tmpChamado.setLoginUsuario(rsChamados.getString("UserID"));
+                
+                lista.add(tmpChamado);
+            }
+                        
+        } catch (Exception erro) {
+            String msgErro = "Falha na listagem dos chamados.\n";
+            msgErro += "Verifique a sintaxe da instrução SQL, nome de campos e tabelas.\n\n";
+            msgErro += "Erro Original: " + erro.getMessage();
+
+            throw new Exception(msgErro);
+        }
+              
+        try {
+            ConexaoDAO.fechaConexao();
+        } catch (Exception erro) {
+            throw new Exception(erro.getMessage());
+        }
+        
+        return lista;
+    }
+    
+    public static ChamadosVO consultarChamado(int tmpId) throws Exception{
+        ChamadosVO tmpChamado = new ChamadosVO();        
+        
+        try {
+            ConexaoDAO.abreConexao();
+        } catch (Exception erro) {
+            throw new Exception(erro.getMessage());
+        }
+           
+        try {
+            //PROGRAMAR
+            String sqlChamados = "Select * from Calls C, CallTypes CT where C.CallID = " + tmpId + " and C.TypeID = CT.TypeID order by CallDate desc";
+            stChamados = ConexaoDAO.connSistema.createStatement();
+            rsChamados = stChamados.executeQuery(sqlChamados);
+            
+            if(rsChamados.next()){
+                
+                tmpChamado.setId(rsChamados.getInt("CallID"));
+                tmpChamado.setStatus(rsChamados.getInt("Status"));
+                tmpChamado.setIdCategoria(rsChamados.getInt("TypeID"));
+                tmpChamado.setDataAbertura(rsChamados.getString("CallDate"));
+                tmpChamado.setDataFechamento(rsChamados.getString("FinishDate"));
+                tmpChamado.setTitulo(rsChamados.getString("Title"));
+                tmpChamado.setDescricao(rsChamados.getString("Description"));
+                tmpChamado.setSolucao(rsChamados.getString("Solution"));
+                tmpChamado.setIdCliente(rsChamados.getString("CustomerID"));
+                tmpChamado.setLoginUsuario(rsChamados.getString("UserID"));
+            }
+                        
+        } catch (Exception erro) {
+            String msgErro = "Falha na listagem dos chamados.\n";
+            msgErro += "Verifique a sintaxe da instrução SQL, nome de campos e tabelas.\n\n";
+            msgErro += "Erro Original: " + erro.getMessage();
+
+            throw new Exception(msgErro);
+        }
+              
+        try {
+            ConexaoDAO.fechaConexao();
+        } catch (Exception erro) {
+            throw new Exception(erro.getMessage());
+        }
+        
+        return tmpChamado;
     }
 
 }//fechando classe
