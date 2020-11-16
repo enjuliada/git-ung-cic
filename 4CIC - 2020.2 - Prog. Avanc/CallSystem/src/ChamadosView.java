@@ -22,6 +22,7 @@ public class ChamadosView extends JInternalFrame implements ActionListener {
     public static JLabel lblDescricao, lblSolucao;
     public static JComboBox cmbTipos;
     public static JTextArea txaDescricao, txaSolucao;
+    public static JScrollPane scrDescricao, scrSolucao;
     public static Container ctnChamados;
     public static JButton btnRegistrar, btnEncerrar, btnFiltrar;
     public static JTable tblChamados;
@@ -71,17 +72,20 @@ public class ChamadosView extends JInternalFrame implements ActionListener {
         ctnChamados.add(lblDescricao);
 
         txaDescricao = new JTextArea();
-        txaDescricao.setLineWrap(true);
-        txaDescricao.setBounds(30, 295, 370, 150);
-        ctnChamados.add(txaDescricao);
+        txaDescricao.setLineWrap(true); //quebra de linha aut.
+        scrDescricao = new JScrollPane(txaDescricao);
+        scrDescricao.setBounds(30, 295, 370, 150);            
+        ctnChamados.add(scrDescricao);
 
-        lblSolucao = new JLabel("Solução");
+        lblSolucao = new JLabel("Solução");        
         lblSolucao.setBounds(460, 30, 200, 20);
         ctnChamados.add(lblSolucao);
 
         txaSolucao = new JTextArea();
-        txaSolucao.setBounds(450, 55, 350, 390);
-        ctnChamados.add(txaSolucao);
+        txaSolucao.setLineWrap(true);
+        scrSolucao = new JScrollPane(txaSolucao);
+        scrSolucao.setBounds(450, 55, 350, 390);
+        ctnChamados.add(scrSolucao);
 
         lblIdCli = new JLabel("Filtrar por Cliente:");
         lblIdCli.setBounds(820, 45, 150, 20);
@@ -152,7 +156,7 @@ public class ChamadosView extends JInternalFrame implements ActionListener {
         desbloquearCampos(false);
         
         this.setClosable(true);
-        this.setSize(1350, 540);
+        this.setSize(1350, 600);
         this.show();
 
     }//fechando construtor
