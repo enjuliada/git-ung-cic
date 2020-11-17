@@ -177,5 +177,40 @@ public class ChamadosDAO {
         
         return tmpChamado;
     }
+    
+    public static String retornaCategoria(int tmpId) throws Exception{
+        String nomeCat="";
+        try {
+            ConexaoDAO.abreConexao();
+        } catch (Exception erro) {
+            throw new Exception(erro.getMessage());
+        }
+        
+        try {
+            String sqlCat = "Select * from CallTypes where TypeId = " + tmpId;
+            stChamados = ConexaoDAO.connSistema.createStatement();
+            rsChamados = stChamados.executeQuery(sqlCat);
+            
+            nomeCat = rsChamados.getString("TypeName");            
+            
+        } catch (Exception erro) {
+            String msgErro = "Falha ao acessar o tipo de chamado.\n";
+            msgErro += "Verifique a sintaxe da instrução SQL, nome de campos e tabelas.\n\n";
+            msgErro += "Erro Original: " + erro.getMessage();
+
+            throw new Exception(msgErro);
+        }
+        
+        try {
+            ConexaoDAO.fechaConexao();
+        } catch (Exception erro) {
+            throw new Exception(erro.getMessage());
+        }
+        
+        return nomeCat;
+    }
+    
+    
+    
 
 }//fechando classe

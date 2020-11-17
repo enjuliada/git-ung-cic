@@ -1,4 +1,3 @@
-
 import java.io.*;
 import java.nio.file.*;
 import java.nio.channels.*;
@@ -28,8 +27,10 @@ public class ChamadosView extends JInternalFrame implements ActionListener {
     public static JTable tblChamados;
     public static JScrollPane scrChamados;
     public static DefaultTableModel mdlChamados;
-    public static String strTopo[] = {"ID", "Titulo", "Cliente", "Categoria"};
+    public static String strTopo[] = {"ID", "Titulo", "Data", "Cliente", "Categoria"};
 
+    public static java.util.List<ChamadosVO> lstChamados = new ArrayList<ChamadosVO>();
+    
     public ChamadosView() {
 
         super("Gerenciamento de Chamados");
@@ -117,6 +118,24 @@ public class ChamadosView extends JInternalFrame implements ActionListener {
 
         scrChamados.setBounds(820, 75, 490, 415);
         ctnChamados.add(scrChamados);
+        
+        //1. Evento na tabela
+        carregarChamados();
+        
+        tblChamados.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+
+                int idCham = Integer.parseInt(tblChamados.getValueAt(tblChamados.getSelectedRow(), 0).toString());
+
+                try {
+                    carregarCampos(ChamadosDAO.consultarChamado(idCham));
+                } catch (Exception erro) {
+                    JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+                }
+
+            }
+        }
+        );
 
         lblCampos = new JLabel[strCampos.length];
         txtCampos = new JTextField[strCampos.length - 1];
@@ -240,4 +259,50 @@ public class ChamadosView extends JInternalFrame implements ActionListener {
         return tipos;
     }
 
+    //2. Listagem dos dados
+    public static void carregarChamados() {
+
+        while (mdlChamados.getRowCount() > 0) {
+            mdlChamados.removeRow(0);
+        }
+
+        try {
+            lstChamados = ChamadosDAO.listarChamados();
+
+            for (ChamadosVO tmpChamado : lstChamados) {
+                String dados[] = new String[5];
+
+                dados[0] = "" + tmpChamado.getId();
+                dados[1] = tmpChamado.getTitulo();
+                dados[2] = tmpChamado.getDataAbertura();
+                dados[3] = tmpChamado.getIdCliente();
+                dados[4] = "" + tmpChamado.getIdCategoria();
+
+                mdlChamados.addRow(dados);
+            }
+
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+    }//fechando carregarClientes
+
+    public static void carregarCampos(ChamadosVO tmpChamado) {
+
+        try {
+            txtCampos[0].setText(""+tmpChamado.getId());
+            txtCampos[1].setText(tmpChamado.getTitulo());
+            txtCampos[2].setText(tmpChamado.getDataAbertura());
+            txtCampos[3].setText(tmpChamado.getLoginUsuario());
+            txtCampos[4].setText(tmpChamado.getIdCliente());
+            txtCampos[5].setText(ClientesDAO.consultarCliente(tmpChamado.getIdCliente()).getNomeEmpresa());
+            cmbTipos.setSelectedIndex(tmpChamado.getIdCategoria()-1);
+            txaDescricao.setText(tmpChamado.getDescricao());
+            txaSolucao.setText(tmpChamado.getSolucao());
+            
+
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
 }//fechando class
