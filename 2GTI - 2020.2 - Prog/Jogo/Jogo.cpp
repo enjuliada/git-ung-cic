@@ -1,10 +1,12 @@
 #include<stdio.h>
+#include<windows.h>
 #include<stdlib.h>
 #include<locale.h>
 #include<string.h>
-#include<math.h>
-#include<conio.h>
 #include<time.h>
+#include<iostream>
+#include<fstream>
+#include<conio.h>
 
 char nomePers[21];
 int classe;
@@ -14,6 +16,8 @@ char m1[5][12], m2[5][12];
 int vM1[5], dM1[5];
 int vM2[5], dM2[5];
 int contTela = 0;
+
+int idMonstro;
 
 char nBoss[20];
 int atribBoss[2];
@@ -44,11 +48,66 @@ printf("                             `b  `       '  d'\n");
 printf("                              `             '\n");                 
 }
 
+void desenhaAranha(){
+	printf("      /      \\         \n");
+	printf("    \\ \\  ,,  /  /      \n");
+	printf("     '-.`\()/`.-'       \n");
+	printf("   .--_'(  )'_--.      \n");
+	printf("  / /` /`'''`\\ `\\ \\     \n");
+	printf("   |  |  ><  |  |      \n");
+	printf("   \\  \\      /  /      \n");
+	printf("       '.__.'          \n");
+}
+
+void desenhaMorcego(){
+	printf("    /\\                 /\\\n");
+	printf("   / \\'._   (\\_/)   _.'/ \\\n");
+	printf("  /_.''._'--('.')--'_.''._\\\n");
+	printf("  | \\_ / `;=/ '' \\=;` \\ _/ |\n");
+	printf("   \\/ `\\__|`\\___/`|__/`  \\/\n");
+	printf("    `      \\(/|\\)/       `\n");
+	printf("            '' ''\n");
+}
+
+void desenhaRato(){
+	printf("              (\\_/)       \n");
+	printf("     .-'''-.-.-' a\\       \n");
+	printf("     /  \\      _.--'      \n");
+	printf("    (\\  /_---\\\\_\\_        \n");
+	printf("     `'-.                 \n");
+	printf("      ,__)                \n");
+}
+
+void desenhaLobo(){
+	printf("        _              \n");
+	printf("       / \\      _-'    \n");
+	printf("     _/|  \\-''- _ /    \n");
+	printf("__-'   |          \\    \n");
+	printf("    /             \\    \n");
+	printf("    /       ''o.  |o      \n");
+	printf("    |            \\ ;   \n");
+	printf("                  ',   \n");
+	printf("       \\_         __\\  \n");
+	printf("         ''-_    \\.//  \n");
+	printf("           / '-____'   \n");
+	printf("          /            \n");
+	printf("        _''            \n");
+	printf("      _-'              \n");
+}
+
+void desenhaCobra(){
+	printf("--..,_                         _,.--.            \n");
+	printf("       `'.'.                .'`__ o  `;__.       \n");
+	printf("         '.'.            .'.'`  '---'`  `        \n");
+	printf("           '.`'--....--'`.'                      \n");
+	printf("              `'--....--'`                       \n");
+}
+
 void definirAtrib(int tmpClasse){
 	
 	if(tmpClasse == 1){ //Guerreiro
 		
-		atributos[3] = 20; //Força
+		atributos[3] = 20; //ForÃ§a
 		atributos[4] = 5; //Destreza
 		atributos[5] = 10; //Vitalidade
 		atributos[0] = 7 * atributos[5]; //Life
@@ -58,7 +117,7 @@ void definirAtrib(int tmpClasse){
 		
 	}else if(tmpClasse == 2){ //Arqueiro
 		
-		atributos[3] = 5; //Força
+		atributos[3] = 5; //ForÃ§a
 		atributos[4] = 20; //Destreza
 		atributos[5] = 10; //Vitalidade
 		atributos[0] = 6 * atributos[5]; //Life
@@ -67,7 +126,7 @@ void definirAtrib(int tmpClasse){
 		
 	}else if(tmpClasse == 3){ //Paladino
 		
-		atributos[3] = 15; //Força
+		atributos[3] = 15; //ForÃ§a
 		atributos[4] = 7; //Destreza
 		atributos[5] = 13; //Vitalidade
 		atributos[0] = (float)7 * atributos[5]; //Life
@@ -142,8 +201,8 @@ void gerarDados(){
 	
 	strcpy(nomeAtributos[0],"Vida");
 	strcpy(nomeAtributos[1],"Dano");
-	strcpy(nomeAtributos[2],"Crítico");
-	strcpy(nomeAtributos[3],"Força");
+	strcpy(nomeAtributos[2],"CrÃ­tico");
+	strcpy(nomeAtributos[3],"ForÃ§a");
 	strcpy(nomeAtributos[4],"Destreza");
 	strcpy(nomeAtributos[5],"Vitalidade");
 	
@@ -151,14 +210,14 @@ void gerarDados(){
 	strcpy(ambientes[1],"Taverna");
 	strcpy(ambientes[2],"Floresta");
 	strcpy(ambientes[3],"Catacumba");
-	strcpy(ambientes[4],"Cemitério");
+	strcpy(ambientes[4],"CemitÃ©rio");
 	strcpy(ambientes[5],"Caverna");
-	strcpy(ambientes[6],"Pântano");
+	strcpy(ambientes[6],"PÃ¢ntano");
 	strcpy(ambientes[7],"Vilarejo");
 	strcpy(ambientes[8],"Campo"); 
 	strcpy(ambientes[9],"Castelo"); 
 	strcpy(ambientes[10],"Riacho"); 
-	strcpy(ambientes[11],"Mausoléu");
+	strcpy(ambientes[11],"MausolÃ©u");
 	
 	strcpy(m1[0],"Aranha");
 	strcpy(m1[1],"Morcego");
@@ -203,7 +262,19 @@ void gerarDados(){
 	
 }
 
-int gerarBatalha(int idMonstro){
+int gerarBatalha(){
+	
+	vM1[0] = 45;
+	vM1[1] = 50;
+	vM1[2] = 75;
+	vM1[3] = 90;
+	vM1[4] = 80;
+	
+	vM2[0] = 85;
+	vM2[1] = 100;
+	vM2[2] = 90;
+	vM2[3] = 110;
+	vM2[4] = 95;
 	
 	bool morteC = false, morteB = false;
 	int dBoss, dChar;
@@ -213,6 +284,7 @@ int gerarBatalha(int idMonstro){
 		
 		while(morteB == false && morteC == false){
 					
+			
 			
 			dBoss = rand() % atribBoss[1];
 			
@@ -227,7 +299,7 @@ int gerarBatalha(int idMonstro){
 			}
 			
 			if(morteC == true){
-				printf("VOCÊ MORREU!");
+				printf("VOCÃŠ MORREU!");
 				break;
 			} 
 			
@@ -244,7 +316,7 @@ int gerarBatalha(int idMonstro){
 			}
 			
 			if(morteB == true){
-				printf("VOCÊ VENCEU!");
+				printf("VOCÃŠ VENCEU!");
 				break;
 			} 
 			
@@ -254,6 +326,30 @@ int gerarBatalha(int idMonstro){
 	}else{
 		
 		if(contTela < 6){
+			
+			switch (idMonstro){
+			case 0:
+				desenhaAranha();
+				printf("\n\n");
+				break;
+				
+			case 1:
+				desenhaMorcego();
+				printf("\n\n");
+				break;
+			case 2:
+				desenhaRato();
+				printf("\n\n");
+				break;
+			case 3:
+				desenhaLobo();
+				printf("\n\n");
+				break;
+			case 4:
+				desenhaCobra();
+				printf("\n\n");
+				break;
+		}
 		
 			
 		int vidaGanha = vM1[idMonstro]*(float)0.1;
@@ -267,7 +363,7 @@ int gerarBatalha(int idMonstro){
 			_sleep(1000);
 		
 			if(vM1[idMonstro] <= 0){
-				printf("\n\nVOCÊ MATOU O %s!\n\n",m1[idMonstro]);
+				printf("\n\nVOCÃŠ MATOU O %s!\n\n",m1[idMonstro]);
 				atributos[0] += vidaGanha;
 				printf("Bonus de vida: %d\n\n", atributos[0]);
 				 
@@ -298,7 +394,7 @@ int gerarBatalha(int idMonstro){
 			_sleep(1000);
 		
 			if(vM2[idMonstro] <= 0){
-				printf("\n\nVOCÊ MATOU O %s!\n\n",m2[idMonstro]);
+				printf("\n\nVOCÃŠ MATOU O %s!\n\n",m2[idMonstro]);
 				atributos[0] += vidaGanha;
 				printf("Bonus de vida: %d\n\n", atributos[0]);
 				 
@@ -338,26 +434,27 @@ void criarAmbiente(){
 	vM1[3] = 70;
 	vM1[4] = 60;
 	
-	int opc, idMonstro=0, idTela=0;	
+	int opc, idTela=0;	
 	int i,j;
 	int repetiu=0;	
 	int qtde=0;
-		
-	idMonstro = rand() % 5;
 	
 	if(contTela<=1){
 		idTela = contTela;
 		sorteados[contTela] = idTela;
-		printf("#%d - %s está andando em um %s, e se depara com um %s.\nEscolha a opção desejada:\n\n",contTela, nomePers, ambientes[idTela], m1[idMonstro]);				
+		printf("#%d - %s estÃ¡ andando em um %s, e se depara com um %s.\nEscolha a opÃ§Ã£o desejada:\n\n",contTela, nomePers, ambientes[idTela], m1[idMonstro]);				
 		contTela++;
 		
 		printf("1 - Enfrentar inimigo\n");
-	printf("2 - Avançar \n\n");
-	printf("Opção: ");
+	printf("2 - AvanÃ§ar \n\n");
+	printf("OpÃ§Ã£o: ");
 	scanf("%d", &opc);
 	
+	printf("\n\n");
+	
 	if(opc == 1){
-		gerarBatalha(idMonstro);
+		
+		gerarBatalha();
 		system("pause");
 		
 		
@@ -384,18 +481,18 @@ void criarAmbiente(){
 			
 			if(repetiu == 0){
 				if(contTela < 6)	
-					printf("#%d - %s está andando em um %s, e se depara com um %s.\nEscolha a opção desejada:\n\n",contTela, nomePers, ambientes[idTela], m1[idMonstro]);
+					printf("#%d - %s estÃ¡ andando em um %s, e se depara com um %s.\nEscolha a opÃ§Ã£o desejada:\n\n",contTela, nomePers, ambientes[idTela], m1[idMonstro]);
 				else
-					printf("#%d - %s está andando em um %s, e se depara com um %s.\nEscolha a opção desejada:\n\n",contTela, nomePers, ambientes[idTela], m2[idMonstro]);
+					printf("#%d - %s estÃ¡ andando em um %s, e se depara com um %s.\nEscolha a opÃ§Ã£o desejada:\n\n",contTela, nomePers, ambientes[idTela], m2[idMonstro]);
 					
 				sorteados[contTela] = idTela;
 				printf("1 - Enfrentar inimigo\n");
-	printf("2 - Avançar \n\n");
-	printf("Opção: ");
+	printf("2 - AvanÃ§ar \n\n");
+	printf("OpÃ§Ã£o: ");
 	scanf("%d", &opc);
 	
 	if(opc == 1){
-		gerarBatalha(idMonstro);
+		gerarBatalha();
 		system("pause");
 		
 		
@@ -447,7 +544,7 @@ void criarAmbiente(){
 		
 	}
 	
-	
+
 	
 }
 
@@ -466,7 +563,7 @@ int main(){
 	printf("1 - Guerreiro\n");
 	printf("2 - Arqueiro\n");
 	printf("3 - Paladino\n");
-	printf("Opção: ");
+	printf("OpÃ§Ã£o: ");
 	scanf("%d", &classe);
 	
 	printf("\n\n");
@@ -483,9 +580,14 @@ int main(){
 	
 	system("cls");
 	
-	printf ("Início do jogo...\n\n\n");
+	printf ("InÃ­cio do jogo...\n\n\n");
 	
 	while(contTela<11){
+		
+		
+		srand(time(NULL));	
+		idMonstro = rand() % 5;
+	
 		criarAmbiente();
 	}
 	
@@ -497,6 +599,7 @@ int main(){
 	desenhaBoss();
 	printf("\n\n");
 	
-	gerarBatalha(100);	
+	idMonstro = 100;
+	gerarBatalha();	
 	
 }
