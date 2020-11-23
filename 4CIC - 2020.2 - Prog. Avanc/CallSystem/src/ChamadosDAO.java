@@ -54,7 +54,7 @@ public class ChamadosDAO {
 
         try {
             //AQUI
-            String sqlRegistro = "Insert into Calls(Status, TypeID, CallDate, FinishDate, Title, CustomerID, Description, Solucion, UserID) values (";
+            String sqlRegistro = "Insert into Calls(Status, TypeID, CallDate, FinishDate, Title, CustomerID, Description, Solution, UserID) values (";
             sqlRegistro += "0, " + tmpChamado.getIdCategoria() + ",";
             sqlRegistro += "'" + tmpChamado.getDataAbertura() + "',";
             sqlRegistro += "'" + tmpChamado.getDataFechamento() + "',";
@@ -221,7 +221,7 @@ public class ChamadosDAO {
         try {
             //Prog
             String sqlAlt = "Update calls  set solution = '" + tmpSolucao + "' where ";
-            sqlAlt = "CallID = " + tmpId;
+            sqlAlt += "CallID = " + tmpId;
             
             stChamados = ConexaoDAO.connSistema.createStatement();
             stChamados.executeUpdate(sqlAlt);
@@ -240,6 +240,38 @@ public class ChamadosDAO {
             throw new Exception(erro.getMessage());
         }
 
+    }
+    
+    public static void encerrarChamado(int tmpId) throws Exception{
+        try {
+            ConexaoDAO.abreConexao();
+        } catch (Exception erro) {
+             throw new Exception(erro.getMessage());
+        }
+        
+        try{
+            //PROGRAMAR AQUI
+            
+            String sqlEncerra="";
+            sqlEncerra+="Update Calls set Status = 1 where callID = " + tmpId;
+            
+            stChamados = ConexaoDAO.connSistema.createStatement();
+            stChamados.executeUpdate(sqlEncerra);
+            
+            
+        }catch (Exception erro) {
+            String msgErro = "Falha ao encerrar o chamado.\n";
+            msgErro += "Verifique a sintaxe da instrução SQL, nome de campos e tabelas.\n\n";
+            msgErro += "Erro Original: " + erro.getMessage();
+
+            throw new Exception(msgErro);
+        }
+        
+        try {
+            ConexaoDAO.fechaConexao();
+        } catch (Exception erro) {
+             throw new Exception(erro.getMessage());
+        }
     }
 
 }//fechando classe

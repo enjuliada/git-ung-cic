@@ -86,6 +86,7 @@ public class ChamadosView extends JInternalFrame implements ActionListener {
 
         txaDescricao = new JTextArea();
         txaDescricao.setLineWrap(true); //quebra de linha aut.
+        txaDescricao.setWrapStyleWord(true);
         scrDescricao = new JScrollPane(txaDescricao);
         scrDescricao.setBounds(30, 295, 370, 150);            
         ctnChamados.add(scrDescricao);
@@ -96,6 +97,7 @@ public class ChamadosView extends JInternalFrame implements ActionListener {
 
         txaSolucao = new JTextArea();
         txaSolucao.setLineWrap(true);
+        txaSolucao.setWrapStyleWord(true);
         scrSolucao = new JScrollPane(txaSolucao);
         scrSolucao.setBounds(450, 55, 350, 390);
         ctnChamados.add(scrSolucao);
@@ -198,6 +200,12 @@ public class ChamadosView extends JInternalFrame implements ActionListener {
             txtCampos[0].setEditable(false);
             txtCampos[5].setEditable(false);
             txtCampos[0].setText(gerarId());
+            txtCampos[3].setEditable(false);
+            
+            txtCampos[1].setForeground(Color.black);
+            
+            limparCampos();            
+            
         }
         else if(evt.getSource() == btnRegistrar){
             try{
@@ -219,6 +227,8 @@ public class ChamadosView extends JInternalFrame implements ActionListener {
                 
                 JOptionPane.showMessageDialog(null, "Um novo chamado foi registrado");
                 desbloquearCampos(false);
+                carregarChamados();
+                txtCampos[1].setForeground(Color.red);
                 
                 
             }catch(Exception erro){
@@ -228,10 +238,34 @@ public class ChamadosView extends JInternalFrame implements ActionListener {
         
         else if(evt.getSource() == btnAtualizar){
             txaSolucao.setEditable(true);
-            btnSalvar.setEnabled(true);            
+            btnSalvar.setEnabled(true);   
+            
+            btnAtualizar.setEnabled(false);
             
         }else if(evt.getSource() == btnSalvar){
             try{
+                
+                String tmpSolucao = txaSolucao.getText();
+                int tmpId = Integer.parseInt(txtCampos[0].getText());
+                
+                ChamadosDAO.atualizarChamado(tmpId, tmpSolucao);
+                JOptionPane.showMessageDialog(null, "Chamado Atualizado!");
+                txaSolucao.setEditable(false);
+                btnSalvar.setEnabled(false);
+                
+            }catch(Exception erro){
+                JOptionPane.showMessageDialog(null, erro.getMessage());
+            }
+        } else if(evt.getSource() == btnEncerrar){
+            try{
+                
+                int tmpId = Integer.parseInt(txtCampos[0].getText());
+                //ALTERAR AQUI
+                ChamadosDAO.encerrarChamado(tmpId);
+                JOptionPane.showMessageDialog(null, "Chamado Encerrado!");
+                
+                carregarCampos(ChamadosDAO.consultarChamado(tmpId));
+                
                 
             }catch(Exception erro){
                 JOptionPane.showMessageDialog(null, erro.getMessage());
@@ -252,8 +286,8 @@ public class ChamadosView extends JInternalFrame implements ActionListener {
     }
     
     public static void desbloquearCampos(boolean tmpStatus){
-        for(int i=0; i<txtCampos.length;i++){
-            txtCampos[i].setEditable(tmpStatus);
+        for(int i=0; i<txtCampos.length;i++){            
+                txtCampos[i].setEditable(tmpStatus);
         }        
         cmbTipos.setEnabled(tmpStatus);      
         txaDescricao.setEditable(tmpStatus);
@@ -323,12 +357,33 @@ public class ChamadosView extends JInternalFrame implements ActionListener {
             txaDescricao.setText(tmpChamado.getDescricao());
             txaSolucao.setText(tmpChamado.getSolucao());
             
+            int tmpStatus = tmpChamado.getStatus();
+            
+            if(tmpStatus == 1){
+                txtCampos[1].setForeground(Color.blue);
+            }else{
+                txtCampos[1].setForeground(Color.red);
+            }
+            
             btnAtualizar.setEnabled(true);
+            btnEncerrar.setEnabled(true);
             
 
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    public static void limparCampos(){
+        for(int i=1; i<txtCampos.length; i++){
+            if(i!=3)
+                txtCampos[i].setText("");            
+        }
+            btnAtualizar.setEnabled(false);
+            btnSalvar.setEnabled(false);
+            btnEncerrar.setEnabled(false);
+            
+            btnRegistrar.setEnabled(true);
     }
     
 }//fechando class
