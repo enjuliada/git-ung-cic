@@ -23,7 +23,7 @@ public class ChamadosView extends JInternalFrame implements ActionListener {
     public static JTextArea txaDescricao, txaSolucao;
     public static JScrollPane scrDescricao, scrSolucao;
     public static Container ctnChamados;
-    public static JButton btnRegistrar, btnEncerrar, btnFiltrar;
+    public static JButton btnRegistrar, btnEncerrar, btnFiltrar, btnAtualizar, btnSalvar;
     public static JTable tblChamados;
     public static JScrollPane scrChamados;
     public static DefaultTableModel mdlChamados;
@@ -62,10 +62,22 @@ public class ChamadosView extends JInternalFrame implements ActionListener {
         btnRegistrar.setBounds(30, 460, 370, 30);
         ctnChamados.add(btnRegistrar);
 
+        btnAtualizar = new JButton("Atualizar");
+        btnAtualizar.addActionListener(this);
+        btnAtualizar.setEnabled(false);
+        btnAtualizar.setBounds(450, 460, 115, 30);
+        ctnChamados.add(btnAtualizar);
+        
+        btnSalvar = new JButton("Salvar");
+        btnSalvar.addActionListener(this);
+        btnSalvar.setEnabled(false);
+        btnSalvar.setBounds(570, 460, 105, 30);
+        ctnChamados.add(btnSalvar);
+
         btnEncerrar = new JButton("Encerrar Chamado");
         btnEncerrar.addActionListener(this);
         btnEncerrar.setEnabled(false);
-        btnEncerrar.setBounds(450, 460, 350, 30);
+        btnEncerrar.setBounds(685, 460, 115, 30);
         ctnChamados.add(btnEncerrar);
 
         lblDescricao = new JLabel("Descrição do Problema:");
@@ -214,6 +226,18 @@ public class ChamadosView extends JInternalFrame implements ActionListener {
             }
         }
         
+        else if(evt.getSource() == btnAtualizar){
+            txaSolucao.setEditable(true);
+            btnSalvar.setEnabled(true);            
+            
+        }else if(evt.getSource() == btnSalvar){
+            try{
+                
+            }catch(Exception erro){
+                JOptionPane.showMessageDialog(null, erro.getMessage());
+            }
+        }
+        
     }
     
     public static String gerarId(){
@@ -298,6 +322,8 @@ public class ChamadosView extends JInternalFrame implements ActionListener {
             cmbTipos.setSelectedIndex(tmpChamado.getIdCategoria()-1);
             txaDescricao.setText(tmpChamado.getDescricao());
             txaSolucao.setText(tmpChamado.getSolucao());
+            
+            btnAtualizar.setEnabled(true);
             
 
         } catch (Exception erro) {
